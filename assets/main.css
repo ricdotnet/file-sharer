@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+:root {
+    --rich-black: #010C14;
+    --white-smoke: #F5F5F5;
+    --air-blue: #60A3D2;
+
+    --gun-metal: #0C2633;
+}
+
+html {
+    font-family: "Inter", "system-ui";
+    font-size: 0.875rem;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: var(--rich-black);
+    color: var(--white-smoke);
+}
+
+a, a:visited {
+    text-decoration: none;
+    color: var(--air-blue);
+}
+
+.container {
+    width: 900px;
+    margin-inline: auto;
+}
