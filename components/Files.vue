@@ -1,24 +1,24 @@
 <script setup lang="ts">
-  const files = [
-    {
-      filename: 'hello_world.zip',
-      size: 2133212,
-    },
-    {
-      filename: 'Song Of My People.mp3',
-      size: 5443133,
-    }
-  ];
+  const { data, pending } = await useFetch('/api/files', {
+    lazy: true,
+    server: false,
+  });
 </script>
 
 <template>
-  <div>
-    <div v-for="file in files">
-      {{ file.filename }} :: {{ file.size / 1000000 }}
-    </div>
+  <div v-if="pending">
+    Loading files...
+  </div>
+  <div v-else class="files-container">
+    <FileCard v-for="file in data.files" :file="file"/>
   </div>
 </template>
 
 <style scoped>
-
+  .files-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-items: stretch;
+    gap: 1.25rem;
+  }
 </style>
