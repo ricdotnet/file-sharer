@@ -1,12 +1,16 @@
 <script setup lang="ts">
+  import {File} from "~/types";
+
   defineProps<{
-    file: string;
+    file: File;
   }>();
 </script>
 
 <template>
   <div class="file">
-    {{ file }}
+    <div>{{ file.filename }}</div>
+    <div>Size: {{ file.size }}</div>
+    <div>Uploaded: {{ file.created }}</div>
   </div>
 </template>
 

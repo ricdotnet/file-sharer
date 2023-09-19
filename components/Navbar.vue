@@ -8,9 +8,8 @@
       <span class="title">FileSharer</span>
 
       <div class="links">
-<!--        <NuxtLink to="#">Files</NuxtLink>-->
-        <NuxtLink to="#">Upload</NuxtLink>
-<!--        <NuxtLink to="#">Logout</NuxtLink>-->
+        <NuxtLink to="/">Files</NuxtLink>
+        <NuxtLink to="/upload">Upload</NuxtLink>
       </div>
     </div>
   </nav>
