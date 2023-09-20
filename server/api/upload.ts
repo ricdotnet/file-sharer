@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export default defineEventHandler(async (event) => {
-  const multipart = await readMultipartFormData(event);
+  const multipart = await readMultipartFormData(event); // TODO: Error handling
 
   if (multipart && multipart.length > 1) {
     throw createError({
@@ -24,7 +24,5 @@ export default defineEventHandler(async (event) => {
     await fs.writeFile(path.join(process.cwd(), 'server', 'uploads', file.filename ?? 'unknown'), file.data);
   }
 
-  return {
-    ok: 'file uploaded',
-  };
+  return sendRedirect(event, '/');
 });
