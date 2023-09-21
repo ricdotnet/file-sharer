@@ -2,7 +2,7 @@
   import FileCard from "~/components/FileCard.vue";
   import Spinner from "~/components/Spinner.vue";
 
-  const { data, pending } = await useFetch('/api/files', {
+  const {data, pending} = await useFetch('/api/files', {
     lazy: true,
     server: false,
   });
@@ -29,5 +29,6 @@
     display: flex;
     justify-items: stretch;
     gap: 1.25rem;
+    flex-wrap: wrap;
   }
 </style>

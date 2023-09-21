@@ -6,6 +6,10 @@
     --air-blue: #60A3D2;
 
     --gun-metal: #0C2633;
+
+    /* dummy vars */
+    --x: -100px;
+    --y: -100px;
 }
 
 html {
