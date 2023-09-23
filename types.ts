@@ -3,3 +3,8 @@ export interface File {
   size: number;
   created: Date;
 }
+
+export interface Target extends EventTarget {
+  style: string;
+  files: FileList;
+}

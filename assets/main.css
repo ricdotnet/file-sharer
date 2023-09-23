@@ -3,8 +3,8 @@
 :root {
     --rich-black: #010C14;
     --white-smoke: #F5F5F5;
+    --text-dim: #ADC5CF;
     --air-blue: #60A3D2;
-
     --gun-metal: #0C2633;
 
     /* dummy vars */
@@ -29,7 +29,21 @@ a, a:visited {
     color: var(--air-blue);
 }
 
+*:focus {
+    outline: 2px solid var(--air-blue);
+    outline-offset: 4px;
+    border-radius: 0.5rem;
+}
+
+button {
+    all: unset;
+}
+
 .container {
     width: 900px;
     margin-inline: auto;
+}
+
+.hidden {
+    display: none;
 }

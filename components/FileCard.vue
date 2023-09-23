@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import {File} from "~/types";
+  import {File, Target} from "~/types";
 
-  const fileCardRef = ref<HTMLDivElement | null>(null);
+  const fileCardRef = ref<HTMLAnchorElement | null>(null);
 
   defineProps<{
     file: File;
@@ -9,10 +9,6 @@
 
   onMounted(() => {
     if (!fileCardRef.value) return;
-
-    interface Target extends EventTarget {
-      style: string;
-    }
 
     fileCardRef.value.addEventListener('mousemove', (event: MouseEvent) => {
       const target: Target | null = event.target as Target;
@@ -32,18 +28,24 @@
     });
   });
 
-  async function download(filename: string) {
-    const {data} = await useFetch('/api/download');
-    console.log(data.value);
+  function convertSize(size: number) {
+    if (size < 1000) {
+      return size + 'b';
+    }
+    if (size < 1000000) {
+      return size / 1000 + 'KB';
+    }
+
+    return size / 1000000 + 'MB';
   }
 </script>
 
 <template>
-  <div ref="fileCardRef" class="file" @click="download(file.filename)">
+  <a ref="fileCardRef" class="file" :href="`/api/download/${file.filename}`">
     <div>{{ file.filename }}</div>
-    <div>Size: {{ file.size }}</div>
+    <div>Size: {{ convertSize(file.size) }}</div>
     <div>Uploaded: {{ file.created }}</div>
-  </div>
+  </a>
 </template>
 
 <style scoped>
@@ -64,6 +66,8 @@
     * {
       pointer-events: none;
       user-select: none;
+
+      color: white;
     }
 
     &:hover {

@@ -13,6 +13,7 @@
     <Spinner/>
   </div>
   <div v-else class="files-container">
+<!--    <a href="/api/download/5000000.bin">Download 5MB file</a>-->
     <FileCard v-for="file in data.files" :file="file"/>
   </div>
 </template>
