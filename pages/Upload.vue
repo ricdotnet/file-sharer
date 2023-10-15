@@ -4,6 +4,10 @@
   const filename = ref('Upload File'.toUpperCase());
   const fileSelected = ref(false);
 
+  useHead({
+    title: 'Upload a File',
+  });
+  
   function onChange(event: Event) {
     const target = event.target as Target;
 

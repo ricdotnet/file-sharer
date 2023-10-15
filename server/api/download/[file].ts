@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     file = Buffer.from(arr);
   } else {
     filename = decodeURI(filename);
-    file = await fs.readFile(path.join(config.UPLOADS_PATH, filename));
+    file = await fs.readFile(path.join(config.UPLOADS_PATH(), filename));
   }
 
   if (!file) return;
