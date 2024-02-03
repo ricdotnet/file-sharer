@@ -7,7 +7,11 @@
   useHead({
     title: 'Upload a File',
   });
-  
+
+  definePageMeta({
+    middleware: 'upload-auth'
+  });
+
   function onChange(event: Event) {
     const target = event.target as Target;
 
