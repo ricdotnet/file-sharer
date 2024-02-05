@@ -1,8 +1,17 @@
 <script setup lang="ts">
+  import {onMounted} from "@vue/runtime-core";
+  import {useError} from "#app/composables/error";
   import {Target} from "~/types";
 
   const filename = ref('Upload File'.toUpperCase());
-  const fileSelected = ref(false);
+  const fileSelected = ref<boolean>(false);
+  const keyRef = ref<HTMLInputElement>();
+
+  onMounted(() => {
+    if (keyRef.value) {
+      keyRef.value.value = localStorage.getItem('auth-key') || '';
+    }
+  });
 
   useHead({
     title: 'Upload a File',
@@ -37,6 +46,9 @@
     <label class="file-select" for="file-select" :data-selected="fileSelected">
       {{ filename }}
     </label>
+
+    <input type="hidden" ref="keyRef" name="auth-key" />
+
     <button class="button" type="submit">Upload</button>
   </form>
 </template>

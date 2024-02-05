@@ -2,10 +2,10 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      title: 'Files',
+      title: 'ricdotnet\'s Files',
     },
   },
   devtools: {
-    enabled: true
+    enabled: true,
   },
 });
