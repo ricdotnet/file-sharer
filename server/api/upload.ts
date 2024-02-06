@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import config from '~/config';
-import { Logger } from '@ricdotnet/logger/dist';
+import { Logger } from '@ricdotnet/logger/dist/index.js';
 
 export default defineEventHandler(async (event) => {
   const multipart = await readMultipartFormData(event); // TODO: Error handling
