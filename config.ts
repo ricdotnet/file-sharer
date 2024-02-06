@@ -1,4 +1,4 @@
-import { Logger } from '@ricdotnet/logger/dist';
+import { Logger } from '@ricdotnet/logger/dist/index.js';
 
 const logLevel = process.env.NODE_ENV === 'developments'
   ? 'debug'
