@@ -1,48 +1,39 @@
 import fs from 'fs/promises';
 import path from 'path';
 import config from '~/config';
+import { Logger } from '@ricdotnet/logger/dist';
 
 export default defineEventHandler(async (event) => {
   const multipart = await readMultipartFormData(event); // TODO: Error handling
 
   if (!multipart) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'You must upload something',
-    });
+    Logger.get().error('Tried to post an empty form');
+    return sendRedirect(event, '/error', 400);
   }
 
   // TODO: handle this better
   if (multipart.length > 2) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Cannot upload more than one file at a time',
-    });
+    Logger.get().error('Tried to upload multiple files');
+    return sendRedirect(event, '/error', 400);
   }
 
   if (multipart[1].name !== 'auth-key') {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Auth key not set',
-    });
+    Logger.get().error('Auth key not set');
+    return sendRedirect(event, '/error', 400);
   }
 
   const authKey = multipart[1].data.toString();
 
   if (authKey !== process.env.SECRET) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Invalid auth key',
-    });
+    Logger.get().error('Invalid auth key');
+    return sendRedirect(event, '/error', 400);
   }
 
   const file = multipart[0];
 
   if (file.data.length > 10_000_000) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Cannot upload files larger than 10MB',
-    });
+    Logger.get().error('Tried to upload a file larger than 10MB');
+    return sendRedirect(event, '/error', 400);
   }
 
   await fs.writeFile(path.join(config.UPLOADS_PATH(), file.filename ?? 'unknown'), file.data);

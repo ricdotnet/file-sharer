@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import {onMounted} from "@vue/runtime-core";
-  import {useError} from "#app/composables/error";
   import {Target} from "~/types";
 
   const filename = ref('Upload File'.toUpperCase());
