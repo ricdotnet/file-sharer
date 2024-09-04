@@ -1,20 +1,29 @@
 <script setup lang="ts">
   import FileCard from "~/components/FileCard.vue";
   import Spinner from "~/components/Spinner.vue";
-
-  const {data, pending} = await useFetch('/api/files', {
-    lazy: true,
-    server: false,
+  
+  const files = ref<{ files: File[] }>({ files: [] });
+  const isLoading = ref(true);
+  
+  onMounted(async () => {
+    const {data} = await useFetch<{ files: File[] }>('/api/files', {
+      lazy: false,
+      headers: {
+        Authorisation: localStorage.getItem('auth-key') ?? '',
+      },
+    });
+    
+    isLoading.value = false;
+    files.value = data.value || { files: [] };
   });
 </script>
 
 <template>
-  <div class="loading" v-if="pending">
+  <div class="loading" v-if="isLoading">
     <Spinner/>
   </div>
   <div v-else class="files-container">
-<!--    <a href="/api/download/5000000.bin">Download 5MB file</a>-->
-    <FileCard v-for="file in data.files" :file="file"/>
+    <FileCard v-for="file in files.files" :file="file"/>
   </div>
 </template>
 

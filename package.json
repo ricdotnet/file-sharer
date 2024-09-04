@@ -11,9 +11,11 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@types/node": "^22.5.3",
     "nuxt": "^3.7.3"
   },
   "dependencies": {
-    "@ricdotnet/logger": "^0.2.2"
+    "@ricdotnet/logger": "^0.2.2",
+    "mysql2": "^3.11.0"
   }
 }

@@ -6,6 +6,9 @@ import config from "~/config";
 export default defineEventHandler(async (event) => {
   const uploadsDir = await fs.readdir(config.UPLOADS_PATH());
   const files: File[] = [];
+  
+  const auhtKey = getHeader(event, 'authorisation');
+  const isAuthed = auhtKey === process.env.SECRET;
 
   for (let file of uploadsDir) {
     if (config.IGNORED_FILES.includes(file)) continue;
@@ -16,6 +19,7 @@ export default defineEventHandler(async (event) => {
       filename: file,
       size: fileInfo.size,
       created: fileInfo.birthtime,
+      canDelete: isAuthed,
     });
   }
 
