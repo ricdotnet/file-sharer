@@ -9,6 +9,18 @@ const access: ConnectionOptions = {
   host: env.DB_HOST,
 };
 
-const db = mysql.createConnection(access);
+let db: mysql.Connection;
 
-export { db };
+(async () => {
+  db = await mysql.createConnection(access);
+})();
+
+async function findUserByUsername(username: string) {
+  return (await db.prepare('SELECT * FROM users WHERE username = ?')).execute([username]);
+}
+
+async function findUserByEmail(email: string) {
+  return (await db.prepare('SELECT * FROM users WHERE email = ?')).execute([email]);
+}
+
+export { db, findUserByUsername, findUserByEmail };
