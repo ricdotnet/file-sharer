@@ -1,29 +1,35 @@
 import jwt from 'jsonwebtoken';
 import { findUserByUsername } from '~/server/utils/db';
 import { IUser, TUserAuthenticated, TUserAuthenticatedTokenPayload, TUserResult } from '~/server/utils/types';
+import { Messages } from '~/server/utils/messages';
 
 export default defineEventHandler(async (event) => {
   if (event.method !== 'POST') {
     return createError({
       statusCode: 404,
-      statusMessage: 'Route not found',
     });
   }
 
   const { username, password } = await readBody<IUser>(event);
 
   if (!username || !password) {
-    return createError({ statusCode: 400, message: 'Invalid payload' });
+    return createError({ statusCode: 400, message: Messages.INVALID_PAYLOAD });
   }
 
-  const [rows] = await findUserByUsername(username);
-  if (!Array.isArray(rows) || !rows.length) {
-    return createError({ statusCode: 400, message: 'User not found' });
+  let rows;
+
+  try {
+    rows = await findUserByUsername(username);
+    if (!Array.isArray(rows) || !rows.length) {
+      return createError({ statusCode: 400, message: Messages.USER_NOT_FOUND });
+    }
+  } catch (err) {
+    return createError({ statusCode: 500, message: Messages.FAILED_TO_FIND_USER_BY_USERNAME });
   }
 
   const user = rows[0] as TUserResult;
   if (user.password !== password) {
-    return createError({ statusCode: 401, message: 'Invalid password' });
+    return createError({ statusCode: 401, message: Messages.INVALID_PASSWORD });
   }
 
   setResponseStatus(event, 200);
@@ -38,7 +44,7 @@ export default defineEventHandler(async (event) => {
   try {
     token = jwt.sign(userAuthenticatedTokenPayload, process.env.SECRET as string, { expiresIn: '1h' });
   } catch (err) {
-    return createError({ statusCode: 500, message: 'Failed to sign token' });
+    return createError({ statusCode: 500, message: Messages.FAILED_TO_SIGN_TOKEN });
   }
 
   const userAuthenticated: TUserAuthenticated = {

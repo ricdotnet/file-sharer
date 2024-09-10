@@ -2,9 +2,15 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      title: 'ricdotnet\'s Files',
+      title: 'File Sharer',
     },
   },
+  runtimeConfig: {
+    public: {
+      listViewEnabled: process.env.NUXT_LIST_VIEW_ENABLED === 'true',
+    },
+  },
+  ssr: false,
   devtools: {
     enabled: true,
   },

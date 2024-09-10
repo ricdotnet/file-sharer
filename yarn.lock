@@ -776,6 +776,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@heroicons/vue@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "@heroicons/vue@npm:2.1.5"
+  peerDependencies:
+    vue: ">= 3"
+  checksum: 08e3e458c32005e8c943c1f9a99cc9edd8903ae06106abbc000b31e2a47f09af2dcf348e9e3ee00563820d65c97e3899c4c1e74ff89ccdb79c4130793c6cf57c
+  languageName: node
+  linkType: hard
+
 "@ioredis/commands@npm:^1.1.1":
   version: 1.2.0
   resolution: "@ioredis/commands@npm:1.2.0"
@@ -5836,6 +5845,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nuxt-app@workspace:."
   dependencies:
+    "@heroicons/vue": ^2.1.5
     "@nuxt/devtools": latest
     "@ricdotnet/logger": ^0.2.2
     "@types/jsonwebtoken": ^9.0.6

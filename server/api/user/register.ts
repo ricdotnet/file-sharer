@@ -1,37 +1,49 @@
-import { db, findUserByUsername, findUserByEmail } from '~/server/utils/db';
+import { findUserByUsername, findUserByEmail, createUser } from '~/server/utils/db';
 import { IUser } from '~/server/utils/types';
+import { Messages } from '~/server/utils/messages';
 
 export default defineEventHandler(async (event) => {
   if (event.method !== 'POST') {
     return createError({
       statusCode: 404,
-      statusMessage: 'Route not found',
     });
   }
 
   const { username, email, password } = await readBody<IUser>(event);
 
   if (!username || !email || !password) {
-    return createError({ statusCode: 400, message: 'Invalid payload' });
+    return createError({ statusCode: 400, message: Messages.INVALID_PAYLOAD });
   }
 
   if (password.length <= 8) {
-    return createError({ statusCode: 400, message: 'Password must be longer than 8 characters' });
+    return createError({ statusCode: 400, message: Messages.INVALID_PASSWORD_LENGTH });
   }
 
   let rows;
-  [rows] = await findUserByUsername(username);
-  if (Array.isArray(rows) && rows.length) {
-    return createError({ statusCode: 400, message: 'Username already registered' });
+
+  try {
+    rows = await findUserByUsername(username);
+    if (Array.isArray(rows) && rows.length) {
+      return createError({ statusCode: 400, message: Messages.USERNAME_EXISTS });
+    }
+  } catch (err) {
+    return createError({ statusCode: 500, message: Messages.FAILED_TO_FIND_USER_BY_USERNAME });
   }
 
-  [rows] = await findUserByEmail(email);
-  if (Array.isArray(rows) && rows.length) {
-    return createError({ statusCode: 400, message: 'Email already registered' });
+  try {
+    rows = await findUserByEmail(email);
+    if (Array.isArray(rows) && rows.length) {
+      return createError({ statusCode: 400, message: Messages.EMAIL_EXISTS });
+    }
+  } catch (err) {
+    return createError({ statusCode: 500, message: Messages.FAILED_TO_FIND_USER_BY_EMAIL });
   }
 
-  const preparedStatement = await db.prepare('INSERT INTO users (username, password, email) VALUES (?, ?, ?)');
-  await preparedStatement.execute([username, password, email]);
+  try {
+    await createUser(username, password, email);
+  } catch (err) {
+    return createError({ statusCode: 500, message: Messages.FAILED_TO_CREATE_USER });
+  }
 
   setResponseStatus(event, 201);
 

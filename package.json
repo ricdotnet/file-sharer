@@ -17,6 +17,7 @@
     "nuxt": "^3.7.3"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.1.5",
     "@ricdotnet/logger": "^0.2.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.0"
