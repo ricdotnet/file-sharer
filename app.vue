@@ -5,17 +5,14 @@
 </template>
 
 <script setup lang="ts">
-  import "~/assets/main.css";
+  import '~/assets/main.css';
+  import { userStore } from './stores/userStore';
 
-  if (!localStorage.getItem("token")) {
-    await navigateTo("/login");
-  } else {
-    const token = localStorage.getItem("token");
-    const { data, error } = await useFetch("/api/user/auth", {
-      headers: {
-        Authorization: `${token}`,
-      },
-      lazy: false,
-    });
+  const { authenticate, isAuthenticated } = userStore();
+
+  if (process.client) {
+    await authenticate();
+
+    
   }
 </script>

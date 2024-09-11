@@ -10,8 +10,11 @@ export default defineNuxtConfig({
       listViewEnabled: process.env.NUXT_LIST_VIEW_ENABLED === 'true',
     },
   },
-  ssr: false,
+  // ssr: false,
   devtools: {
     enabled: true,
   },
+  modules: [
+    '@pinia/nuxt',
+  ],
 });

@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
       return createError({ statusCode: 400, message: Messages.USER_NOT_FOUND });
     }
   } catch (err) {
+    console.log(err);
     return createError({ statusCode: 500, message: Messages.FAILED_TO_FIND_USER_BY_USERNAME });
   }
 

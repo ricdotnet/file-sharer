@@ -30,7 +30,7 @@
     const username = usernameInput.value.value;
     const password = passwordInput.value.value;
 
-    const { data, error } = await useFetch('/api/user/login', {
+    const { data, error } = await useFetch<{ token: string }>('/api/user/login', {
       method: 'POST',
       body: {
         username,
