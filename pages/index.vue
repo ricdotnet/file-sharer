@@ -1,5 +1,5 @@
 <template>
-  <Files/>
+  <Files />
 </template>
 
 <script setup lang="ts">

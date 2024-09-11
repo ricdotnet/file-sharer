@@ -1,11 +1,11 @@
 <template>
   <form method="POST" enctype="multipart/form-data" action="/api/upload" @submit="onSubmit">
-    <input class="file" ref="fileRef" id="file-select" type="file" name="file" @change="onChange" title=""/>
+    <input class="file" ref="fileRef" id="file-select" type="file" name="file" @change="onChange" title="" />
     <label class="file-select" for="file-select" :data-selected="fileSelected">
       {{ filename }}
     </label>
 
-    <input type="hidden" ref="keyRef" name="auth-key"/>
+    <input type="hidden" ref="keyRef" name="auth-key" />
 
     <button class="button" type="submit">Upload</button>
   </form>

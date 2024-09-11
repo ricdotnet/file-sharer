@@ -3,15 +3,15 @@
     <div class="login-container">
       <div class="input-group">
         <label for="username">Username</label>
-        <input ref="usernameInput" id="username"/>
+        <input ref="usernameInput" id="username" />
       </div>
 
       <div class="input-group">
         <label for="password">Password</label>
-        <input ref="passwordInput" id="password"/>
+        <input ref="passwordInput" id="password" />
       </div>
 
-      <Button type="submit" label="Login"/>
+      <Button type="submit" label="Login" />
     </div>
   </form>
 </template>
@@ -19,6 +19,9 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import Button from '~/components/Button.vue';
+  import { useUserStore } from '#imports';
+
+  const { setIsAuthenticated } = useUserStore();
 
   const usernameInput = ref<HTMLInputElement | null>(null);
   const passwordInput = ref<HTMLInputElement | null>(null);
@@ -47,6 +50,7 @@
       localStorage.setItem('token', data.value.token);
     }
 
+    setIsAuthenticated(true);
     navigateTo('/');
   }
 </script>

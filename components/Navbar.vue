@@ -1,19 +1,32 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
   <nav>
     <div class="container">
       <span class="title">FileSharer</span>
 
-      <div class="links">
-        <NuxtLink to="/">Files</NuxtLink>
-        <NuxtLink to="/upload">Upload</NuxtLink>
-      </div>
+      <ClientOnly>
+        <div v-if="isAuthenticated">
+          <div class="links">
+            <NuxtLink to="/">Files</NuxtLink>
+            <NuxtLink to="/upload">Upload</NuxtLink>
+            <button @click="onLogoutClick">Logout</button>
+          </div>
+        </div>
+      </ClientOnly>
     </div>
   </nav>
 </template>
+
+<script setup lang="ts">
+  import { useUserStore, storeToRefs } from '#imports';
+
+  const userStore = useUserStore();
+  const { isAuthenticated } = storeToRefs(userStore);
+
+  async function onLogoutClick() {
+    userStore.logout();
+    navigateTo('/login');
+  }
+</script>
 
 <style scoped>
   nav {

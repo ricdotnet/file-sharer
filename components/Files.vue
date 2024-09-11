@@ -1,20 +1,20 @@
 <template>
   <div class="icons">
     <IconButton @click="view = 'grid'">
-      <TableCellsIcon class="icon" :class="view === 'grid' ? 'active-view' : ''"/>
+      <TableCellsIcon class="icon" :class="view === 'grid' ? 'active-view' : ''" />
     </IconButton>
     <template v-if="config.public.listViewEnabled">
       <IconButton @click="view = 'list'">
-        <ListBulletIcon class="icon" :class="view === 'list' ? 'active-view' : ''"/>
+        <ListBulletIcon class="icon" :class="view === 'list' ? 'active-view' : ''" />
       </IconButton>
     </template>
   </div>
   <div class="loading" v-if="isLoading">
-    <Spinner/>
+    <Spinner />
   </div>
   <div v-else>
     <div v-if="view === 'grid'" class="files-container">
-      <FileCard v-for="file in files.files" :file="file"/>
+      <FileCard v-for="file in files.files" :file="file" />
     </div>
     <div v-else>
       Table view coming soon.

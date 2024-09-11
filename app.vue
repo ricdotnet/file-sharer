@@ -1,18 +1,21 @@
 <template>
   <NuxtLayout>
-    <NuxtPage/>
+    <NuxtPage />
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
   import '~/assets/main.css';
-  import { userStore } from './stores/userStore';
+  import { useUserStore, storeToRefs } from '#imports';
 
-  const { authenticate, isAuthenticated } = userStore();
+  const userStore = useUserStore();
+  const { isAuthenticated } = storeToRefs(userStore);
 
   if (process.client) {
-    await authenticate();
+    await userStore.authenticate();
 
-    
+    if (!isAuthenticated.value) {
+      await navigateTo('/login');
+    }
   }
 </script>

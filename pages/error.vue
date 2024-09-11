@@ -1,13 +1,13 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
   <div class="error-message">
     <span>{OOPS}</span>
     <span>Something went wrong when uploading.</span>
   </div>
 </template>
+
+<script setup lang="ts">
+
+</script>
 
 <style scoped>
   .error-message {

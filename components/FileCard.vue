@@ -1,3 +1,13 @@
+<template>
+  <a ref="fileCardRef" class="file" :href="`/api/download/${file.filename}`"
+    :style="{ '--x': `${x}px`, '--y': `${y}px` }">
+    <div>{{ file.filename }}</div>
+    <div>Size: {{ convertSize(file.size) }}</div>
+    <div>Uploaded: {{ formatShort(file.created) }}</div>
+    <button v-if="file.canDelete" @click="onClickDelete">DELETE</button>
+  </a>
+</template>
+
 <script setup lang="ts">
   import { File } from "~/types";
   import { useDate } from '~/composables/useDate';
@@ -36,19 +46,6 @@
     alert('hello world');
   }
 </script>
-
-<template>
-  <a ref="fileCardRef"
-     class="file"
-     :href="`/api/download/${file.filename}`"
-     :style="{ '--x': `${x}px`, '--y': `${y}px` }"
-  >
-    <div>{{ file.filename }}</div>
-    <div>Size: {{ convertSize(file.size) }}</div>
-    <div>Uploaded: {{ formatShort(file.created) }}</div>
-    <button v-if="file.canDelete" @click="onClickDelete">DELETE</button>
-  </a>
-</template>
 
 <style>
   .file {
