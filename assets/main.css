@@ -13,7 +13,7 @@
 }
 
 html {
-    font-family: "Inter", "system-ui";
+    font-family: "Inter", "system-ui", sans-serif;
     font-size: 0.875rem;
 }
 
@@ -27,6 +27,10 @@ body {
 a, a:visited {
     text-decoration: none;
     color: var(--air-blue);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
 }
 
 *:focus {

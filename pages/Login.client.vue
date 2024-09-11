@@ -1,6 +1,8 @@
 <template>
   <form method="post" @submit="onLoginSubmit">
     <div class="login-container">
+      <h1>Login</h1>
+
       <div class="input-group">
         <label for="username">Username</label>
         <input ref="usernameInput" id="username" />
@@ -8,7 +10,7 @@
 
       <div class="input-group">
         <label for="password">Password</label>
-        <input ref="passwordInput" id="password" />
+        <input ref="passwordInput" id="password" type="password"/>
       </div>
 
       <Button type="submit" label="Login" />
@@ -67,12 +69,12 @@
     align-items: stretch;
     height: auto;
     width: 30%;
-    background-color: var(--gun-metal);
     box-sizing: border-box;
     padding-inline: 2rem;
     padding-block: 2rem;
     border-radius: 0.6rem;
     gap: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.35);
 
     @media screen and (max-width: 1280px) {
       width: 40%;
@@ -102,12 +104,16 @@
     input {
       box-sizing: border-box;
       width: 100%;
-      padding-inline: 0.7rem;
-      padding-block: 0.5rem;
-      border-radius: 0.4rem;
+      border: 1px solid var(--gun-metal);
+      border-radius: 0.5rem;
+      padding: 1rem 1rem;
       color: white;
       background-color: transparent;
-      border: 1px solid var(--air-blue);
+      transition: ease-in-out 150ms;
+    }
+
+    label {
+      color: rgba(255, 255, 255, 0.5);
     }
   }
 </style>

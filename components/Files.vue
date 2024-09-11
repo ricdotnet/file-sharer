@@ -38,7 +38,6 @@
   const view = ref<View>('grid');
 
   onMounted(() => {
-    isLoading.value = false;
     files.value = {
       files: [
         {
@@ -61,6 +60,8 @@
         },
       ]
     };
+
+    isLoading.value = false;
   });
 
   // onMounted(async () => {

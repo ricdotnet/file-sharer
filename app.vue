@@ -1,7 +1,9 @@
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <div v-if="!isLoading">
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -10,6 +12,7 @@
 
   const userStore = useUserStore();
   const { isAuthenticated } = storeToRefs(userStore);
+  const isLoading = ref(true);
 
   if (process.client) {
     await userStore.authenticate();
@@ -18,4 +21,6 @@
       await navigateTo('/login');
     }
   }
+
+  isLoading.value = false;
 </script>

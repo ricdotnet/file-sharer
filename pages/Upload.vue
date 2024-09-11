@@ -7,7 +7,7 @@
 
     <input type="hidden" ref="keyRef" name="auth-key" />
 
-    <button class="button" type="submit">Upload</button>
+     <Button label="Upload" type="submit" />
   </form>
 </template>
 
@@ -19,18 +19,17 @@
   const fileSelected = ref<boolean>(false);
   const keyRef = ref<HTMLInputElement>();
 
-  onMounted(() => {
-    if (keyRef.value && process.client) {
-      keyRef.value.value = localStorage.getItem('auth-key') || '';
-    }
-  });
+  // onMounted(() => {
+  //   if (keyRef.value && process.client) {
+  //     keyRef.value.value = localStorage.getItem('auth-key') || '';
+  //   }
+  // });
+
+  const { data } = await useFetch('/api/user/digest');
+  console.log(data.value);
 
   useHead({
     title: 'Upload a File',
-  });
-
-  definePageMeta({
-    middleware: 'upload-auth'
   });
 
   function onChange(event: Event) {
@@ -87,18 +86,6 @@
 
     &:hover {
       border: 0.3rem dashed var(--air-blue);
-    }
-  }
-
-  .button {
-    border: 1px solid var(--gun-metal);
-    padding: 1rem 2rem;
-    cursor: pointer;
-    border-radius: 0.5rem;
-    transition: ease-in-out 150ms;
-
-    &:hover {
-      border: 1px solid var(--air-blue);
     }
   }
 </style>

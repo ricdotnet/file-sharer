@@ -12,21 +12,18 @@
 
 <style scoped>
   .button {
-    background-color: var(--air-blue);
-    border: none;
+    border: 1px solid var(--gun-metal);
+    padding: 1rem 2rem;
     cursor: pointer;
-    display: inline-flex;
-    padding-block: 0.5rem;
-    padding-inline: 1rem;
-    outline: none;
-    border-radius: 0.4rem;
+    border-radius: 0.5rem;
+    transition: ease-in-out 150ms;
 
     &:focus-visible {
       outline: 2px solid var(--air-blue);
     }
 
-    &:active {
-      opacity: 0.8;
+    &:hover {
+      border: 1px solid var(--air-blue);
     }
   }
 </style>
