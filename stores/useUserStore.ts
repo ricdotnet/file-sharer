@@ -19,9 +19,9 @@ export const useUserStore = defineStore('user', () => {
     const data = await response.json();
 
     isAuthenticated.value = data.isAuthenticated;
-  };
+  }
 
-  async function setIsAuthenticated(value: boolean) {
+  function setIsAuthenticated(value: boolean) {
     isAuthenticated.value = value;
   }
 

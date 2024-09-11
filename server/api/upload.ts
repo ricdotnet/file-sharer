@@ -17,17 +17,7 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, '/error', 400);
   }
 
-  if (multipart[1].name !== 'auth-key') {
-    Logger.get().error('Auth key not set');
-    return sendRedirect(event, '/error', 400);
-  }
-
-  const authKey = multipart[1].data.toString();
-
-  if (authKey !== process.env.SECRET) {
-    Logger.get().error('Invalid auth key');
-    return sendRedirect(event, '/error', 400);
-  }
+  // TODO: handle the token
 
   const file = multipart[0];
 
