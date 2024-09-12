@@ -1,9 +1,10 @@
-FROM node:20 as build
+FROM node:20 AS build
 
 WORKDIR /app
 
 COPY ./package.json /app/package.json
 COPY ./yarn.lock /app/yarn.lock
+COPY ./.yarnrc.yml /app/.yarnrc.yml
 
 RUN corepack enable
 RUN yarn install
