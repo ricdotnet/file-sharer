@@ -1669,6 +1669,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@phc/format@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@phc/format@npm:1.0.0"
+  checksum: 15ee02504fbc16590923d89b1f1c2f5892df27cf2bf19180e5678511413e87b6e5355815a092749cd01698855ee5a0fc5d2393951c727acd650934eed290e26e
+  languageName: node
+  linkType: hard
+
 "@pinia/nuxt@npm:latest":
   version: 0.5.4
   resolution: "@pinia/nuxt@npm:0.5.4"
@@ -2478,6 +2485,18 @@ __metadata:
     delegates: ^1.0.0
     readable-stream: ^3.6.0
   checksum: 52590c24860fa7173bedeb69a4c05fb573473e860197f618b9a28432ee4379049336727ae3a1f9c4cb083114601c1140cee578376164d0e651217a9843f9fe83
+  languageName: node
+  linkType: hard
+
+"argon2@npm:^0.41.1":
+  version: 0.41.1
+  resolution: "argon2@npm:0.41.1"
+  dependencies:
+    "@phc/format": ^1.0.0
+    node-addon-api: ^8.1.0
+    node-gyp: latest
+    node-gyp-build: ^4.8.1
+  checksum: c26e94275c8b04a5f0cd3f4b0ff80f2ee4d8805e5fe39ec8b8f511409bad40e493bfb85f8b107d7d40714e64144a9fedf79cc8320beeec037791d9683bb7e753
   languageName: node
   linkType: hard
 
@@ -6144,6 +6163,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-addon-api@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "node-addon-api@npm:8.1.0"
+  dependencies:
+    node-gyp: latest
+  checksum: a30398fa9bb029f164b57d77aac1dc57e62e46cf1a5c468e1a762e34b442ae9d3ee007a87de58e5866df19446f08d556a2dc261a39240d10f6512ed50acf8210
+  languageName: node
+  linkType: hard
+
 "node-domexception@npm:^1.0.0":
   version: 1.0.0
   resolution: "node-domexception@npm:1.0.0"
@@ -6205,6 +6233,17 @@ __metadata:
     node-gyp-build-optional: optional.js
     node-gyp-build-test: build-test.js
   checksum: c3676d337b36803bc7792e35bf7fdcda7cdcb7e289b8f9855a5535702a82498eb976842fefcf487258c58005ca32ce3d537fbed91280b04409161dcd7232a882
+  languageName: node
+  linkType: hard
+
+"node-gyp-build@npm:^4.8.1":
+  version: 4.8.2
+  resolution: "node-gyp-build@npm:4.8.2"
+  bin:
+    node-gyp-build: bin.js
+    node-gyp-build-optional: optional.js
+    node-gyp-build-test: build-test.js
+  checksum: 1a57bba8c4c193f808bd8ad1484d4ebdd8106dd9f04a3e82554dc716e3a2d87d7e369e9503c145e0e6a7e2c663fec0d8aaf52bd8156342ec7fc388195f37824e
   languageName: node
   linkType: hard
 
@@ -6442,6 +6481,7 @@ __metadata:
     "@ricdotnet/logger": ^0.2.2
     "@types/jsonwebtoken": ^9.0.6
     "@types/node": ^22.5.3
+    argon2: ^0.41.1
     jsonwebtoken: ^9.0.2
     mysql2: ^3.11.0
     nuxt: ^3.7.3
