@@ -24,7 +24,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: corepack enable && yarn install
 
       - name: Apply migrations
         run: node ./migrations/applyMigrations.mjs
