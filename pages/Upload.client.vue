@@ -34,12 +34,12 @@
 
   async function onSubmit(event: Event) {
     event.preventDefault();
-    if (!fileSelected.value) {
+    if (!fileSelected.value || !file.value) {
       return;
     }
 
     const form = new FormData();
-    form.append('file', file.value, 'file');
+    form.append('file', file.value, file.value.name);
 
     await fetch('/api/upload', {
       method: 'POST',
@@ -48,6 +48,8 @@
         Authorization: `${localStorage.getItem('token')}`,
       },
     });
+
+    await navigateTo('/');
   }
 </script>
 

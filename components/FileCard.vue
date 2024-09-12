@@ -1,10 +1,10 @@
 <template>
   <a ref="fileCardRef" class="file" :href="`/api/download/${file.filename}`"
     :style="{ '--x': `${x}px`, '--y': `${y}px` }">
-    <div>{{ file.filename }}</div>
+    <div>{{ file.original_filename }}</div>
     <div>Size: {{ convertSize(file.size) }}</div>
-    <div>Uploaded: {{ formatShort(file.created) }}</div>
-    <button v-if="file.canDelete" @click="onClickDelete">DELETE</button>
+    <div>Uploaded: {{ formatShort(new Date(file.created)) }}</div>
+    <!-- <button v-if="file.canDelete" @click="onClickDelete">DELETE</button> -->
   </a>
 </template>
 
@@ -59,6 +59,11 @@
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    max-width: max-content;
+
+    /* display: flex;
+    flex-direction: column;
+    gap: 0.5rem; */
 
     transition: ease-in-out 200ms;
 
