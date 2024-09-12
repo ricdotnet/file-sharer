@@ -1,5 +1,5 @@
 <template>
-  <form method="POST" enctype="multipart/form-data" action="/api/upload" @submit="onSubmit">
+  <form method="POST" @submit="onSubmit">
     <input class="file" ref="fileRef" id="file-select" type="file" name="file" @change="onChange" title=""/>
     <label class="file-select" for="file-select" :data-selected="fileSelected">
       {{ filename }}
@@ -14,6 +14,7 @@
 
   const filename = ref('Upload File'.toUpperCase());
   const fileSelected = ref(false);
+  const file = ref<File | null>(null);
 
   useHead({
     title: 'Upload a File',
@@ -26,15 +27,27 @@
       return;
     }
 
-    const file = target.files[0];
-    filename.value = file.name;
+    file.value = target.files[0] as File;
+    filename.value = file.value.name;
     fileSelected.value = true;
   }
 
-  function onSubmit(event: Event) {
+  async function onSubmit(event: Event) {
+    event.preventDefault();
     if (!fileSelected.value) {
-      event.preventDefault();
+      return;
     }
+
+    const form = new FormData();
+    form.append('file', file.value, 'file');
+
+    await fetch('/api/upload', {
+      method: 'POST',
+      body: form,
+      headers: {
+        Authorization: `${localStorage.getItem('token')}`,
+      },
+    });
   }
 </script>
 
