@@ -10,9 +10,9 @@ jobs:
   build_docker_image:
     runs-on: ubuntu-latest
     steps:
-      name: Test
-      run: echo ${{ github.repository }}
-      shell: bash
+      - name: Test
+        run: echo ${{ github.repository }}
+        shell: bash
 #    name: Build Docker Image
 #    runs-on: ubuntu-latest
 #
