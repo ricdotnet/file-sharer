@@ -48,6 +48,7 @@ export default defineEventHandler(async (event) => {
     await fs.writeFile(path.join(config.UPLOADS_PATH(), fileName), file.data);
   } catch (err) {
     Logger.get().error('Failed to write file');
+    console.log(err);
     return sendRedirect(event, '/error', 500);
   } finally {
     await createFile(decoded.id, file.filename ?? 'NO_NAME', fileName);
