@@ -1,5 +1,6 @@
 import { Logger } from '@ricdotnet/logger/dist';
 import mysql, { PoolOptions } from 'mysql2/promise';
+import * as argon from 'argon2';
 
 const env = process.env;
 
@@ -49,11 +50,13 @@ async function findUserByEmail(email: string) {
 
 async function createUser(username: string, password: string, email: string) {
   let conn;
+  
+  const hashedPass = await argon.hash(password);
 
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare('INSERT INTO users (username, password, email) VALUES (?, ?, ?)');
-    await preparedStatement.execute([username, password, email]);
+    await preparedStatement.execute([username, hashedPass, email]);
   } catch (err) {
     Logger.get().error('Error in createUser');
     throw err;

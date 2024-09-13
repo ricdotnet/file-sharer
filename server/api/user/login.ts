@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { findUserByUsername } from '~/server/utils/db';
 import { IUser, TUserAuthenticated, TUserAuthenticatedTokenPayload, TUserResult } from '~/server/utils/types';
 import { Messages } from '~/server/utils/messages';
+import * as argon from 'argon2';
 
 export default defineEventHandler(async (event) => {
   if (event.method !== 'POST') {
@@ -29,7 +30,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const user = rows[0] as TUserResult;
-  if (user.password !== password) {
+  if (!(await argon.verify(user.password ,password))) {
     return createError({ statusCode: 401, message: Messages.INVALID_PASSWORD });
   }
 
