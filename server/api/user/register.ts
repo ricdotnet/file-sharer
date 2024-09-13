@@ -27,6 +27,7 @@ export default defineEventHandler(async (event) => {
       return createError({ statusCode: 400, message: Messages.USERNAME_EXISTS });
     }
   } catch (err) {
+    console.log(err);
     return createError({ statusCode: 500, message: Messages.FAILED_TO_FIND_USER_BY_USERNAME });
   }
 
@@ -36,12 +37,14 @@ export default defineEventHandler(async (event) => {
       return createError({ statusCode: 400, message: Messages.EMAIL_EXISTS });
     }
   } catch (err) {
+    console.log(err);
     return createError({ statusCode: 500, message: Messages.FAILED_TO_FIND_USER_BY_EMAIL });
   }
 
   try {
     await createUser(username, password, email);
   } catch (err) {
+    console.log(err);
     return createError({ statusCode: 500, message: Messages.FAILED_TO_CREATE_USER });
   }
 
