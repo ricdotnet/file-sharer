@@ -3,7 +3,7 @@ import path from 'path';
 import jwt from 'jsonwebtoken';
 import { File } from '~/types';
 import config from "~/config";
-import { Logger } from '@ricdotnet/logger/dist';
+import { Logger } from '@ricdotnet/logger/dist/index.js';
 import { findFilesByUserId } from '../utils/db';
 
 export default defineEventHandler(async (event) => {

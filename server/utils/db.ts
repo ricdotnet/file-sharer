@@ -1,4 +1,4 @@
-import { Logger } from '@ricdotnet/logger/dist';
+import { Logger } from '@ricdotnet/logger/dist/index.js';
 import mysql, { PoolOptions } from 'mysql2/promise';
 import * as argon from 'argon2';
 
