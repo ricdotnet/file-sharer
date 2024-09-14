@@ -15,5 +15,10 @@ export default defineNuxtConfig({
   },
   modules: [
     '@pinia/nuxt',
+    'nuxt-cron',
   ],
+  cron: {
+    timeZone: 'Europe/London',
+    jobsDir: 'cron',
+  },
 });

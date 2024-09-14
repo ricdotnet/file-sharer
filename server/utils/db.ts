@@ -139,7 +139,7 @@ async function saveCookie(owner: number, cookie: string) {
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare('INSERT INTO cookies (owner, value, expires) VALUES (?, ?, ?)');
-    await preparedStatement.execute([owner, cookie, new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)]);
+    await preparedStatement.execute([owner, cookie, new Date(Date.now() + 1000 * 60 * 60)]);
   } catch (err: any) {
     Logger.get().error(`Error in saveCookie: ${err.message}`);
     throw err;
@@ -165,6 +165,20 @@ async function findCookie(cookie: string) {
   return rows;
 }
 
+async function clearExpiredCookies() {
+  let conn;
+
+  try {
+    conn = await db.getConnection();
+    await conn.query('DELETE FROM cookies WHERE expires < NOW() - INTERVAL 1 HOUR');
+  } catch (err: any) {
+    Logger.get().error(`Error in clearExpiredCookies: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+}
+
 export {
   createUser,
   findUserByUsername,
@@ -174,5 +188,6 @@ export {
   findFileByFilename,
   deleteFileById,
   saveCookie,
-  findCookie
+  findCookie,
+  clearExpiredCookies,
 };

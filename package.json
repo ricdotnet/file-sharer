@@ -23,6 +23,7 @@
     "argon2": "^0.41.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.0",
+    "nuxt-cron": "^1.6.0",
     "pinia": "^2.2.2"
   },
   "packageManager": "yarn@3.6.1"

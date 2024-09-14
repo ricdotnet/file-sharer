@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const cookie = crypto.randomBytes(16).toString('hex');
-  setCookie(event, 'file-sharer', cookie, { httpOnly: true, secure: true, sameSite: 'strict' });
+  setCookie(event, 'file-sharer', cookie, { httpOnly: true, secure: true, sameSite: 'strict', expires: new Date(Date.now() + 1000 * 60 * 60 * 24) });
 
   try {
     await saveCookie(user.id, cookie);
