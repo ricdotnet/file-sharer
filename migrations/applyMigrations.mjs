@@ -21,11 +21,10 @@ fs.readdir('./migrations', async (err, files) => {
 
     try {
       await connection.query(sql);
+      console.log(`Migration ${file} applied`);
     } catch (err) {
       console.error(`Migration ${file} failed: ${err.message}`);
     }
-
-    console.log(`Migration ${file} applied`);
   }
 
   connection.end();
