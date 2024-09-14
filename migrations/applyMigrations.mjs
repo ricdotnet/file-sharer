@@ -19,7 +19,11 @@ fs.readdir('./migrations', async (err, files) => {
   for (let file of _files) {
     const sql = fs.readFileSync(`./migrations/${file}`, 'utf8');
 
-    await connection.query(sql);
+    try {
+      await connection.query(sql);
+    } catch (err) {
+      console.error(`Migration ${file} failed: ${err.message}`);
+    }
 
     console.log(`Migration ${file} applied`);
   }
