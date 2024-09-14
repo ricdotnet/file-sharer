@@ -1700,10 +1700,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ricdotnet/logger@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "@ricdotnet/logger@npm:0.2.2"
-  checksum: 9f78a0a4df1110b630745a60f131ea87a1d6ec976922306262011fe91677b72dfb6c5191e1623f171c2ba2cededecb7dfbaba404846849ec75daa2a0bcfa8fd2
+"@ricdotnet/logger@npm:^0.3.3":
+  version: 0.3.3
+  resolution: "@ricdotnet/logger@npm:0.3.3"
+  checksum: dcf2eea17cea8b5c100dcbba16eaf6e388c4736329f679b95dc7293de731e3767dc286c8d3f717d7b835c5cc15be73b65f2668349cea8f29f9bc10d9d3a080d8
   languageName: node
   linkType: hard
 
@@ -6478,7 +6478,7 @@ __metadata:
     "@heroicons/vue": ^2.1.5
     "@nuxt/devtools": latest
     "@pinia/nuxt": latest
-    "@ricdotnet/logger": ^0.2.2
+    "@ricdotnet/logger": ^0.3.3
     "@types/jsonwebtoken": ^9.0.6
     "@types/node": ^22.5.3
     argon2: ^0.41.1

@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
-import { findUserByUsername } from '~/server/utils/db';
+import { findUserByUsername, saveCookie } from '~/server/utils/db';
 import { IUser, TUserAuthenticated, TUserAuthenticatedTokenPayload, TUserResult } from '~/server/utils/types';
 import { Messages } from '~/server/utils/messages';
 import * as argon from 'argon2';
+import crypto from 'crypto';
 
 export default defineEventHandler(async (event) => {
   if (event.method !== 'POST') {
@@ -52,6 +53,15 @@ export default defineEventHandler(async (event) => {
   const userAuthenticated: TUserAuthenticated = {
     ...userAuthenticatedTokenPayload,
     token,
+  }
+
+  const cookie = crypto.randomBytes(16).toString('hex');
+  setCookie(event, 'file-sharer', cookie, { httpOnly: true, secure: true, sameSite: 'strict' });
+
+  try {
+    await saveCookie(user.id, cookie);
+  } catch (err) {
+    return createError({ statusCode: 500, message: Messages.FAILED_TO_SAVE_COOKIE });
   }
 
   return userAuthenticated;

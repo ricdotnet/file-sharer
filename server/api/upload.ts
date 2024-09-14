@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
   const multipart = await readMultipartFormData(event); // TODO: Error handling
 
   if (!multipart) {
-    Logger.get().error('Tried to post an empty form');
+    Logger.get().error('No files uploaded');
     return sendRedirect(event, '/error', 400);
   }
 
@@ -36,8 +36,8 @@ export default defineEventHandler(async (event) => {
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.SECRET as string) as TUserAuthenticatedTokenPayload;
-  } catch (err) {
-    Logger.get().error('Tried to upload a file with an invalid token');
+  } catch (err: any) {
+    Logger.get().error(`Tried to upload a file with an invalid token: ${err.message}`);
     return sendRedirect(event, '/error', 400);
   }
 
@@ -46,9 +46,8 @@ export default defineEventHandler(async (event) => {
 
   try {
     await fs.writeFile(path.join(config.UPLOADS_PATH(), fileName), file.data);
-  } catch (err) {
-    Logger.get().error('Failed to write file');
-    console.log(err);
+  } catch (err: any) {
+    Logger.get().error(`Failed to write file: ${err.message}`);
     return sendRedirect(event, '/error', 500);
   } finally {
     await createFile(decoded.id, file.filename ?? 'NO_NAME', fileName);

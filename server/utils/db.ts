@@ -22,8 +22,8 @@ async function findUserByUsername(username: string) {
   try {
     conn = await db.getConnection();
     [rows] = await conn.query('SELECT * FROM users WHERE username = ?', [username]);
-  } catch (err) {
-    Logger.get().error('Error in findUserByUsername');
+  } catch (err: any) {
+    Logger.get().error(`Error in findUserByUsername: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -38,8 +38,8 @@ async function findUserByEmail(email: string) {
   try {
     conn = await db.getConnection();
     [rows] = await conn.query('SELECT * FROM users WHERE email = ?', [email]);
-  } catch (err) {
-    Logger.get().error('Error in findUserByEmail');
+  } catch (err: any) {
+    Logger.get().error(`Error in findUserByEmail: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -50,15 +50,15 @@ async function findUserByEmail(email: string) {
 
 async function createUser(username: string, password: string, email: string) {
   let conn;
-  
+
   const hashedPass = await argon.hash(password);
 
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare('INSERT INTO users (username, password, email) VALUES (?, ?, ?)');
     await preparedStatement.execute([username, hashedPass, email]);
-  } catch (err) {
-    Logger.get().error('Error in createUser');
+  } catch (err: any) {
+    Logger.get().error(`Error in createUser: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -72,8 +72,8 @@ async function createFile(userId: number, ogName: string, fileName: string) {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare('INSERT INTO files (owner, original_filename, filename) VALUES (?, ?, ?)');
     await preparedStatement.execute([userId, ogName, fileName]);
-  } catch (err) {
-    Logger.get().error('Error in createFile');
+  } catch (err: any) {
+    Logger.get().error(`Error in createFile: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -87,8 +87,8 @@ async function findFilesByUserId(userId: number) {
   try {
     conn = await db.getConnection();
     [rows] = await conn.query('SELECT * FROM files WHERE owner = ?', [userId]);
-  } catch (err) {
-    Logger.get().error('Error in findFilesByUserId');
+  } catch (err: any) {
+    Logger.get().error(`Error in findFilesByUserId: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -97,4 +97,53 @@ async function findFilesByUserId(userId: number) {
   return rows;
 }
 
-export { createUser, findUserByUsername, findUserByEmail, createFile, findFilesByUserId };
+async function findFileByFilename(filename: string) {
+  let conn;
+  let rows;
+
+  try {
+    conn = await db.getConnection();
+    [rows] = await conn.query('SELECT * FROM files WHERE filename = ?', [filename]);
+  } catch (err: any) {
+    Logger.get().error(`Error in fineFileByFilename: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+
+  return rows;
+}
+
+async function saveCookie(owner: number, cookie: string) {
+  let conn;
+
+  try {
+    conn = await db.getConnection();
+    const preparedStatement = await conn.prepare('INSERT INTO cookies (owner, value, expires) VALUES (?, ?, ?)');
+    await preparedStatement.execute([owner, cookie, new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)]);
+  } catch (err: any) {
+    Logger.get().error(`Error in saveCookie: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+}
+
+async function findCookie(cookie: string) {
+  let conn;
+  let rows;
+
+  try {
+    conn = await db.getConnection();
+    [rows] = await conn.query('SELECT * FROM cookies WHERE value = ?', [cookie]);
+  } catch (err: any) {
+    Logger.get().error(`Error in findCookie: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+
+  return rows;
+}
+
+export { createUser, findUserByUsername, findUserByEmail, createFile, findFilesByUserId, findFileByFilename, saveCookie, findCookie };

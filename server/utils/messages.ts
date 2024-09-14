@@ -9,4 +9,6 @@ export enum Messages {
   'EMAIL_EXISTS' = 'Email already registered',
   'FAILED_TO_SIGN_TOKEN' = 'Failed to sign token',
   'FAILED_TO_CREATE_USER' = 'Failed to create user',
+  'FILE_NOT_FOUND' = 'File not found',
+  'FAILED_TO_SAVE_COOKIE' = 'Failed to save cookie into the database',
 }
