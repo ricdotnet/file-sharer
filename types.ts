@@ -1,4 +1,5 @@
 export interface File {
+  id: number;
   filename: string;
   size: number;
   created: Date;

@@ -4,8 +4,9 @@ import config from "~/config";
 import { findCookie, findFileByFilename } from '~/server/utils/db';
 import { Messages } from '#imports';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
+import { H3Event } from 'h3';
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event: H3Event) => {
   let filename = getRouterParam(event, 'file');
   let file;
 

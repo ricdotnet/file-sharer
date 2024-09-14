@@ -21,5 +21,9 @@ export const useFileStore = defineStore('file', () => {
     files.value = data.files;
   }
 
-  return { files, fetchFiles };
+  function removeFile(id: number) {
+    files.value = files.value.filter((file) => file.id !== id);
+  }
+
+  return { files, fetchFiles, removeFile };
 });

@@ -1,16 +1,35 @@
 <template>
-  <a ref="fileCardRef" class="file" :href="`/api/download/${file.filename}`"
-    :style="{ '--x': `${x}px`, '--y': `${y}px` }">
-    <div>{{ file.original_filename }}</div>
-    <div>Size: {{ convertSize(file.size) }}</div>
-    <div>Uploaded: {{ formatShort(new Date(file.created)) }}</div>
-    <!-- <button v-if="file.canDelete" @click="onClickDelete">DELETE</button> -->
-  </a>
+  <div ref="fileCardRef" class="file"
+       :style="{ '--x': `${x}px`, '--y': `${y}px` }">
+    <div class="card-title">
+      {{ file.original_filename }}
+    </div>
+    <div class="icon-group">
+      <CircleStackIcon class="icon"/>
+      <span>{{ convertSize(file.size) }}</span>
+    </div>
+    <div class="icon-group">
+      <CalendarDaysIcon class="icon"/>
+      {{ formatShort(new Date(file.created)) }}
+    </div>
+    <div class="card-actions">
+      <a target="_blank" :href="`/api/download/${file.filename}`">
+        <ArrowDownOnSquareIcon class="icon"/>
+      </a>
+      <IconButton v-if="file.canDelete" @click="(e) => onClickDelete(e, file.id)">
+        <TrashIcon class="icon"/>
+      </IconButton>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
   import { File } from "~/types";
   import { useDate } from '~/composables/useDate';
+  import { ArrowDownOnSquareIcon, CircleStackIcon, CalendarDaysIcon, TrashIcon } from '@heroicons/vue/16/solid';
+  import { useFileStore } from '~/stores/useFileStore';
+
+  const { removeFile } = useFileStore();
 
   const fileCardRef = ref<HTMLAnchorElement | null>(null);
   const { formatShort } = useDate();
@@ -41,36 +60,43 @@
     return size / 1000000 + 'MB';
   }
 
-  function onClickDelete(event: MouseEvent) {
+  async function onClickDelete(event: MouseEvent, id: number) {
     event.stopPropagation();
-    alert('hello world');
+
+    const confirmDelete = confirm('Are you sure you want to delete this file?');
+    if (!confirmDelete) return;
+
+    // @ts-ignore
+    await useFetch(`/api/files/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `${localStorage.getItem('token')}`,
+      },
+    });
+
+    removeFile(id);
   }
 </script>
 
-<style>
+<style scoped>
   .file {
-    height: auto;
     padding: 2rem 2.5rem;
     border: 1px solid var(--gun-metal);
-    flex-grow: 1;
-    flex-shrink: 1;
     border-radius: 1.1rem;
     box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, .5);
     position: relative;
     overflow: hidden;
-    cursor: pointer;
-    max-width: max-content;
 
-    /* display: flex;
+    width: 200px;
+    height: 200px;
+
+    display: flex;
     flex-direction: column;
-    gap: 0.5rem; */
+    gap: 0.5rem;
 
     transition: ease-in-out 200ms;
 
     * {
-      pointer-events: none;
-      user-select: none;
-
       color: white;
     }
 
@@ -91,5 +117,22 @@
       position: absolute;
       z-index: -1;
     }
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .card-actions {
+    position: absolute;
+    bottom: 2rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .icon-group {
+    display: flex;
+    gap: 0.5rem;
   }
 </style>

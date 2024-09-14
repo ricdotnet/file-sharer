@@ -114,6 +114,25 @@ async function findFileByFilename(filename: string) {
   return rows;
 }
 
+async function deleteFileById(id: number) {
+  let rows;
+  let conn;
+
+  try {
+    conn = await db.getConnection();
+    [rows] = await conn.query('SELECT * FROM files WHERE id = ?', [id]);
+    const preparedStatement = await conn.prepare('DELETE FROM files WHERE id = ?');
+    await preparedStatement.execute([id]);
+  } catch (err: any) {
+    Logger.get().error(`Error in deleteFileById: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+
+  return rows;
+}
+
 async function saveCookie(owner: number, cookie: string) {
   let conn;
 
@@ -146,4 +165,14 @@ async function findCookie(cookie: string) {
   return rows;
 }
 
-export { createUser, findUserByUsername, findUserByEmail, createFile, findFilesByUserId, findFileByFilename, saveCookie, findCookie };
+export {
+  createUser,
+  findUserByUsername,
+  findUserByEmail,
+  createFile,
+  findFilesByUserId,
+  findFileByFilename,
+  deleteFileById,
+  saveCookie,
+  findCookie
+};
