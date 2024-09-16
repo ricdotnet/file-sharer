@@ -133,6 +133,21 @@ async function deleteFileById(id: number) {
   return rows;
 }
 
+async function updateFileById(id: number, isPrivate: boolean) {
+  let conn;
+
+  try {
+    conn = await db.getConnection();
+    const preparedStatement = await conn.prepare('UPDATE files SET is_private = ? WHERE id = ?');
+    await preparedStatement.execute([isPrivate, id]);
+  } catch (err: any) {
+    Logger.get().error(`Error in updateFileById: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+}
+
 async function saveCookie(owner: number, cookie: string) {
   let conn;
 
@@ -187,6 +202,7 @@ export {
   findFilesByUserId,
   findFileByFilename,
   deleteFileById,
+  updateFileById,
   saveCookie,
   findCookie,
   clearExpiredCookies,

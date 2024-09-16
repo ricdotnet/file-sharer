@@ -1,5 +1,5 @@
 <template>
-  <div class="icons">
+  <!-- <div class="icons">
     <IconButton @click="view = 'grid'">
       <TableCellsIcon class="icon" :class="view === 'grid' ? 'active-view' : ''" />
     </IconButton>
@@ -8,7 +8,7 @@
         <ListBulletIcon class="icon" :class="view === 'list' ? 'active-view' : ''" />
       </IconButton>
     </div>
-  </div>
+  </div> -->
   <div class="loading" v-if="isLoading">
     <Spinner />
   </div>
@@ -54,10 +54,21 @@
 
   .files-container {
     margin-top: 2rem;
-    display: flex;
-    justify-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 1.25rem;
-    flex-wrap: wrap;
+  }
+
+  @media (max-width: 900px) {
+    .files-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 528px) {
+    .files-container {
+      grid-template-columns: 1fr;
+    }
   }
 
   .icons {

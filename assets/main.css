@@ -52,6 +52,12 @@ button {
     margin-inline: auto;
 }
 
+@media (max-width: 900px) {
+    .container {
+        width: 90%;
+    }
+}
+
 .hidden {
     display: none;
 }

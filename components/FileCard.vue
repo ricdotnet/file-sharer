@@ -16,6 +16,10 @@
       <a target="_blank" :href="`/api/download/${file.filename}`">
         <ArrowDownOnSquareIcon class="icon"/>
       </a>
+      <IconButton @click="(e) => onClickLock(e, file.id)">
+        <LockClosedIcon v-if="file.is_private" class="icon"/>
+        <LockOpenIcon v-else class="icon"/>
+      </IconButton>
       <IconButton v-if="file.canDelete" @click="(e) => onClickDelete(e, file.id)">
         <TrashIcon class="icon"/>
       </IconButton>
@@ -26,17 +30,17 @@
 <script setup lang="ts">
   import { File } from "~/types";
   import { useDate } from '~/composables/useDate';
-  import { ArrowDownOnSquareIcon, CircleStackIcon, CalendarDaysIcon, TrashIcon } from '@heroicons/vue/16/solid';
+  import { ArrowDownOnSquareIcon, CircleStackIcon, CalendarDaysIcon, TrashIcon, LockClosedIcon, LockOpenIcon } from '@heroicons/vue/16/solid';
   import { useFileStore } from '~/stores/useFileStore';
 
-  const { removeFile } = useFileStore();
+  const { removeFile, updatePrivacy } = useFileStore();
 
   const fileCardRef = ref<HTMLAnchorElement | null>(null);
   const { formatShort } = useDate();
   const x = ref(0);
   const y = ref(0);
 
-  defineProps<{
+  const props = defineProps<{
     file: File;
   }>();
 
@@ -49,15 +53,23 @@
     });
   });
 
+  // TODO: maybe move this to a composable
   function convertSize(size: number) {
+    let _size;
+    let _unit;
+
     if (size < 1000) {
-      return size + 'b';
-    }
-    if (size < 1000000) {
-      return size / 1000 + 'KB';
+      _size = size;
+      _unit = 'b';
+    } else if (size < 1000000) {
+      _size = size / 1000;
+      _unit = 'KB';
+    } else {
+      _size = size / 1000000;
+      _unit = 'MB';
     }
 
-    return size / 1000000 + 'MB';
+    return `${_size.toFixed(2)} ${_unit}`;
   }
 
   async function onClickDelete(event: MouseEvent, id: number) {
@@ -66,7 +78,6 @@
     const confirmDelete = confirm('Are you sure you want to delete this file?');
     if (!confirmDelete) return;
 
-    // @ts-ignore
     await useFetch(`/api/files/${id}`, {
       method: 'DELETE',
       headers: {
@@ -75,6 +86,25 @@
     });
 
     removeFile(id);
+  }
+
+  async function onClickLock(event: MouseEvent, id: number) {
+    event.stopPropagation();
+
+    const confirmLock = confirm(`Are you sure you want to ${props.file.is_private ? 'unlock' : 'lock'} this file?`);
+    if (!confirmLock) return;
+
+    await useFetch(`/api/files/${id}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        is_private: !props.file.is_private,
+      }),
+    });
+
+    updatePrivacy(id);
   }
 </script>
 
@@ -87,7 +117,7 @@
     position: relative;
     overflow: hidden;
 
-    width: 200px;
+    /* width: 200px; */
     height: 200px;
 
     display: flex;

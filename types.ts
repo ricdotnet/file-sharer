@@ -5,6 +5,7 @@ export interface File {
   created: Date;
   canDelete: boolean;
   original_filename: string;
+  is_private: boolean;
 }
 
 export interface Target extends EventTarget {

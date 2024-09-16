@@ -25,5 +25,17 @@ export const useFileStore = defineStore('file', () => {
     files.value = files.value.filter((file) => file.id !== id);
   }
 
-  return { files, fetchFiles, removeFile };
+  function updatePrivacy(id: number) {
+    files.value = files.value.map((file) => {
+      if (file.id !== id) {
+        return file;
+      }
+      return {
+        ...file,
+        is_private: !file.is_private,
+      };
+    });
+  }
+
+  return { files, fetchFiles, removeFile, updatePrivacy };
 });
