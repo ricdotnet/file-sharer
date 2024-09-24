@@ -24,7 +24,7 @@ export default defineEventHandler(async (event: H3Event) => {
     return sendRedirect(event, '/error', 400);
   }
 
-  await updateFileById(decodec.id, +id, body.is_private);
+  await updateFileById(decoded.id, +id, body.is_private);
 
   setResponseStatus(event, 204);
 
