@@ -120,9 +120,9 @@ async function deleteFileById(owner: number, id: number) {
 
   try {
     conn = await db.getConnection();
-    [rows] = await conn.query('SELECT * FROM files WHERE id = ? and owner = ?', [id]);
-    const preparedStatement = await conn.prepare('DELETE FROM files WHERE id = ?');
-    await preparedStatement.execute([owner, id]);
+    [rows] = await conn.query('SELECT * FROM files WHERE id = ? and owner = ?', [id, owner]);
+    const preparedStatement = await conn.prepare('DELETE FROM files WHERE id = ? and owner = ?');
+    await preparedStatement.execute([id, owner]);
   } catch (err: any) {
     Logger.get().error(`Error in deleteFileById: ${err.message}`);
     throw err;
