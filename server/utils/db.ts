@@ -114,15 +114,15 @@ async function findFileByFilename(filename: string) {
   return rows;
 }
 
-async function deleteFileById(id: number) {
+async function deleteFileById(owner: number, id: number) {
   let rows;
   let conn;
 
   try {
     conn = await db.getConnection();
-    [rows] = await conn.query('SELECT * FROM files WHERE id = ?', [id]);
+    [rows] = await conn.query('SELECT * FROM files WHERE id = ? and owner = ?', [id]);
     const preparedStatement = await conn.prepare('DELETE FROM files WHERE id = ?');
-    await preparedStatement.execute([id]);
+    await preparedStatement.execute([owner, id]);
   } catch (err: any) {
     Logger.get().error(`Error in deleteFileById: ${err.message}`);
     throw err;
@@ -133,13 +133,13 @@ async function deleteFileById(id: number) {
   return rows;
 }
 
-async function updateFileById(id: number, isPrivate: boolean) {
+async function updateFileById(owner: number, id: number, isPrivate: boolean) {
   let conn;
 
   try {
     conn = await db.getConnection();
-    const preparedStatement = await conn.prepare('UPDATE files SET is_private = ? WHERE id = ?');
-    await preparedStatement.execute([isPrivate, id]);
+    const preparedStatement = await conn.prepare('UPDATE files SET is_private = ? WHERE owner = ? and id = ?');
+    await preparedStatement.execute([isPrivate, owner, id]);
   } catch (err: any) {
     Logger.get().error(`Error in updateFileById: ${err.message}`);
     throw err;
