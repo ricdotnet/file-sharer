@@ -1,16 +1,23 @@
-FROM node:20 AS build
+FROM node:20-alpine3.20 AS builder
+
+WORKDIR /builder
+
+COPY ./package.json /builder/package.json
+COPY ./yarn.lock /builder/yarn.lock
+COPY ./.yarnrc.yml /builder/.yarnrc.yml
+
+RUN corepack enable && yarn install
+
+COPY . .
+
+RUN yarn build
+
+FROM node:20-alpine3.20 AS production
 
 WORKDIR /app
 
-COPY ./package.json /app/package.json
-COPY ./yarn.lock /app/yarn.lock
-COPY ./.yarnrc.yml /app/.yarnrc.yml
-
-RUN corepack enable
-RUN yarn install
-COPY . .
-RUN yarn build
+COPY --from=builder /builder/.output /app
 
 EXPOSE 3000
 
-CMD ["node", "./.output/server/index.mjs"]
+ENTRYPOINT ["node", "./server/index.mjs"]
