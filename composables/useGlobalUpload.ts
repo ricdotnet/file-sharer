@@ -13,6 +13,11 @@ export const useGlobalUpload = () => {
     window.addEventListener('keyup', keyUpHandler);
   }
 
+  const removeKeyEvents = () => {
+    window.removeEventListener('keydown', keyDownHandler);
+    window.removeEventListener('keyup', keyUpHandler);
+  }
+
   const keyDownHandler = async (e: any) => {
     if (!isMetaKeyPressed.value && (e.key === 'Meta' || e.key === 'Control')) {
       isMetaKeyPressed.value = true;
@@ -66,5 +71,5 @@ export const useGlobalUpload = () => {
     window.location.reload();
   }
 
-  return { registerKeyEvents, fileName, imageFile, imageType, isUploading, resetFile, uploadFile };
+  return { registerKeyEvents, fileName, imageFile, imageType, isUploading, resetFile, uploadFile, removeKeyEvents };
 };

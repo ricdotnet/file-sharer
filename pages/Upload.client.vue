@@ -41,6 +41,10 @@
     const form = new FormData();
     form.append('file', file.value, file.value.name);
 
+    if (file.value.type.includes('image/')) {
+      form.append('is_image', 'true');
+    }
+
     await fetch('/api/upload', {
       method: 'POST',
       body: form,

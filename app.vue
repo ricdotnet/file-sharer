@@ -3,7 +3,7 @@
     <NuxtLayout>
       <NuxtPage/>
 
-      <UploadImageDialog v-if="isUploading"/>
+      <UploadImageDialog :is-open="isUploading" />
     </NuxtLayout>
   </div>
 </template>
@@ -18,7 +18,7 @@ const isLoading = ref(true);
 const userStore = useUserStore();
 const { isAuthenticated } = storeToRefs(userStore);
 
-const { registerKeyEvents, isUploading } = useGlobalUpload();
+const { registerKeyEvents, removeKeyEvents, isUploading } = useGlobalUpload();
 
 if (process.client) {
   await userStore.authenticate();
@@ -32,6 +32,14 @@ if (process.client) {
     registerKeyEvents();
   }
 }
+
+watch(isAuthenticated, async () => {
+  registerKeyEvents();
+
+  if (!isAuthenticated.value) {
+    removeKeyEvents();
+  }
+});
 
 isLoading.value = false;
 </script>
