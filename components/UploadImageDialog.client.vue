@@ -1,18 +1,16 @@
 <template>
-  <template v-if="isOpen">
-    <div class="overlay">
-      <div class="dialog">
-        <div class="dialog__content">
-          <h2 class="title">Preview</h2>
-          <img class="image-preview" src="" ref="previewRef" :alt="fileName"/>
-        </div>
-        <div class="dialog__actions">
-          <Button @click="uploadFile" label="Upload"/>
-          <Button @click="closeDialog" label="Close"/>
-        </div>
+  <div v-if="isOpen" class="overlay">
+    <div class="dialog">
+      <div class="dialog__content">
+        <h2 class="title">Preview</h2>
+        <img class="image-preview" src="" ref="previewRef" :alt="fileName"/>
+      </div>
+      <div class="dialog__actions">
+        <Button @click="uploadFile" label="Upload"/>
+        <Button @click="closeDialog" label="Close"/>
       </div>
     </div>
-  </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -28,11 +26,19 @@ const { imageFile, fileName, uploadFile, resetFile } = useGlobalUpload();
 const previewRef = ref<HTMLImageElement | null>(null);
 const isLoadingPreview = ref(true);
 
-defineProps<{
+const props = defineProps<{
   isOpen: boolean;
 }>();
 
 onUpdated(() => {
+  if (props.isOpen) {
+    document.addEventListener('keydown', onKeydown);
+  }
+
+  if (!props.isOpen) {
+    document.removeEventListener('keydown', onKeydown);
+  }
+
   if (imageFile.value && previewRef.value && isAuthenticated.value) {
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -45,6 +51,13 @@ onUpdated(() => {
     isLoadingPreview.value = false;
   }
 });
+
+const onKeydown = (event: KeyboardEvent) => {
+  console.log('closing dialog');
+  if (event.key === 'Escape') {
+    closeDialog();
+  }
+};
 
 const closeDialog = () => {
   resetFile();

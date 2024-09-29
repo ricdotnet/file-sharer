@@ -54,8 +54,14 @@ export default defineEventHandler(async (event) => {
     Logger.get().error(`Failed to write file: ${err.message}`);
     return sendRedirect(event, '/error', 500);
   } finally {
-    const isPrivate = multipart[2]?.data.toString('utf-8') === 'true' ?? true;
-    const isImage = multipart[1]?.data.toString('utf-8') === 'true' ?? false;
+    const _isPrivate = multipart[2]?.data.toString('utf-8');
+    const _isImage = multipart[1]?.data.toString('utf-8');
+
+    const isPrivate = _isPrivate ? _isPrivate === 'true' : true;
+    const isImage = _isImage ? _isImage === 'true' : false;
+
+    console.log('isPrivate', isPrivate);
+    console.log('isImage', isImage);
 
     await createFile(decoded.id, file.filename ?? 'NO_NAME', fileName, { is_private: isPrivate, is_image: isImage });
   }
