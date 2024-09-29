@@ -41,7 +41,9 @@
 
   if (process.client) {
     await fileStore.fetchFiles();
-    isLoading.value = false;
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 100);
   }
 </script>
 
