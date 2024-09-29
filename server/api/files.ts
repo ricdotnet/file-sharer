@@ -31,6 +31,8 @@ export default defineEventHandler(async (event) => {
       created: fileInfo.birthtime,
       canDelete: true, // TODO: update this later
     });
+
+    files.sort((a, b) => b.created.getTime() - a.created.getTime());
   }
 
   return {

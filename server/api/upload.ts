@@ -60,9 +60,6 @@ export default defineEventHandler(async (event) => {
     const isPrivate = _isPrivate ? _isPrivate === 'true' : true;
     const isImage = _isImage ? _isImage === 'true' : false;
 
-    console.log('isPrivate', isPrivate);
-    console.log('isImage', isImage);
-
     await createFile(decoded.id, file.filename ?? 'NO_NAME', fileName, { is_private: isPrivate, is_image: isImage });
   }
 
