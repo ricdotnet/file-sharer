@@ -65,13 +65,13 @@ async function createUser(username: string, password: string, email: string) {
   }
 }
 
-async function createFile(userId: number, ogName: string, fileName: string) {
+async function createFile(userId: number, ogName: string, fileName: string, options: { is_private: boolean, is_image: boolean }) {
   let conn;
 
   try {
     conn = await db.getConnection();
-    const preparedStatement = await conn.prepare('INSERT INTO files (owner, original_filename, filename) VALUES (?, ?, ?)');
-    await preparedStatement.execute([userId, ogName, fileName]);
+    const preparedStatement = await conn.prepare('INSERT INTO files (owner, original_filename, filename, is_private, is_image) VALUES (?, ?, ?, ?, ?)');
+    await preparedStatement.execute([userId, ogName, fileName, options.is_private, options.is_image]);
   } catch (err: any) {
     Logger.get().error(`Error in createFile: ${err.message}`);
     throw err;

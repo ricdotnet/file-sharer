@@ -24,7 +24,7 @@ export default defineNuxtConfig({
   },
   nuxtApiShield: {
     limit: {
-      max: 30,
+      max: 1000000,
       duration: 60 * 30,
       ban: 3600,
     },

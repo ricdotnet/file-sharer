@@ -9,6 +9,7 @@ import { H3Event } from 'h3';
 export default defineEventHandler(async (event: H3Event) => {
   let filename = getRouterParam(event, 'file');
   let file;
+  let isImage = false;
 
   if (!filename) return;
 
@@ -43,6 +44,8 @@ export default defineEventHandler(async (event: H3Event) => {
       }
     }
 
+    isImage = fileResult.is_image;
+
     file = await fs.readFile(path.join(config.UPLOADS_PATH(), filename));
   }
 
@@ -51,11 +54,18 @@ export default defineEventHandler(async (event: H3Event) => {
     return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
   }
 
-  setResponseHeaders(event, {
-    'content-type': 'application/octet-stream',
-    'content-length': file.length,
-    'content-disposition': `attachment; filename="${filename}"`,
-  });
+  if (isImage) {
+    setResponseHeaders(event, {
+      'content-type': 'image',
+      'content-length': file.length,
+    });
+  } else {
+    setResponseHeaders(event, {
+      'content-type': 'application/octet-stream',
+      'content-length': file.length,
+      'content-disposition': `attachment; filename="${filename}"`,
+    });
+  }
 
   return file;
 });

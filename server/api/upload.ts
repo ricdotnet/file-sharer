@@ -14,9 +14,13 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, '/error', 400);
   }
 
-  if (multipart.length > 2) {
-    Logger.get().error('Tried to upload multiple files');
-    return sendRedirect(event, '/error', 400);
+  if (multipart.length > 1) {
+    const hasTypeCount = multipart.filter((item) => 'type' in item);
+
+    if (hasTypeCount.length > 1) {
+      Logger.get().error('Tried to upload multiple files');
+      return sendRedirect(event, '/error', 400);
+    }
   }
 
   const token = event.headers.get('Authorization');
@@ -50,7 +54,10 @@ export default defineEventHandler(async (event) => {
     Logger.get().error(`Failed to write file: ${err.message}`);
     return sendRedirect(event, '/error', 500);
   } finally {
-    await createFile(decoded.id, file.filename ?? 'NO_NAME', fileName);
+    const isPrivate = multipart[2]?.data.toString('utf-8') === 'true' ?? true;
+    const isImage = multipart[1]?.data.toString('utf-8') === 'true' ?? false;
+
+    await createFile(decoded.id, file.filename ?? 'NO_NAME', fileName, { is_private: isPrivate, is_image: isImage });
   }
 
   return sendRedirect(event, '/');

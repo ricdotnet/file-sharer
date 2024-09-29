@@ -1,27 +1,37 @@
 <template>
   <div v-if="!isLoading">
     <NuxtLayout>
-      <NuxtPage />
+      <NuxtPage/>
+
+      <UploadImageDialog v-if="isUploading"/>
     </NuxtLayout>
   </div>
 </template>
 
 <script setup lang="ts">
-  import '~/assets/main.css';
-  import { useUserStore, storeToRefs } from '#imports';
+import '~/assets/main.css';
+import { storeToRefs, useUserStore } from '#imports';
+import { useGlobalUpload } from '~/composables/useGlobalUpload';
 
-  const userStore = useUserStore();
-  const { isAuthenticated } = storeToRefs(userStore);
-  const isLoading = ref(true);
+const isLoading = ref(true);
 
-  if (process.client) {
-    await userStore.authenticate();
+const userStore = useUserStore();
+const { isAuthenticated } = storeToRefs(userStore);
 
-    if (!isAuthenticated.value) {
-      localStorage.removeItem('token');
-      await navigateTo('/login');
-    }
+const { registerKeyEvents, isUploading } = useGlobalUpload();
+
+if (process.client) {
+  await userStore.authenticate();
+
+  if (!isAuthenticated.value) {
+    localStorage.removeItem('token');
+    await navigateTo('/login');
   }
 
-  isLoading.value = false;
+  if (isAuthenticated.value) {
+    registerKeyEvents();
+  }
+}
+
+isLoading.value = false;
 </script>
