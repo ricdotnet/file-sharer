@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
 
   const file = multipart[0];
 
-  if (file.data.length > 10_000_000) {
+  if (file.data.length > 50_000_000) {
     Logger.get().error('Tried to upload a file larger than 10MB');
     return sendRedirect(event, '/error', 400);
   }
