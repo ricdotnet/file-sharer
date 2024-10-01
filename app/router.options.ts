@@ -13,6 +13,11 @@ export default {
       component: () => import('~/pages/Upload.client.vue')
     },
     {
+      name: 'view',
+      path: '/view/:file',
+      component: () => import('~/pages/View.client.vue')
+    },
+    {
       name: 'login',
       path: '/login',
       component: () => import('~/pages/Login.client.vue')
