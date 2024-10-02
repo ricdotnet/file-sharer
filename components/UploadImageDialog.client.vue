@@ -14,9 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGlobalUpload } from '~/composables/useGlobalUpload';
-import { useUserStore } from '~/stores/useUserStore';
-import { storeToRefs, useRouter, useRuntimeConfig } from '#imports';
+import { storeToRefs, useRouter, useRuntimeConfig, useGlobalUpload, useCopyUrlToClipboard, useUserStore } from '#imports';
 
 const config = useRuntimeConfig();
 
@@ -64,7 +62,7 @@ const onKeydown = (event: KeyboardEvent) => {
 const doUploadFile = async () => {
   const storedFilename = await uploadFile();
   if (storedFilename) {
-    await navigator.clipboard.writeText(`${window.location.href}/view/${storedFilename}`);
+    await useCopyUrlToClipboard().copy(`/view/${storedFilename}`);
     await useRouter().push(`/view/${storedFilename}`);
   }
 };

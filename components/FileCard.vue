@@ -30,8 +30,8 @@
 </template>
 
 <script setup lang="ts">
-import { File } from '~/types';
-import { useDate } from '~/composables/useDate';
+import type { File } from '~/types';
+import { useDate, useCopyUrlToClipboard, useFileStore } from '#imports';
 import {
   ArrowDownOnSquareIcon,
   CircleStackIcon,
@@ -41,7 +41,6 @@ import {
   LockOpenIcon,
   ClipboardDocumentCheckIcon,
 } from '@heroicons/vue/16/solid';
-import { useFileStore } from '~/stores/useFileStore';
 
 const config = useRuntimeConfig();
 
@@ -119,9 +118,9 @@ async function onClickLock(event: MouseEvent, id: number) {
   updatePrivacy(id);
 }
 
-function copyLinkToClipboard() {
+async function copyLinkToClipboard() {
   try {
-    navigator.clipboard.writeText(`${window.location.href}/api/download/${props.file.filename}`);
+    await useCopyUrlToClipboard().copy(`/api/download/${props.file.filename}`);
   } catch (err) {
     console.log(err);
   }
