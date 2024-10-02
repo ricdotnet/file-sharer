@@ -1,27 +1,28 @@
-import fs from 'fs/promises';
-import path from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import config from "~/config";
 import { findCookie, findFileByFilename } from '~/server/utils/db';
 import { Messages } from '#imports';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
-import { H3Event } from 'h3';
+import type { H3Event } from 'h3';
 
 export default defineEventHandler(async (event: H3Event) => {
   let filename = getRouterParam(event, 'file');
-  let file;
+  let file: Buffer;
   let isImage = false;
 
   if (!filename) return;
 
-  if (/^[0-9]{1,8}(.bin)$/g.test(filename)) {
+  if (/^\d{1,8}(.bin)$/g.test(filename)) {
     const length = filename.match(/\d+/g);
     if (!length) return;
 
-    const arr = new ArrayBuffer(+length![0]);
+    const arr = new ArrayBuffer(+length[0]);
     file = Buffer.from(arr);
   } else {
     filename = decodeURI(filename);
 
+    // biome-ignore lint/suspicious/noExplicitAny: allow any
     const [fileResult] = await findFileByFilename(filename) as any[];
     if (!fileResult) return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
 
@@ -32,6 +33,7 @@ export default defineEventHandler(async (event: H3Event) => {
         return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
       }
 
+      // biome-ignore lint/suspicious/noExplicitAny: allow any
       const [cookieResult] = await findCookie(cookie) as any[];
       if (!cookieResult) {
         Logger.get().warn(`User tried to access private file ${filename} with an invalid cookie`);

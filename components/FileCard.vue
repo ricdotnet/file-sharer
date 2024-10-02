@@ -30,9 +30,17 @@
 </template>
 
 <script setup lang="ts">
-import { File } from "~/types";
+import { File } from '~/types';
 import { useDate } from '~/composables/useDate';
-import { ArrowDownOnSquareIcon, CircleStackIcon, CalendarDaysIcon, TrashIcon, LockClosedIcon, LockOpenIcon, ClipboardDocumentCheckIcon } from '@heroicons/vue/16/solid';
+import {
+  ArrowDownOnSquareIcon,
+  CircleStackIcon,
+  CalendarDaysIcon,
+  TrashIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+  ClipboardDocumentCheckIcon,
+} from '@heroicons/vue/16/solid';
 import { useFileStore } from '~/stores/useFileStore';
 
 const config = useRuntimeConfig();
@@ -59,8 +67,8 @@ onMounted(() => {
 
 // TODO: maybe move this to a composable
 function convertSize(size: number) {
-  let _size;
-  let _unit;
+  let _size: number;
+  let _unit: 'b' | 'KB' | 'MB';
 
   if (size < 1000) {
     _size = size;
