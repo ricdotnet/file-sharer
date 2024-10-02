@@ -121,7 +121,7 @@ async function onClickLock(event: MouseEvent, id: number) {
 
 function copyLinkToClipboard() {
   try {
-    navigator.clipboard.writeText(`${config.public.appUrl}/api/download/${props.file.filename}`);
+    navigator.clipboard.writeText(`${window.location.href}/api/download/${props.file.filename}`);
   } catch (err) {
     console.log(err);
   }

@@ -32,10 +32,6 @@ const props = defineProps<{
   isOpen: boolean;
 }>();
 
-onMounted(() => {
-  console.log(useRuntimeConfig());
-});
-
 onUpdated(() => {
   if (props.isOpen) {
     document.addEventListener('keydown', onKeydown);
@@ -68,7 +64,7 @@ const onKeydown = (event: KeyboardEvent) => {
 const doUploadFile = async () => {
   const storedFilename = await uploadFile();
   if (storedFilename) {
-    await navigator.clipboard.writeText(`${config.public.appUrl}/view/${storedFilename}`);
+    await navigator.clipboard.writeText(`${window.location.href}/view/${storedFilename}`);
     await useRouter().push(`/view/${storedFilename}`);
   }
 };
