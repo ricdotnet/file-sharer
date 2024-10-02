@@ -6,7 +6,7 @@
         <img class="image-preview" src="" ref="previewRef" :alt="fileName"/>
       </div>
       <div class="dialog__actions">
-        <Button @click="uploadFile" label="Upload"/>
+        <Button @click="doUploadFile" label="Upload"/>
         <Button @click="closeDialog" label="Close"/>
       </div>
     </div>
@@ -16,7 +16,9 @@
 <script setup lang="ts">
 import { useGlobalUpload } from '~/composables/useGlobalUpload';
 import { useUserStore } from '~/stores/useUserStore';
-import { storeToRefs } from '#imports';
+import { storeToRefs, useRouter } from '#imports';
+
+const config = useRuntimeConfig();
 
 const userStore = useUserStore();
 const { isAuthenticated } = storeToRefs(userStore);
@@ -42,7 +44,8 @@ onUpdated(() => {
   if (imageFile.value && previewRef.value && isAuthenticated.value) {
     const reader = new FileReader();
     reader.onloadend = () => {
-      if (reader.result && 'src' in previewRef.value) {
+      // biome-ignore lint/style/noNonNullAssertion: will always have a value
+      if (reader.result && 'src' in previewRef.value!) {
         previewRef.value.src = reader.result as string;
       }
     };
@@ -53,9 +56,17 @@ onUpdated(() => {
 });
 
 const onKeydown = (event: KeyboardEvent) => {
-  console.log('closing dialog');
   if (event.key === 'Escape') {
     closeDialog();
+  }
+};
+
+const doUploadFile = async () => {
+  const storedFilename = await uploadFile();
+  if (storedFilename) {
+    console.log(config.public);
+    navigator.clipboard.writeText(`${config.public.appUrl}/view/${storedFilename}`);
+    useRouter().push(`/view/${storedFilename}`);
   }
 };
 

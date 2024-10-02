@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 
 const imageType = ref('');
+// biome-ignore lint/suspicious/noExplicitAny: allow any here
 const imageFile = ref<any>();
 const fileName = ref('');
 const isUploading = ref(false);
@@ -18,6 +19,7 @@ export const useGlobalUpload = () => {
     window.removeEventListener('keyup', keyUpHandler);
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: allow any here
   const keyDownHandler = async (e: any) => {
     if (!isMetaKeyPressed.value && (e.key === 'Meta' || e.key === 'Control')) {
       isMetaKeyPressed.value = true;
@@ -25,7 +27,7 @@ export const useGlobalUpload = () => {
     if (isMetaKeyPressed && e.key === 'v') {
       try {
         const items = await navigator.clipboard.read();
-        for (let item of items) {
+        for (const item of items) {
           const types = item.types.filter(t => t.includes('image/'));
           const blob = await item.getType(types[0]);
 
@@ -41,6 +43,7 @@ export const useGlobalUpload = () => {
     }
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: allow any here
   const keyUpHandler = (e: any) => {
     if (isMetaKeyPressed.value && (e.key === 'Meta' || e.key === 'Control')) {
       isMetaKeyPressed.value = false;
@@ -54,12 +57,14 @@ export const useGlobalUpload = () => {
   }
 
   const uploadFile = async () => {
+    const filename = `${Date.now()}.${imageType.value}`;
+
     const form = new FormData();
-    form.append('file', imageFile.value, Date.now() + '.' + imageType.value);
+    form.append('file', imageFile.value, filename);
     form.append('is_image', 'true');
     form.append('is_private', 'false');
 
-    await fetch('/api/upload', {
+    const response = await fetch('/api/upload', {
       method: 'POST',
       body: form,
       headers: {
@@ -68,7 +73,9 @@ export const useGlobalUpload = () => {
     });
 
     resetFile();
-    window.location.reload();
+
+    const storedFilename = await response.text();
+    return storedFilename;
   }
 
   return { registerKeyEvents, fileName, imageFile, imageType, isUploading, resetFile, uploadFile, removeKeyEvents };

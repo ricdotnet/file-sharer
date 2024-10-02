@@ -61,15 +61,13 @@ export default defineEventHandler(async (event: H3Event) => {
       'content-type': 'image',
       'content-length': file.length,
     });
-
-    return sendRedirect(event, `/view/${filename}`);
+  } else {
+    setResponseHeaders(event, {
+      'content-type': 'application/octet-stream',
+      'content-length': file.length,
+      'content-disposition': `attachment; filename="${filename}"`,
+    });
   }
-
-  setResponseHeaders(event, {
-    'content-type': 'application/octet-stream',
-    'content-length': file.length,
-    'content-disposition': `attachment; filename="${filename}"`,
-  });
 
   return file;
 });

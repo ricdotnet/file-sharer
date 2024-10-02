@@ -1,6 +1,6 @@
-import fs from 'fs/promises';
-import path from 'path';
-import crypto from 'crypto';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import crypto from 'node:crypto';
 import config from '~/config';
 import jwt from 'jsonwebtoken';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
@@ -37,9 +37,10 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, '/error', 400);
   }
 
-  let decoded;
+  let decoded = null;
   try {
     decoded = jwt.verify(token, process.env.SECRET as string) as TUserAuthenticatedTokenPayload;
+  // biome-ignore lint/suspicious/noExplicitAny: allow any
   } catch (err: any) {
     Logger.get().error(`Tried to upload a file with an invalid token: ${err.message}`);
     return sendRedirect(event, '/error', 400);
@@ -50,17 +51,22 @@ export default defineEventHandler(async (event) => {
 
   try {
     await fs.writeFile(path.join(config.UPLOADS_PATH(), fileName), file.data);
+  // biome-ignore lint/suspicious/noExplicitAny: allow any
   } catch (err: any) {
     Logger.get().error(`Failed to write file: ${err.message}`);
     return sendRedirect(event, '/error', 500);
-  } finally {
-    const _isPrivate = multipart[2]?.data.toString('utf-8');
-    const _isImage = multipart[1]?.data.toString('utf-8');
+  }
 
-    const isPrivate = _isPrivate ? _isPrivate === 'true' : true;
-    const isImage = _isImage ? _isImage === 'true' : false;
+  const _isPrivate = multipart[2]?.data.toString('utf-8');
+  const _isImage = multipart[1]?.data.toString('utf-8');
 
-    await createFile(decoded.id, file.filename ?? 'NO_NAME', fileName, { is_private: isPrivate, is_image: isImage });
+  const isPrivate = _isPrivate ? _isPrivate === 'true' : true;
+  const isImage = _isImage ? _isImage === 'true' : false;
+
+  await createFile(decoded.id, file.filename ?? 'NO_NAME', fileName, { is_private: isPrivate, is_image: isImage });
+
+  if (isImage) {
+    return fileName;
   }
 
   return sendRedirect(event, '/');
