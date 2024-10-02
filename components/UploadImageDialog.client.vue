@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { useGlobalUpload } from '~/composables/useGlobalUpload';
 import { useUserStore } from '~/stores/useUserStore';
-import { storeToRefs, useRouter } from '#imports';
+import { storeToRefs, useRouter, useRuntimeConfig } from '#imports';
 
 const config = useRuntimeConfig();
 
@@ -31,6 +31,10 @@ const isLoadingPreview = ref(true);
 const props = defineProps<{
   isOpen: boolean;
 }>();
+
+onMounted(() => {
+  console.log(useRuntimeConfig());
+});
 
 onUpdated(() => {
   if (props.isOpen) {
@@ -64,9 +68,8 @@ const onKeydown = (event: KeyboardEvent) => {
 const doUploadFile = async () => {
   const storedFilename = await uploadFile();
   if (storedFilename) {
-    console.log(config.public);
-    navigator.clipboard.writeText(`${config.public.appUrl}/view/${storedFilename}`);
-    useRouter().push(`/view/${storedFilename}`);
+    await navigator.clipboard.writeText(`${config.public.appUrl}/view/${storedFilename}`);
+    await useRouter().push(`/view/${storedFilename}`);
   }
 };
 
