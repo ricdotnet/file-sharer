@@ -13,10 +13,10 @@ const route = useRoute();
 const { file } = route.params;
 
 useSeoMeta({
-  title: 'File Sharer',
-  ogTitle: 'File Sharer',
-  description: 'A simple personal file-sharing website.',
-  ogDescription: 'A simple personal file-sharing website.',
+  title: `File Sharer - ${file}`,
+  ogTitle: `File Sharer - ${file}`,
+  description: 'Sharing files made simple.',
+  ogDescription: 'Sharing files made simple.',
   ogImage: `${config.public.appUrl}/api/download/${file}`,
   twitterCard: 'summary_large_image',
 });
