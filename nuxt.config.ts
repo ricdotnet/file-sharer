@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       listViewEnabled: process.env.NUXT_LIST_VIEW_ENABLED === 'true',
-      appUrl: process.env.NUXT_APP_URL,
+      appUrl: process.env.NUXT_APP_URL || 'https://files.ricr.dev',
     },
   },
   devtools: {
