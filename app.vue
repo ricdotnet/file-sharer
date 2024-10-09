@@ -10,17 +10,18 @@
 
 <script setup lang="ts">
 import '~/assets/main.css';
-import { storeToRefs, useUserStore } from '#imports';
-import { useGlobalUpload } from '~/composables/useGlobalUpload';
+import { storeToRefs, useUserStore, useGlobalUpload, useRoute } from '#imports';
 
 const isLoading = ref(true);
+
+const route = useRoute();
 
 const userStore = useUserStore();
 const { isAuthenticated } = storeToRefs(userStore);
 
 const { registerKeyEvents, removeKeyEvents, isUploading } = useGlobalUpload();
 
-if (process.client) {
+if (process.client && route.meta.isAuthed) {
   await userStore.authenticate();
 
   if (!isAuthenticated.value) {

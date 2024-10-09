@@ -5,22 +5,34 @@ export default {
     {
       name: 'home',
       path: '/',
-      component: () => import('~/pages/index.vue')
+      component: () => import('~/pages/index.vue'),
+      meta: {
+        isAuthed: true,
+      },
     },
     {
       name: 'upload',
       path: '/upload',
-      component: () => import('~/pages/Upload.client.vue')
+      component: () => import('~/pages/Upload.client.vue'),
+      meta: {
+        isAuthed: true,
+      },
     },
     {
       name: 'view',
       path: '/view/:file',
-      component: () => import('~/pages/View.client.vue')
+      component: () => import('~/pages/View.client.vue'),
+      meta: {
+        isAuthed: false,
+      },
     },
     {
       name: 'login',
       path: '/login',
-      component: () => import('~/pages/Login.client.vue')
+      component: () => import('~/pages/Login.client.vue'),
+      meta: {
+        isAuthed: false,
+      },
     }
   ],
 } satisfies RouterConfig;

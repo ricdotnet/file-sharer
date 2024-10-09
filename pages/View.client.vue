@@ -9,6 +9,16 @@ import { useRoute } from '#vue-router';
 
 const route = useRoute();
 const { file } = route.params;
+
+useSeoMeta({
+  title: 'File Sharer',
+  ogTitle: 'File Sharer',
+  description: 'A simple personal file-sharing website.',
+  ogDescription: 'A simple personal file-sharing website.',
+  ogImage: `${file}`,
+  twitterCard: 'summary_large_image',
+});
+
 </script>
 
 <style scoped>
