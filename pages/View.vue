@@ -13,7 +13,7 @@ const { file } = route.params;
 const appUrl = ref<string>();
 
 if (process.server) {
-  appUrl.value = import.meta.env.VITE_APP_URL;
+  appUrl.value = await import.meta.env.VITE_APP_URL;
 
   useSeoMeta({
     title: `File Sharer - ${file}`,
