@@ -1,4 +1,4 @@
-import type { RouterConfig } from '@nuxt/schema'
+import type { RouterConfig } from '@nuxt/schema';
 
 export default {
   routes: (_routes) => [
@@ -21,7 +21,7 @@ export default {
     {
       name: 'view',
       path: '/view/:file',
-      component: () => import('~/pages/View.client.vue'),
+      component: () => import('~/pages/View.vue'),
       meta: {
         isAuthed: false,
       },
@@ -33,6 +33,6 @@ export default {
       meta: {
         isAuthed: false,
       },
-    }
+    },
   ],
 } satisfies RouterConfig;
