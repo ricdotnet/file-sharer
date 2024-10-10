@@ -15,6 +15,8 @@ const appUrl = ref<string>();
 if (process.server) {
   appUrl.value = await import.meta.env.VITE_APP_URL;
 
+  console.dir(import.meta, { depth: Number.POSITIVE_INFINITY });
+
   useSeoMeta({
     title: `File Sharer - ${file}`,
     ogTitle: `File Sharer - ${file}`,
