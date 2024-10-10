@@ -42,8 +42,6 @@ import {
   ClipboardDocumentCheckIcon,
 } from '@heroicons/vue/16/solid';
 
-const config = useRuntimeConfig();
-
 const { removeFile, updatePrivacy } = useFileStore();
 
 const fileCardRef = ref<HTMLAnchorElement | null>(null);

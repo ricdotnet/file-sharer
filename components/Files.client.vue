@@ -23,28 +23,26 @@
 </template>
 
 <script setup lang="ts">
-  import FileCard from "~/components/FileCard.vue";
-  import Spinner from "~/components/Spinner.vue";
-  import { ListBulletIcon, TableCellsIcon } from '@heroicons/vue/16/solid';
-  import IconButton from '~/components/IconButton.vue';
-  import { useFileStore, storeToRefs } from "#imports";
+import FileCard from '~/components/FileCard.vue';
+import Spinner from '~/components/Spinner.vue';
+import { ListBulletIcon, TableCellsIcon } from '@heroicons/vue/16/solid';
+import IconButton from '~/components/IconButton.vue';
+import { useFileStore, storeToRefs } from '#imports';
 
-  const config = useRuntimeConfig();
+type View = 'grid' | 'list';
 
-  type View = 'grid' | 'list';
+const isLoading = ref(true);
+const view = ref<View>('grid');
 
-  const isLoading = ref(true);
-  const view = ref<View>('grid');
+const fileStore = useFileStore();
+const { files } = storeToRefs(fileStore);
 
-  const fileStore = useFileStore();
-  const { files } = storeToRefs(fileStore);
-
-  if (process.client) {
-    await fileStore.fetchFiles();
-    setTimeout(() => {
-      isLoading.value = false;
-    }, 100);
-  }
+if (process.client) {
+  await fileStore.fetchFiles();
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 100);
+}
 </script>
 
 <style scoped>

@@ -5,20 +5,10 @@ export default defineNuxtConfig({
       title: 'File Sharer',
     },
   },
-  runtimeConfig: {
-    public: {
-      listViewEnabled: process.env.NUXT_LIST_VIEW_ENABLED === 'true',
-      appUrl: process.env.NUXT_APP_URL || 'https://files.ricr.dev',
-    },
-  },
   devtools: {
     enabled: true,
   },
-  modules: [
-    '@pinia/nuxt',
-    'nuxt-cron',
-    'nuxt-api-shield',
-  ],
+  modules: ['@pinia/nuxt', 'nuxt-cron', 'nuxt-api-shield'],
   cron: {
     timeZone: 'Europe/London',
     jobsDir: 'cron',
@@ -30,13 +20,13 @@ export default defineNuxtConfig({
       ban: 3600,
     },
     log: {
-      path: "Logs",
+      path: 'Logs',
       attempts: 100,
     },
   },
   nitro: {
     storage: {
-      'shield': {
+      shield: {
         driver: 'memory',
       },
     },

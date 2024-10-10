@@ -14,9 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs, useRouter, useRuntimeConfig, useGlobalUpload, useCopyUrlToClipboard, useUserStore } from '#imports';
-
-const config = useRuntimeConfig();
+import { storeToRefs, useRouter, useGlobalUpload, useCopyUrlToClipboard, useUserStore } from '#imports';
 
 const userStore = useUserStore();
 const { isAuthenticated } = storeToRefs(userStore);

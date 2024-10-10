@@ -7,8 +7,6 @@
 <script setup lang="ts">
 import { useRoute } from '#vue-router';
 
-const config = useRuntimeConfig();
-
 const route = useRoute();
 const { file } = route.params;
 
@@ -17,7 +15,7 @@ useSeoMeta({
   ogTitle: `File Sharer - ${file}`,
   description: 'Sharing files made simple.',
   ogDescription: 'Sharing files made simple.',
-  ogImage: `${config.public.appUrl}/api/download/${file}`,
+  ogImage: `${import.meta.env.VITE_APP_URL}/api/download/${file}`,
   twitterCard: 'summary_large_image',
 });
 </script>
