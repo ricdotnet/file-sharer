@@ -49,7 +49,7 @@
 
     if (error.value) {
       console.error('Error:', error.value);
-      addToast({ message: 'Something went wrong when trying to login', type: 'error' });
+      addToast({ message: 'Something went wrong when trying to login.', type: 'error' });
       isLoggingIn.value = false;
       return;
     }
