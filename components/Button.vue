@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <button :label="label" class="button">{{ label }}</button>
-  </div>
+  <button class="button" :disabled="isActioning">
+    <Spinner v-if="isActioning" />
+    {{ label }}
+  </button>
 </template>
 
 <script setup lang="ts">
   defineProps<{
     label: string;
+    isActioning: boolean;
   }>();
 </script>
 
@@ -17,6 +19,11 @@
     cursor: pointer;
     border-radius: 0.5rem;
     transition: ease-in-out 150ms;
+    align-self: flex-start;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 
     &:focus-visible {
       outline: 2px solid var(--air-blue);

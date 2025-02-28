@@ -5,7 +5,7 @@
 
       <div class="input-group">
         <label for="username">Username</label>
-        <input ref="usernameInput" id="username" />
+        <input ref="usernameInput" id="username"/>
       </div>
 
       <div class="input-group">
@@ -13,7 +13,7 @@
         <input ref="passwordInput" id="password" type="password"/>
       </div>
 
-      <Button type="submit" label="Login" />
+      <Button type="submit" label="Login" :is-actioning="isLoggingIn"/>
     </div>
   </form>
 </template>
@@ -21,16 +21,20 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import Button from '~/components/Button.vue';
-  import { useUserStore } from '#imports';
+  import { useToaster, useUserStore } from '#imports';
 
   const { setIsAuthenticated } = useUserStore();
+  const { addToast } = useToaster();
 
+  const isLoggingIn = ref(false);
   const usernameInput = ref<HTMLInputElement | null>(null);
   const passwordInput = ref<HTMLInputElement | null>(null);
 
   async function onLoginSubmit(event: Event) {
     event.preventDefault();
     if (!usernameInput.value?.value || !passwordInput.value?.value) return;
+
+    isLoggingIn.value = true;
 
     const username = usernameInput.value.value;
     const password = passwordInput.value.value;
@@ -45,6 +49,8 @@
 
     if (error.value) {
       console.error('Error:', error.value);
+      addToast({ message: 'Something went wrong when trying to login', type: 'error' });
+      isLoggingIn.value = false;
       return;
     }
 

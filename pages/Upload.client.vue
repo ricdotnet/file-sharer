@@ -5,7 +5,7 @@
       {{ filename }}
     </label>
 
-    <Button label="Upload" type="submit"/>
+    <Button label="Upload" type="submit" :is-actioning="isUploading"/>
   </form>
 </template>
 
@@ -15,6 +15,7 @@
   const filename = ref('Upload File'.toUpperCase());
   const fileSelected = ref(false);
   const file = ref<File | null>(null);
+  const isUploading = ref(false);
 
   useHead({
     title: 'Upload a File',
@@ -38,6 +39,7 @@
       return;
     }
 
+    isUploading.value = true;
     const form = new FormData();
     form.append('file', file.value, file.value.name);
 

@@ -1,68 +1,83 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
 :root {
-    --rich-black: #010C14;
-    --white-smoke: #F5F5F5;
-    --text-dim: #ADC5CF;
-    --air-blue: #60A3D2;
-    --gun-metal: #0C2633;
+  --rich-black: #010C14;
+  --white-smoke: #F5F5F5;
+  --text-dim: #ADC5CF;
+  --air-blue: #60A3D2;
+  --gun-metal: #0C2633;
 
-    /* dummy vars */
-    --x: -100px;
-    --y: -100px;
+  /* dummy vars */
+  --x: -100px;
+  --y: -100px;
 }
 
 html {
-    font-family: "Inter", "system-ui", sans-serif;
-    font-size: 0.875rem;
+  font-family: "Inter", "system-ui", sans-serif;
+  font-size: 0.875rem;
 }
 
 body {
-    padding: 0;
-    margin: 0;
-    background-color: var(--rich-black);
-    color: var(--white-smoke);
+  padding: 0;
+  margin: 0;
+  background-color: var(--rich-black);
+  color: var(--white-smoke);
 }
 
 a, a:visited {
-    text-decoration: none;
-    color: var(--air-blue);
+  text-decoration: none;
+  color: var(--air-blue);
 
-    &:not(:focus-visible) {
-        outline: none;
-    }
+  &:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
-    margin: 0;
+  margin: 0;
 }
 
 *:focus {
-    outline: 2px solid var(--air-blue);
-    outline-offset: 4px;
-    border-radius: 0.5rem;
+  outline: 2px solid var(--air-blue);
+  outline-offset: 4px;
+  border-radius: 0.5rem;
 }
 
 button {
-    all: unset;
+  all: unset;
 }
 
 .container {
-    width: 900px;
-    margin-inline: auto;
+  width: 900px;
+  margin-inline: auto;
 }
 
 @media (max-width: 900px) {
-    .container {
-        width: 90%;
-    }
+  .container {
+    width: 90%;
+  }
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .icon {
-    width: 1.5rem;
-    height: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/** Transitions **/
+.toast-enter-active,
+.toast-leave-active {
+  transition: all 0.25s ease;
+}
+
+.toast-enter-from {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.toast-leave-to {
+  opacity: 0;
 }

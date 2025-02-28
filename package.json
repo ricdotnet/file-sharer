@@ -10,13 +10,6 @@
     "postinstall": "nuxt prepare",
     "migrations": "node --env-file=.env migrations/applyMigrations.mjs"
   },
-  "devDependencies": {
-    "@nuxt/devtools": "latest",
-    "@pinia/nuxt": "latest",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^22.5.3",
-    "nuxt": "^3.7.3"
-  },
   "dependencies": {
     "@heroicons/vue": "^2.1.5",
     "@ricdotnet/logger": "^0.3.3",
@@ -27,5 +20,12 @@
     "nuxt-cron": "^1.6.0",
     "pinia": "^2.2.2"
   },
-  "packageManager": "yarn@3.6.1"
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@pinia/nuxt": "latest",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^22.5.3",
+    "nuxt": "3.12.4"
+  },
+  "packageManager": "yarn@3.8.7"
 }

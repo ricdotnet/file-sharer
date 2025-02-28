@@ -32,15 +32,14 @@ export default defineEventHandler(async (event) => {
 
   const file = multipart[0];
 
-  if (file.data.length > 50_000_000) {
+  if (file.data.length > 10_000_000) {
     Logger.get().error('Tried to upload a file larger than 10MB');
     return sendRedirect(event, '/error', 400);
   }
 
-  let decoded = null;
+  let decoded;
   try {
     decoded = jwt.verify(token, process.env.SECRET as string) as TUserAuthenticatedTokenPayload;
-  // biome-ignore lint/suspicious/noExplicitAny: allow any
   } catch (err: any) {
     Logger.get().error(`Tried to upload a file with an invalid token: ${err.message}`);
     return sendRedirect(event, '/error', 400);

@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const user = rows[0] as TUserResult;
-  if (!(await argon.verify(user.password ,password))) {
+  if (!(await argon.verify(user.password, password))) {
     return createError({ statusCode: 401, message: Messages.INVALID_PASSWORD });
   }
 

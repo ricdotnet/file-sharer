@@ -5,14 +5,24 @@ export default defineNuxtConfig({
       title: 'File Sharer',
     },
   },
+
+  runtimeConfig: {
+    public: {
+      listViewEnabled: process.env.NUXT_LIST_VIEW_ENABLED === 'true',
+      appUrl: process.env.APP_URL,
+    },
+  },
+
   devtools: {
     enabled: true,
   },
   modules: ['@pinia/nuxt', 'nuxt-cron', 'nuxt-api-shield'],
+
   cron: {
     timeZone: 'Europe/London',
     jobsDir: 'cron',
   },
+
   nuxtApiShield: {
     limit: {
       max: 1000000,
@@ -24,6 +34,7 @@ export default defineNuxtConfig({
       attempts: 100,
     },
   },
+
   nitro: {
     storage: {
       shield: {
@@ -31,4 +42,6 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  compatibilityDate: '2025-02-28',
 });

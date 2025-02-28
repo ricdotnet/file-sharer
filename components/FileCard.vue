@@ -1,7 +1,7 @@
 <template>
   <div ref="fileCardRef" class="file" :style="{ '--x': `${x}px`, '--y': `${y}px` }">
-    <div class="card-title">
-      {{ file.original_filename }}
+    <div class="card-title" :title="file.original_filename">
+      {{ sliceTitle(file.original_filename) }}
     </div>
     <div class="icon-group">
       <CircleStackIcon class="icon" />
@@ -15,11 +15,11 @@
       <a target="_blank" :href="`/api/download/${file.filename}`">
         <ArrowDownOnSquareIcon class="icon" />
       </a>
-      <IconButton @click="(e) => onClickLock(e, file.id)">
+      <IconButton @click="(e: MouseEvent) => onClickLock(e, file.id)">
         <LockClosedIcon v-if="file.is_private" class="icon" />
         <LockOpenIcon v-else class="icon" />
       </IconButton>
-      <IconButton v-if="file.canDelete" @click="(e) => onClickDelete(e, file.id)">
+      <IconButton v-if="file.canDelete" @click="(e: MouseEvent) => onClickDelete(e, file.id)">
         <TrashIcon class="icon" />
       </IconButton>
       <IconButton @click="copyLinkToClipboard">
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import type { File } from '~/types';
-import { useDate, useCopyUrlToClipboard, useFileStore } from '#imports';
+import { useDate, useCopyUrlToClipboard, useFileStore, useToaster } from '#imports';
 import {
   ArrowDownOnSquareIcon,
   CircleStackIcon,
@@ -43,6 +43,7 @@ import {
 } from '@heroicons/vue/16/solid';
 
 const { removeFile, updatePrivacy } = useFileStore();
+const { addToast } = useToaster();
 
 const fileCardRef = ref<HTMLAnchorElement | null>(null);
 const { formatShort } = useDate();
@@ -79,6 +80,10 @@ function convertSize(size: number) {
   }
 
   return `${_size.toFixed(2)} ${_unit}`;
+}
+
+function sliceTitle(title: string) {
+  return title.length > 70 ? `${title.slice(0, 70)}...` : title;
 }
 
 async function onClickDelete(event: MouseEvent, id: number) {
@@ -119,8 +124,10 @@ async function onClickLock(event: MouseEvent, id: number) {
 async function copyLinkToClipboard() {
   try {
     await useCopyUrlToClipboard().copy(`/api/download/${props.file.filename}`);
+    addToast({ message: 'File URL copied to clipboard', type: 'info' });
   } catch (err) {
     console.log(err);
+    addToast({ message: 'Could not copy the file to clipboard', type: 'error' });
   }
 }
 </script>
