@@ -14,8 +14,9 @@
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs, useCopyUrlToClipboard, useGlobalUpload, useRouter, useUserStore } from '#imports';
+  import { storeToRefs, useCopyUrlToClipboard, useGlobalUpload, useRouter, useToaster, useUserStore } from '#imports';
 
+  const { addToast } = useToaster();
   const userStore = useUserStore();
   const { isAuthenticated } = storeToRefs(userStore);
 
@@ -65,7 +66,12 @@
   const doUploadFile = async () => {
     const { storedFilename } = await uploadFile();
     if (storedFilename) {
-      await useCopyUrlToClipboard().copy(`/view/${storedFilename}`);
+      try {
+        await useCopyUrlToClipboard().copy(`/view/${storedFilename}`);
+      } catch (error) {
+        console.error(error);
+        addToast({ message: 'Could not copy URL to clipboard.', type: 'error' });
+      }
       await useRouter().push(`/view/${storedFilename}`);
     }
   };
