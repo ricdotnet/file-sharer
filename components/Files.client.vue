@@ -10,11 +10,12 @@
     </div>
   </div> -->
   <div class="loading" v-if="isLoading">
-    <Spinner />
+    <Spinner/>
   </div>
   <div v-else>
+    <div class="no-files" v-if="!files.length"> You have no files stored with us.</div>
     <div v-if="view === 'grid'" class="files-container">
-      <FileCard v-for="file in files" :file="file" />
+      <FileCard v-for="file in files" :file="file"/>
     </div>
     <div v-else>
       Table view coming soon.
@@ -23,26 +24,24 @@
 </template>
 
 <script setup lang="ts">
-import FileCard from '~/components/FileCard.vue';
-import Spinner from '~/components/Spinner.vue';
-import { ListBulletIcon, TableCellsIcon } from '@heroicons/vue/16/solid';
-import IconButton from '~/components/IconButton.vue';
-import { useFileStore, storeToRefs } from '#imports';
+  import FileCard from '~/components/FileCard.vue';
+  import Spinner from '~/components/Spinner.vue';
+  import { storeToRefs, useFileStore } from '#imports';
 
-type View = 'grid' | 'list';
+  type View = 'grid' | 'list';
 
-const isLoading = ref(true);
-const view = ref<View>('grid');
+  const isLoading = ref(true);
+  const view = ref<View>('grid');
 
-const fileStore = useFileStore();
-const { files } = storeToRefs(fileStore);
+  const fileStore = useFileStore();
+  const { files } = storeToRefs(fileStore);
 
-if (process.client) {
-  await fileStore.fetchFiles();
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 100);
-}
+  if (import.meta.client) {
+    await fileStore.fetchFiles();
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 100);
+  }
 </script>
 
 <style scoped>
@@ -85,5 +84,10 @@ if (process.client) {
 
   .active-view {
     opacity: 100%;
+  }
+
+  .no-files {
+    margin-top: 2rem;
+    font-size: 1.25rem;
   }
 </style>

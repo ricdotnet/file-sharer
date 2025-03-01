@@ -11,14 +11,14 @@ export const useFileStore = defineStore('file', () => {
       return;
     }
 
-    const response = await fetch('/api/files', {
+    const response = await $fetch('/api/files', {
       headers: {
         Authorization: `${token}`,
       },
     });
-    const data = await response.json();
 
-    files.value = data.files;
+    // @ts-expect-error files does exist on the response
+    files.value = response.files;
   }
 
   function removeFile(id: number) {

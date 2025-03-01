@@ -56,11 +56,11 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, '/error', 500);
   }
 
+  // If isPrivate is not set then it will be true by default, if it is set, we check for its bool value
   const _isPrivate = multipart[2]?.data.toString('utf-8');
-  const _isImage = multipart[1]?.data.toString('utf-8');
-
   const isPrivate = _isPrivate ? _isPrivate === 'true' : true;
-  const isImage = _isImage ? _isImage === 'true' : false;
+
+  const isImage = multipart[1]?.data.toString('utf-8') === 'true';
 
   await createFile(decoded.id, file.filename ?? 'NO_NAME', fileName, { is_private: isPrivate, is_image: isImage });
 

@@ -92,7 +92,7 @@
     const confirmDelete = confirm('Are you sure you want to delete this file?');
     if (!confirmDelete) return;
 
-    await useFetch(`/api/files/${id}`, {
+    await $fetch(`/api/files/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `${localStorage.getItem('token')}`,
@@ -176,6 +176,7 @@
   .card-title {
     font-size: 1.2rem;
     margin-bottom: 10px;
+    word-break: break-all;
   }
 
   .card-actions {

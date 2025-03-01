@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :disabled="isActioning">
+  <button class="button" :disabled="disabled || isActioning">
     <Spinner v-if="isActioning" />
     {{ label }}
   </button>
@@ -8,7 +8,8 @@
 <script setup lang="ts">
   defineProps<{
     label: string;
-    isActioning: boolean;
+    isActioning?: boolean;
+    disabled?: boolean;
   }>();
 </script>
 

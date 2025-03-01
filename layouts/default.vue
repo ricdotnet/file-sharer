@@ -3,6 +3,7 @@
   <div class="container">
     <slot/>
   </div>
+
   <Transition name="toast" mode="out-in">
     <div v-if="toasts.length" class="toast" @click="removeToast">
       <ExclamationCircleIcon class="icon" v-if="toasts[0].type === 'error'" />

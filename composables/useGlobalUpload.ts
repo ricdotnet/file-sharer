@@ -4,6 +4,7 @@ const imageType = ref('');
 // biome-ignore lint/suspicious/noExplicitAny: allow any here
 const imageFile = ref<any>();
 const fileName = ref('');
+const isPreviewing = ref(false);
 const isUploading = ref(false);
 
 export const useGlobalUpload = () => {
@@ -35,7 +36,7 @@ export const useGlobalUpload = () => {
           imageFile.value = blob;
           fileName.value = `clipboard.${imageType.value}`;
 
-          isUploading.value = true;
+          isPreviewing.value = true;
         }
       } catch (err) {
         // silently catch any error
@@ -53,10 +54,11 @@ export const useGlobalUpload = () => {
   const resetFile = () => {
     imageFile.value = undefined;
     imageType.value = '';
-    isUploading.value = false;
+    isPreviewing.value = false;
   }
 
   const uploadFile = async () => {
+    isUploading.value = true;
     const filename = `${Date.now()}.${imageType.value}`;
 
     const form = new FormData();
@@ -75,8 +77,10 @@ export const useGlobalUpload = () => {
     resetFile();
 
     const storedFilename = await response.text();
-    return storedFilename;
+    isUploading.value = false;
+
+    return { storedFilename };
   }
 
-  return { registerKeyEvents, fileName, imageFile, imageType, isUploading, resetFile, uploadFile, removeKeyEvents };
+  return { registerKeyEvents, fileName, imageFile, imageType, isUploading, resetFile, uploadFile, removeKeyEvents, isPreviewing };
 };

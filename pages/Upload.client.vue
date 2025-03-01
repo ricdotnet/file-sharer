@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-  import { Target } from "~/types";
+  import { type Target } from "~/types";
 
   const filename = ref('Upload File'.toUpperCase());
   const fileSelected = ref(false);

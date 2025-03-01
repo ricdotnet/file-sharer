@@ -3,7 +3,7 @@
     <NuxtLayout>
       <NuxtPage/>
 
-      <UploadImageDialog :is-open="isUploading" />
+      <UploadImageDialog :is-open="isPreviewing" />
     </NuxtLayout>
   </div>
 </template>
@@ -19,9 +19,9 @@ const route = useRoute();
 const userStore = useUserStore();
 const { isAuthenticated } = storeToRefs(userStore);
 
-const { registerKeyEvents, removeKeyEvents, isUploading } = useGlobalUpload();
+const { registerKeyEvents, removeKeyEvents, isPreviewing } = useGlobalUpload();
 
-if (process.client && route.meta.isAuthed) {
+if (import.meta.client && route.meta.isAuthed) {
   await userStore.authenticate();
 
   if (!isAuthenticated.value) {
