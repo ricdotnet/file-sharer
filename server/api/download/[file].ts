@@ -13,7 +13,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
   if (!filename) return;
 
-  if (/^\d{1,8}(.bin)$/g.test(filename)) {
+  if (/^\d{1,10}(.bin)$/g.test(filename)) {
     const length = filename.match(/\d+/g);
     if (!length) return;
 

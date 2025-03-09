@@ -1,21 +1,23 @@
 <template>
   <form method="POST" @submit="onSubmit">
-    <input class="file" ref="fileRef" id="file-select" type="file" name="file" @change="onChange" title=""/>
+    <input class="file" ref="fileRef" id="file-select" type="file" name="file" @change="onChange" title="" />
     <label class="file-select" for="file-select" :data-selected="fileSelected">
       {{ filename }}
     </label>
 
-    <Button label="Upload" type="submit" :is-actioning="isUploading"/>
+    <Button :label="isUploading ? `${progress}%` : 'Upload'" type="submit" :is-actioning="isUploading" />
   </form>
 </template>
 
 <script setup lang="ts">
-  import { type Target } from "~/types";
+  import { type Target } from '~/types';
+  import axios from 'axios';
 
   const filename = ref('Upload File'.toUpperCase());
   const fileSelected = ref(false);
   const file = ref<File | null>(null);
   const isUploading = ref(false);
+  const progress = ref(0);
 
   useHead({
     title: 'Upload a File',
@@ -47,11 +49,16 @@
       form.append('is_image', 'true');
     }
 
-    await fetch('/api/upload', {
-      method: 'POST',
-      body: form,
+    await axios({
+      method: 'post',
+      url: '/api/upload',
+      data: form,
       headers: {
-        Authorization: `${localStorage.getItem('token')}`,
+        Authorization: localStorage.getItem('token'),
+      },
+      onUploadProgress: (event: ProgressEvent) => {
+        const percentComplete = event.loaded / event.total;
+        progress.value = Math.round(percentComplete * 100);
       },
     });
 
