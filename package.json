@@ -19,7 +19,7 @@
     "mysql2": "^3.11.0",
     "nuxt-api-shield": "^0.7.0",
     "nuxt-cron": "^1.6.0",
-    "pinia": "^2.2.2"
+    "pinia": "^3.0.1"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
