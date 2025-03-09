@@ -3338,6 +3338,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/devtools-api@npm:^7.7.2":
+  version: 7.7.2
+  resolution: "@vue/devtools-api@npm:7.7.2"
+  dependencies:
+    "@vue/devtools-kit": ^7.7.2
+  checksum: c9ec7707a08fd425bbdb324edcef8f3c02bb08c77353d154e51fb11f3242b1084337e0385dc955763c0e693ecd0151a98f664036d9a6454d1cd77db692b38c0d
+  languageName: node
+  linkType: hard
+
 "@vue/devtools-core@npm:7.6.8":
   version: 7.6.8
   resolution: "@vue/devtools-core@npm:7.6.8"
@@ -3369,7 +3378,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-kit@npm:^7.6.8":
+"@vue/devtools-kit@npm:^7.6.8, @vue/devtools-kit@npm:^7.7.2":
   version: 7.7.2
   resolution: "@vue/devtools-kit@npm:7.7.2"
   dependencies:
@@ -8461,7 +8470,7 @@ __metadata:
     nuxt: 3.12.4
     nuxt-api-shield: ^0.7.0
     nuxt-cron: ^1.6.0
-    pinia: ^2.2.2
+    pinia: ^3.0.1
   languageName: unknown
   linkType: soft
 
@@ -9041,6 +9050,21 @@ __metadata:
     typescript:
       optional: true
   checksum: 87da2d803edc181a46de14513aae2a252b0218561113ce3d970ffb90f4768d12f3526369ed5a457fe8a1f93f8a16aaf691e624f5a54e54101110c30b424698c9
+  languageName: node
+  linkType: hard
+
+"pinia@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "pinia@npm:3.0.1"
+  dependencies:
+    "@vue/devtools-api": ^7.7.2
+  peerDependencies:
+    typescript: ">=4.4.4"
+    vue: ^2.7.0 || ^3.5.11
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: f2a5e8bfb537f2aff72ea80361cc837b6f328a7c3328e7091c1ec3709859a0c26b7dc75d9bf0ba22f9adfb8445974a3a683fe995b383a0805fc833365884a8c5
   languageName: node
   linkType: hard
 
