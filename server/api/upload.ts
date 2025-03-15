@@ -5,6 +5,7 @@ import config from '~/config';
 import jwt from 'jsonwebtoken';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 import { createFile } from '../utils/db';
+import { MAX_FILE_SIZE } from '~/utils/constants';
 
 export default defineEventHandler(async (event) => {
   const multipart = await readMultipartFormData(event); // TODO: Error handling
@@ -32,7 +33,7 @@ export default defineEventHandler(async (event) => {
 
   const file = multipart[0];
 
-  if (file.data.length > 250_000_000) {
+  if (file.data.length > MAX_FILE_SIZE) {
     Logger.get().error('Tried to upload a file larger than 250MB');
     return sendRedirect(event, '/error', 400);
   }

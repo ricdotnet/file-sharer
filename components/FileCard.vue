@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { File } from '~/types';
+  import type { IFile } from '~/types';
   import { useCopyUrlToClipboard, useDate, useFileStore, useToaster } from '#imports';
   import {
     ArrowDownOnSquareIcon,
@@ -51,7 +51,7 @@
   const y = ref(0);
 
   const props = defineProps<{
-    file: File;
+    file: IFile;
   }>();
 
   onMounted(() => {
