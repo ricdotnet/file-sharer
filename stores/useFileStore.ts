@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
-import type { File } from '~/types';
+import type { IFile } from '~/types';
 
 export const useFileStore = defineStore('file', () => {
-  const files = ref<File[]>([]);
+  const files = ref<IFile[]>([]);
 
   async function fetchFiles() {
     const token = localStorage.getItem('token');

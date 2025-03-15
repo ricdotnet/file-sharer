@@ -1,9 +1,16 @@
 <template>
   <form method="POST" @submit="onSubmit">
-    <input class="file" ref="fileRef" id="file-select" type="file" name="file" @change="onChange" title="" />
-    <label class="file-select" for="file-select" :data-selected="fileSelected">
-      {{ filename }}
-    </label>
+    <span v-if="fileToUpload" class="file-to-upload" @click="setFileToUpload(null)">
+      <span>{{ fileToUpload.name }}</span>
+      <span class="clear-message">click to clear</span>
+    </span>
+
+    <span v-else>
+      <input class="file" ref="fileRef" id="file-select" type="file" name="file" @change="onChange" title="" />
+      <label class="file-select" for="file-select" :data-selected="fileSelected">
+        {{ filename }}
+      </label>
+    </span>
 
     <Button :label="isUploading ? `${progress}%` : 'Upload'" type="submit" :is-actioning="isUploading" />
   </form>
@@ -11,7 +18,10 @@
 
 <script setup lang="ts">
   import { type Target } from '~/types';
-  import axios from 'axios';
+  import { useDropdownArea } from '#imports';
+  import axios, { type AxiosProgressEvent } from 'axios';
+
+  const { fileToUpload, setFileToUpload } = useDropdownArea();
 
   const filename = ref('Upload File'.toUpperCase());
   const fileSelected = ref(false);
@@ -37,27 +47,35 @@
 
   async function onSubmit(event: Event) {
     event.preventDefault();
-    if (!fileSelected.value || !file.value) {
+    if (!file.value && !fileToUpload.value) {
       return;
     }
 
     isUploading.value = true;
     const form = new FormData();
-    form.append('file', file.value, file.value.name);
 
-    if (file.value.type.includes('image/')) {
-      form.append('is_image', 'true');
+    if (file.value) {
+      form.append('file', file.value, file.value.name);
+
+      if (file.value.type.includes('image/')) {
+        form.append('is_image', 'true');
+      }
+    } else if (fileToUpload.value) {
+      form.append('file', fileToUpload.value, fileToUpload.value.name);
+
+      if (fileToUpload.value.type.includes('image/')) {
+        form.append('is_image', 'true');
+      }
     }
 
-    await axios({
+    await axios('/api/upload', {
       method: 'post',
-      url: '/api/upload',
       data: form,
       headers: {
         Authorization: localStorage.getItem('token'),
       },
-      onUploadProgress: (event: ProgressEvent) => {
-        const percentComplete = event.loaded / event.total;
+      onUploadProgress: (event: AxiosProgressEvent) => {
+        const percentComplete = event.loaded / (event.total ?? 0);
         progress.value = Math.round(percentComplete * 100);
       },
     });
@@ -101,6 +119,24 @@
 
     &:hover {
       border: 0.3rem dashed var(--air-blue);
+    }
+  }
+
+  .file-to-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    width: 100%;
+    text-align: center;
+    border-radius: 1rem;
+    padding-block: 2rem;
+    margin-block: 2rem;
+    border: 0.3rem dashed var(--gun-metal);
+    position: relative;
+
+    .clear-message {
+      opacity: 0.2;
     }
   }
 </style>
