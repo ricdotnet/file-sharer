@@ -135,6 +135,15 @@
     border: 0.3rem dashed var(--gun-metal);
     position: relative;
 
+    cursor: pointer;
+    user-select: none;
+
+    transition: ease-in-out 150ms;
+
+    &:hover {
+      border: 0.3rem dashed var(--air-blue);
+    }
+
     .clear-message {
       opacity: 0.2;
     }

@@ -1,6 +1,6 @@
 <template>
   <button class="button" :disabled="disabled || isActioning">
-    <Spinner v-if="isActioning" />
+    <Spinner class="spinner" v-if="isActioning" />
     {{ label }}
   </button>
 </template>
@@ -14,6 +14,11 @@
 </script>
 
 <style scoped>
+  .spinner {
+    width: 15px;
+    height: 15px;
+  }
+
   .button {
     border: 1px solid var(--gun-metal);
     padding: 1rem 2rem;
