@@ -1,9 +1,11 @@
-import { ref } from '#imports';
+import { ref, useToaster } from '#imports';
+import { MAX_FILE_SIZE } from '~/utils/constants';
 
 const fileToUpload = ref<File | null>(null);
 
 export function useDropdownArea() {
   const dropdownArea = ref<HTMLDivElement | null>(null);
+  const { addToast } = useToaster();
 
   const onDragOver = (e: DragEvent) => {
     e.preventDefault();
@@ -21,6 +23,17 @@ export function useDropdownArea() {
     const file = e.dataTransfer?.files[0];
 
     if (!file) {
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      dropdownArea.value!.classList.remove('show');
+
+      addToast({
+        message: 'The file selected is too large',
+        type: 'error',
+      });
+
       return;
     }
 

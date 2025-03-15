@@ -18,10 +18,12 @@
 
 <script setup lang="ts">
   import { type Target } from '~/types';
-  import { useDropdownArea } from '#imports';
+  import { useDropdownArea, useToaster } from '#imports';
   import axios, { type AxiosProgressEvent } from 'axios';
+  import { MAX_FILE_SIZE } from '~/utils/constants';
 
   const { fileToUpload, setFileToUpload } = useDropdownArea();
+  const { addToast } = useToaster();
 
   const filename = ref('Upload File'.toUpperCase());
   const fileSelected = ref(false);
@@ -41,6 +43,16 @@
     }
 
     file.value = target.files[0] as File;
+
+    if (file.value.size > MAX_FILE_SIZE) {
+      addToast({
+        message: 'The file selected is too large',
+        type: 'error',
+      });
+
+      return;
+    }
+
     filename.value = file.value.name;
     fileSelected.value = true;
   }
