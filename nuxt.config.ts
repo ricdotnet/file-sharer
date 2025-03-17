@@ -16,6 +16,7 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
+
   modules: ['@pinia/nuxt', 'nuxt-cron', 'nuxt-api-shield'],
 
   cron: {
@@ -43,5 +44,5 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2025-02-28',
+  compatibilityDate: '2025-03-16',
 });

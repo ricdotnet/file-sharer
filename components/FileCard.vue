@@ -4,26 +4,26 @@
       {{ sliceTitle(file.original_filename) }}
     </div>
     <div class="icon-group">
-      <CircleStackIcon class="icon"/>
+      <CircleStackIcon class="icon" />
       <span>{{ convertSize(file.size) }}</span>
     </div>
     <div class="icon-group">
-      <CalendarDaysIcon class="icon"/>
+      <CalendarDaysIcon class="icon" />
       {{ formatShort(new Date(file.created)) }}
     </div>
     <div class="card-actions">
       <a target="_blank" :href="`/api/download/${file.filename}`">
-        <ArrowDownOnSquareIcon class="icon"/>
+        <ArrowDownOnSquareIcon class="icon" />
       </a>
       <IconButton @click="(e: MouseEvent) => onClickLock(e, file.id)">
-        <LockClosedIcon v-if="file.is_private" class="icon"/>
-        <LockOpenIcon v-else class="icon"/>
+        <LockClosedIcon v-if="file.is_private" class="icon" />
+        <LockOpenIcon v-else class="icon" />
       </IconButton>
       <IconButton v-if="file.canDelete" @click="(e: MouseEvent) => onClickDelete(e, file.id)">
-        <TrashIcon class="icon"/>
+        <TrashIcon class="icon" />
       </IconButton>
       <IconButton @click="copyLinkToClipboard">
-        <ClipboardDocumentCheckIcon class="icon"/>
+        <ClipboardDocumentCheckIcon class="icon" />
       </IconButton>
     </div>
   </div>
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
   import type { IFile } from '~/types';
-  import { useCopyUrlToClipboard, useDate, useFileStore, useToaster } from '#imports';
+  import { useCopyUrlToClipboard, useDate, useFileStore, useToaster, useUserStore } from '#imports';
   import {
     ArrowDownOnSquareIcon,
     CalendarDaysIcon,
@@ -42,6 +42,7 @@
     TrashIcon,
   } from '@heroicons/vue/16/solid';
 
+  const { authToken } = useUserStore();
   const { removeFile, updatePrivacy } = useFileStore();
   const { addToast } = useToaster();
 
@@ -55,7 +56,9 @@
   }>();
 
   onMounted(() => {
-    if (!fileCardRef.value) return;
+    if (!fileCardRef.value) {
+      return;
+    }
 
     document.addEventListener('mousemove', (event: MouseEvent) => {
       x.value = event.x - (fileCardRef.value?.offsetLeft ?? 0);
@@ -90,42 +93,55 @@
     event.stopPropagation();
 
     const confirmDelete = confirm('Are you sure you want to delete this file?');
-    if (!confirmDelete) return;
+    if (!confirmDelete) {
+      return;
+    }
 
     await $fetch(`/api/files/${id}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `${localStorage.getItem('token')}`,
+        Authorization: authToken!,
       },
     });
 
     removeFile(id);
+
+    addToast({
+      message: 'Fie successfully deleted',
+      type: 'success',
+    });
   }
 
   async function onClickLock(event: MouseEvent, id: number) {
     event.stopPropagation();
 
     const confirmLock = confirm(`Are you sure you want to ${props.file.is_private ? 'unlock' : 'lock'} this file?`);
-    if (!confirmLock) return;
+    if (!confirmLock) {
+      return;
+    }
 
-    await useFetch(`/api/files/${id}`, {
+    await $fetch(`/api/files/${id}`, {
       method: 'PATCH',
       headers: {
-        Authorization: `${localStorage.getItem('token')}`,
+        Authorization: authToken!,
       },
       body: JSON.stringify({
         is_private: !props.file.is_private,
       }),
     });
 
-    addToast({ message: `The file has been ${props.file.is_private ? 'unlocked' : 'locked'}.`, type: 'info' });
-
     updatePrivacy(id);
+
+    addToast({
+      message: `The file has been ${props.file.is_private ? 'unlocked' : 'locked'}.`,
+      type: 'info',
+    });
   }
 
   async function copyLinkToClipboard() {
     try {
-      await useCopyUrlToClipboard().copy(`/api/download/${props.file.filename}`);
+      await useCopyUrlToClipboard()
+        .copy(`/api/download/${props.file.filename}`);
       addToast({ message: 'File URL copied to clipboard.', type: 'info' });
     } catch (err) {
       console.log(err);

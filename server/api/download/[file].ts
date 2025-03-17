@@ -13,6 +13,8 @@ export default defineEventHandler(async (event: H3Event) => {
 
   if (!filename) return;
 
+  filename = decodeURI(filename);
+
   if (/^\d{1,10}(.bin)$/g.test(filename)) {
     const length = filename.match(/\d+/g);
     if (!length) return;
@@ -33,8 +35,7 @@ export default defineEventHandler(async (event: H3Event) => {
         return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
       }
 
-      // biome-ignore lint/suspicious/noExplicitAny: allow any
-      const [cookieResult] = await findCookie(cookie) as any[];
+      const [cookieResult] = await findCookie(cookie) as ICookie[];
       if (!cookieResult) {
         Logger.get().warn(`User tried to access private file ${filename} with an invalid cookie`);
         return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });

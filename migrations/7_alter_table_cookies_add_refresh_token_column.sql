@@ -1,0 +1,1 @@
+ALTER TABLE cookies ADD COLUMN refresh_token text not null;
