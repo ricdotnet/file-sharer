@@ -1,0 +1,26 @@
+name: Verify build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  verify_build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        run: corepack enable && yarn install
+
+      - name: Build for production
+        run: yarn build
