@@ -2,6 +2,10 @@ name: Build release Docker image
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [ "Verify build" ]
+    types:
+      - completed
   push:
     branches:
       - 'master'

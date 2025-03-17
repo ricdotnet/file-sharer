@@ -1,6 +1,9 @@
 name: migrations.yml
 on:
+  workflow_dispatch:
   push:
+    branches:
+      - 'master'
     paths:
       - 'migrations/**'
 
@@ -23,8 +26,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: corepack enable && yarn install
+      - name: Install mysql
+        run: npm install -g mysql2/promise
 
       - name: Apply migrations
         run: node ./migrations/applyMigrations.mjs
