@@ -3006,12 +3006,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^9.0.6":
-  version: 9.0.6
-  resolution: "@types/jsonwebtoken@npm:9.0.6"
+"@types/jsonwebtoken@npm:^9.0.9":
+  version: 9.0.9
+  resolution: "@types/jsonwebtoken@npm:9.0.9"
   dependencies:
+    "@types/ms": "*"
     "@types/node": "*"
-  checksum: a568e7cb1c703bcb015eff8bf5996e276e748d2b39ddc47edf5ddccd1378f5792179c43302a1c803e47a54b0220f9ecaae445ec444d28bf81b88856f899e85b9
+  checksum: 9d564fc09fc83f66e319754dee0b039ae23f28fc38a9227c35283e69311ddf5a7493a060c7f956df8cd856416747c515b51fec20b8656865eacebf23b3c6bc62
   languageName: node
   linkType: hard
 
@@ -3019,6 +3020,13 @@ __metadata:
   version: 3.4.2
   resolution: "@types/luxon@npm:3.4.2"
   checksum: 6f92d5bd02e89f310395753506bcd9cef3a56f5940f7a50db2a2b9822bce753553ac767d143cb5b4f9ed5ddd4a84e64f89ff538082ceb4d18739af7781b56925
+  languageName: node
+  linkType: hard
+
+"@types/ms@npm:*":
+  version: 2.1.0
+  resolution: "@types/ms@npm:2.1.0"
+  checksum: 532d2ebb91937ccc4a89389715e5b47d4c66e708d15942fe6cc25add6dc37b2be058230a327dd50f43f89b8b6d5d52b74685a9e8f70516edfc9bdd6be910eff4
   languageName: node
   linkType: hard
 
@@ -8511,7 +8519,7 @@ __metadata:
     "@nuxt/devtools": latest
     "@pinia/nuxt": latest
     "@ricdotnet/logger": ^0.3.3
-    "@types/jsonwebtoken": ^9.0.6
+    "@types/jsonwebtoken": ^9.0.9
     "@types/node": ^22.13.10
     argon2: ^0.41.1
     axios: ^1.8.2
