@@ -1,6 +1,7 @@
 name: Verify build
 
 on:
+  workflow_call:
   push:
     branches:
       - master
