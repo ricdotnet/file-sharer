@@ -8493,13 +8493,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt-api-shield@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "nuxt-api-shield@npm:0.7.0"
+"nuxt-api-shield@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "nuxt-api-shield@npm:0.8.0"
   dependencies:
     "@nuxt/kit": ^3.12.2
     defu: ^6.1.4
-  checksum: 44de7d4c079d1f3a0761a4a5563dda004a1a53f0a66190776e3434ce7ae9355bc5644a2c2e7d106f5156db0b8bacf077da40a5ad0b80ec0dabf6c8554f3b031f
+  checksum: 3b2e0d062462c1e5b2911e4386d1072a08514bc3b49e536d4113656eb85d035b0841460aa2b31944149f09d7e2f39e4d2e83812601cb5e282d5a164304fece8e
   languageName: node
   linkType: hard
 
@@ -8518,7 +8518,7 @@ __metadata:
     jsonwebtoken: ^9.0.2
     mysql2: ^3.11.0
     nuxt: 3.15.4
-    nuxt-api-shield: ^0.7.0
+    nuxt-api-shield: ^0.8.0
     nuxt-cron: ^1.6.0
     pinia: ^3.0.1
   languageName: unknown
