@@ -1185,12 +1185,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@heroicons/vue@npm:^2.1.5":
-  version: 2.1.5
-  resolution: "@heroicons/vue@npm:2.1.5"
+"@heroicons/vue@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@heroicons/vue@npm:2.2.0"
   peerDependencies:
     vue: ">= 3"
-  checksum: 08e3e458c32005e8c943c1f9a99cc9edd8903ae06106abbc000b31e2a47f09af2dcf348e9e3ee00563820d65c97e3899c4c1e74ff89ccdb79c4130793c6cf57c
+  checksum: 57bd39343384b2e6ffdf7c792f20fa3aaad9e88f1b66ce256336b383ba05e34fe38f869af7b4e9c344ba65743707317f076dc37d7403ea0a06f8df2025c485e5
   languageName: node
   linkType: hard
 
@@ -7027,7 +7027,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nuxt-app@workspace:."
   dependencies:
-    "@heroicons/vue": ^2.1.5
+    "@heroicons/vue": ^2.2.0
     "@nuxt/devtools": latest
     "@pinia/nuxt": latest
     "@ricdotnet/logger": ^0.3.3
