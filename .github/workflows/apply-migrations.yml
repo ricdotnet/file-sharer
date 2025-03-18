@@ -28,7 +28,7 @@ jobs:
           node-version: '20'
 
       - name: Install mysql
-        run: npm -g install mysql2/promise
+        run: npm -g install mysql2
 
       - name: Apply migrations
         run: node ./migrations/applyMigrations.mjs
