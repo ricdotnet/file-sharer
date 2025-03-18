@@ -27,7 +27,7 @@ jobs:
           node-version: '20'
 
       - name: Install mysql
-        run: npm install -g mysql2/promise
+        run: corepack enable && yarn add mysql2/promise
 
       - name: Apply migrations
         run: node ./migrations/applyMigrations.mjs
