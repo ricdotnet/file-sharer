@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       listViewEnabled: process.env.NUXT_LIST_VIEW_ENABLED === 'true',
-      baseUrl: process.env.APP_URL,
+      baseUrl: process.env.NUXT_BASE_URL || 'http://localhost:3000',
     },
   },
 
