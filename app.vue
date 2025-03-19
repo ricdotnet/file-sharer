@@ -32,7 +32,6 @@
     await userStore.authenticate();
 
     if (!isAuthenticated.value) {
-      localStorage.removeItem('token');
       await navigateTo('/login');
     }
 

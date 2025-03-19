@@ -1,24 +1,23 @@
 import fs from 'fs/promises';
 import path from 'path';
-import jwt from 'jsonwebtoken';
-import { File } from '~/types';
-import config from "~/config";
+import { IFile } from '~/types';
+import config from '~/config';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 import { findFilesByUserId } from '../utils/db';
+import { isValidAuthentication } from '~/server/utils/auth';
 
 export default defineEventHandler(async (event) => {
-  const files: File[] = [];
+  const files: IFile[] = [];
 
-  const token = event.headers.get('Authorization');
-  let decoded;
-  try {
-    decoded = jwt.verify(token!, process.env.SECRET as string) as TUserAuthenticatedTokenPayload;
-  } catch (err) {
-    Logger.get().error('Tried to list files with an invalid token');
-    return createError({ statusCode: 401 });
+  const { tokenData, error } = await isValidAuthentication(event);
+
+  if (error) {
+    Logger.get()
+          .error(`Error occurred: ${error}`);
+    return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
-  const _files = await findFilesByUserId(decoded.id);
+  const _files = await findFilesByUserId(tokenData!.id);
 
   // @ts-ignore
   for (let file of _files) {

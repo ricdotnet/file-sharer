@@ -8,7 +8,7 @@
           <div class="links">
             <NuxtLink to="/">Files</NuxtLink>
             <NuxtLink to="/upload">Upload</NuxtLink>
-            <button @click="onLogoutClick">Logout</button>
+            <a href="/logout">Logout</a>
           </div>
         </div>
       </ClientOnly>
@@ -21,11 +21,6 @@
 
   const userStore = useUserStore();
   const { isAuthenticated } = storeToRefs(userStore);
-
-  async function onLogoutClick() {
-    userStore.logout();
-    navigateTo('/login');
-  }
 </script>
 
 <style scoped>

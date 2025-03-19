@@ -1,24 +1,22 @@
 import { defineStore } from 'pinia';
 import type { IFile } from '~/types';
+import { useUserStore } from '#imports';
 
 export const useFileStore = defineStore('file', () => {
   const files = ref<IFile[]>([]);
+  const userStore = useUserStore();
 
   async function fetchFiles() {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
+    if (!userStore.authToken) {
       return;
     }
 
-    const response = await $fetch('/api/files', {
-      headers: {
-        Authorization: `${token}`,
-      },
+    const { data } = await request({
+      url: '/api/files',
+      headers: { Authorization: userStore.authToken },
     });
 
-    // @ts-expect-error files does exist on the response
-    files.value = response.files;
+    files.value = data.files;
   }
 
   function removeFile(id: number) {

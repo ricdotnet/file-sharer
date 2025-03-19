@@ -13,7 +13,7 @@ export default {
     {
       name: 'upload',
       path: '/upload',
-      component: () => import('~/pages/Upload.client.vue'),
+      component: () => import('~/pages/upload.vue'),
       meta: {
         isAuthed: true,
       },
@@ -21,7 +21,7 @@ export default {
     {
       name: 'view',
       path: '/view/:file',
-      component: () => import('~/pages/View.vue'),
+      component: () => import('~/pages/view.vue'),
       meta: {
         isAuthed: false,
       },
@@ -29,7 +29,7 @@ export default {
     {
       name: 'login',
       path: '/login',
-      component: () => import('~/pages/Login.client.vue'),
+      component: () => import('~/pages/login.vue'),
       meta: {
         isAuthed: false,
       },

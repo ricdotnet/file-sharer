@@ -1,9 +1,8 @@
-import jwt from 'jsonwebtoken';
-import { findUserByUsername, saveCookie } from '~/server/utils/db';
+import { findUserByUsername } from '~/server/utils/db';
 import { IUser, TUserAuthenticated, TUserAuthenticatedTokenPayload, TUserResult } from '~/server/utils/types';
 import { Messages } from '~/server/utils/messages';
 import * as argon from 'argon2';
-import crypto from 'crypto';
+import { generateCookie, generateToken } from '~/server/utils/auth';
 
 export default defineEventHandler(async (event) => {
   if (event.method !== 'POST') {
@@ -43,26 +42,14 @@ export default defineEventHandler(async (event) => {
     id: user.id,
   };
 
-  let token;
-  try {
-    token = jwt.sign(userAuthenticatedTokenPayload, process.env.SECRET as string, { expiresIn: '1h' });
-  } catch (err) {
-    return createError({ statusCode: 500, message: Messages.FAILED_TO_SIGN_TOKEN });
-  }
+  const token = generateToken(userAuthenticatedTokenPayload);
 
   const userAuthenticated: TUserAuthenticated = {
     ...userAuthenticatedTokenPayload,
     token,
-  }
+  };
 
-  const cookie = crypto.randomBytes(16).toString('hex');
-  setCookie(event, 'file-sharer', cookie, { httpOnly: true, secure: true, sameSite: 'strict', expires: new Date(Date.now() + 1000 * 60 * 60 * 24) });
-
-  try {
-    await saveCookie(user.id, cookie);
-  } catch (err) {
-    return createError({ statusCode: 500, message: Messages.FAILED_TO_SAVE_COOKIE });
-  }
+  await generateCookie(event, user.id);
 
   return userAuthenticated;
 });

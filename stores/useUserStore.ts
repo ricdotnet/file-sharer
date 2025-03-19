@@ -1,34 +1,32 @@
 import { defineStore } from 'pinia';
+import axios from 'axios';
 
 export const useUserStore = defineStore('user', () => {
   const isAuthenticated = ref(false);
+  const authToken = ref<string | undefined>();
 
   async function authenticate() {
-    const token = localStorage.getItem('token');
+    try {
+      const { data } = await axios<{
+        isAuthenticated: boolean;
+        authToken: string;
+      }>('/api/user/me');
 
-    if (!token) {
+      isAuthenticated.value = data.isAuthenticated;
+      authToken.value = data.authToken;
+    } catch (_error) {
       isAuthenticated.value = false;
-      return;
+      authToken.value = undefined;
     }
-
-    const response = await fetch('/api/user/auth', {
-      headers: {
-        Authorization: `${token}`,
-      },
-    });
-    const data = await response.json();
-
-    isAuthenticated.value = data.isAuthenticated;
   }
 
   function setIsAuthenticated(value: boolean) {
     isAuthenticated.value = value;
   }
 
-  function logout() {
-    localStorage.removeItem('token');
-    isAuthenticated.value = false;
+  function setAuthToken(value: string) {
+    authToken.value = value;
   }
 
-  return { isAuthenticated, authenticate, setIsAuthenticated, logout };
+  return { isAuthenticated, authToken, authenticate, setIsAuthenticated, setAuthToken };
 });
