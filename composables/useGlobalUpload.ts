@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { useUserStore, request } from '#imports';
 
 const imageType = ref('');
 // biome-ignore lint/suspicious/noExplicitAny: allow any here
@@ -9,16 +10,17 @@ const isUploading = ref(false);
 
 export const useGlobalUpload = () => {
   const isMetaKeyPressed = ref(false);
+  const { authToken } = useUserStore();
 
   const registerKeyEvents = () => {
     window.addEventListener('keydown', keyDownHandler);
     window.addEventListener('keyup', keyUpHandler);
-  }
+  };
 
   const removeKeyEvents = () => {
     window.removeEventListener('keydown', keyDownHandler);
     window.removeEventListener('keyup', keyUpHandler);
-  }
+  };
 
   // biome-ignore lint/suspicious/noExplicitAny: allow any here
   const keyDownHandler = async (e: any) => {
@@ -55,7 +57,7 @@ export const useGlobalUpload = () => {
     imageFile.value = undefined;
     imageType.value = '';
     isPreviewing.value = false;
-  }
+  };
 
   const uploadFile = async () => {
     isUploading.value = true;
@@ -66,21 +68,30 @@ export const useGlobalUpload = () => {
     form.append('is_image', 'true');
     form.append('is_private', 'false');
 
-    const response = await fetch('/api/upload', {
+    const response = await request({
+      url: '/api/upload',
       method: 'POST',
-      body: form,
-      headers: {
-        Authorization: `${localStorage.getItem('token')}`,
-      },
+      data: form,
+      headers: { Authorization: authToken! },
     });
 
     resetFile();
 
-    const storedFilename = await response.text();
+    const storedFilename = await response.data;
     isUploading.value = false;
 
     return { storedFilename };
-  }
+  };
 
-  return { registerKeyEvents, fileName, imageFile, imageType, isUploading, resetFile, uploadFile, removeKeyEvents, isPreviewing };
+  return {
+    registerKeyEvents,
+    fileName,
+    imageFile,
+    imageType,
+    isUploading,
+    resetFile,
+    uploadFile,
+    removeKeyEvents,
+    isPreviewing,
+  };
 };
