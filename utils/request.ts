@@ -2,7 +2,7 @@ import axios, { type AxiosResponse } from 'axios';
 import { useUserStore, navigateTo } from '#imports';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.APP_URL || 'http://localhost:3000',
+  baseURL: process.env.baseUrl || 'http://localhost:3000',
 });
 
 axiosInstance.interceptors.response.use(
