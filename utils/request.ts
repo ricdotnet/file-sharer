@@ -1,9 +1,7 @@
 import axios, { type AxiosResponse } from 'axios';
 import { useUserStore, navigateTo } from '#imports';
 
-const axiosInstance = axios.create({
-  baseURL: useRuntimeConfig().public.baseUrl,
-});
+const axiosInstance = axios.create({});
 
 axiosInstance.interceptors.response.use(
   response => response,
