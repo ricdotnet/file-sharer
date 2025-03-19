@@ -28,14 +28,14 @@
   const { registerKeyEvents, removeKeyEvents, isPreviewing } = useGlobalUpload();
   const { dropdownArea, registerDropdownAreaEvents, removeDropdownAreaEvents } = useDropdownArea();
 
-  if (import.meta.client && route.meta.isAuthed) {
+  if (import.meta.client) {
     await userStore.authenticate();
 
-    if (!isAuthenticated.value) {
+    if (route.meta.isAuthed && !isAuthenticated.value) {
       await navigateTo('/login');
     }
 
-    if (isAuthenticated.value) {
+    if (route.meta.isAuthed && isAuthenticated.value) {
       registerKeyEvents();
       registerDropdownAreaEvents();
     }
