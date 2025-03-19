@@ -1,5 +1,5 @@
 import axios, { type AxiosResponse } from 'axios';
-import { useUserStore, navigateTo } from '#imports';
+import { useUserStore } from '#imports';
 
 const axiosInstance = axios.create({});
 

@@ -10,17 +10,15 @@
   const route = useRoute();
   const { file } = route.params;
 
-  const appUrl = ref<string>();
-
   if (import.meta.server) {
-    appUrl.value = process.env.VITE_APP_URL;
+    const baseUrl = process.env.NUXT_BASE_URL;
 
     useSeoMeta({
       title: `File Sharer - ${file}`,
       ogTitle: `File Sharer - ${file}`,
       description: 'Sharing files made simple.',
       ogDescription: 'Sharing files made simple.',
-      ogImage: `${appUrl.value}/api/download/${file}`,
+      ogImage: `${baseUrl}/api/download/${file}`,
       twitterCard: 'summary_large_image',
     });
   }
