@@ -12,12 +12,11 @@ export const useUserStore = defineStore('user', () => {
         authToken: string;
       }>('/api/user/me');
 
-      debugger;
-
       isAuthenticated.value = data.isAuthenticated;
       authToken.value = data.authToken;
     } catch (_error) {
-      // ignore
+      isAuthenticated.value = false;
+      authToken.value = undefined;
     }
   }
 

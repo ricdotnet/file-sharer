@@ -97,12 +97,20 @@
       return;
     }
 
-    await $fetch(`/api/files/${id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: authToken!,
-      },
-    });
+    try {
+      await request({
+        url: `/api/files/${id}`,
+        method: 'DELETE',
+        headers: { authorization: authToken! },
+      });
+    } catch (_) {
+      addToast({
+        type: 'error',
+        message: 'Error while trying to delete the file',
+      });
+
+      return;
+    }
 
     removeFile(id);
 
@@ -120,15 +128,21 @@
       return;
     }
 
-    await $fetch(`/api/files/${id}`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: authToken!,
-      },
-      body: JSON.stringify({
-        is_private: !props.file.is_private,
-      }),
-    });
+    try {
+      await request({
+        url: `/api/files/${id}`,
+        method: 'PATCH',
+        headers: { Authorization: authToken! },
+        data: { is_private: !props.file.is_private },
+      });
+    } catch (_) {
+      addToast({
+        type: 'error',
+        message: 'Error while trying to lock or unlock the file',
+      });
+
+      return;
+    }
 
     updatePrivacy(id);
 

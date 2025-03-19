@@ -19,7 +19,7 @@
 <script setup lang="ts">
   import { type Target } from '~/types';
   import { useDropdownArea, useToaster, useUserStore } from '#imports';
-  import axios, { type AxiosProgressEvent } from 'axios';
+  import { type AxiosProgressEvent } from 'axios';
   import { MAX_FILE_SIZE } from '~/utils/constants';
   import request from '~/utils/request';
 
@@ -83,7 +83,7 @@
     }
 
     try {
-      await request( {
+      await request({
         url: '/api/upload',
         method: 'post',
         data: form,
@@ -95,10 +95,11 @@
           progress.value = Math.round(percentComplete * 100);
         },
       });
-
-      debugger;
-    } catch (e) {
-      console.error(e);
+    } catch (_) {
+      addToast({
+        type: 'error',
+        message: 'Error while uploading file',
+      });
     }
 
     await navigateTo('/');

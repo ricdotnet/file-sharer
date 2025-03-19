@@ -6,7 +6,7 @@ export interface IUser {
 
 export interface ICookie {
   value: string;
-  owner: string;
+  owner: number;
   expires: Date;
   refresh_token: string;
 }

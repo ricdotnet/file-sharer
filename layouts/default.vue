@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
   import { useToaster } from '~/composables/useToaster';
-  import { CheckCircleIcon, ExclamationCircleIcon, InformationCircleIcon } from "@heroicons/vue/20/solid";
+  import { CheckCircleIcon, ExclamationCircleIcon, InformationCircleIcon } from "@heroicons/vue/16/solid";
 
   const { removeToast, toasts } = useToaster();
 </script>
