@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   const cookieRows = await findCookie(cookie) as ICookie[];
   const cookieData = cookieRows[0];
 
-  if (new Date(cookieData.expires) > new Date()) {
+  if (new Date(cookieData.expires) < new Date()) {
     // cookie is expired
     Logger.get().warn(`User ${cookieData.owner} called /me with an expired cookie`);
     return createError({ statusCode: 401, message: 'Unauthorized' });
