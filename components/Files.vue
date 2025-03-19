@@ -55,13 +55,14 @@
   watchEffect(() => {
     const filter = filterInput.value;
 
-    if (!filter) {
-      showFilteredFiles.value = false;
-      return;
-    }
-
     debounce(() => {
       showFilteredFiles.value = true;
+
+      if (!filter) {
+        showFilteredFiles.value = false;
+        return;
+      }
+
       filteredFiles.value = files.value
                                  .filter(({ original_filename }) => original_filename.toLowerCase()
                                                                                      .includes(filter.toLowerCase()));
