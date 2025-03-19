@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
   // @ts-ignore
   for (let file of _files) {
     const filePath = path.join(config.UPLOADS_PATH(), file.filename);
+
     const fileInfo = await fs.stat(filePath);
 
     files.push({
@@ -30,9 +31,9 @@ export default defineEventHandler(async (event) => {
       created: fileInfo.birthtime,
       canDelete: true, // TODO: update this later
     });
-
-    files.sort((a, b) => b.created.getTime() - a.created.getTime());
   }
+
+  files.sort((a, b) => b.created.getTime() - a.created.getTime());
 
   return {
     files,

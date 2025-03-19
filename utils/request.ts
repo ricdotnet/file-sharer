@@ -18,7 +18,7 @@ axiosInstance.interceptors.response.use(
       return axiosInstance(originalRequestConfig);
     }
 
-    await navigateTo('/logout')
+    window.location.href = useRuntimeConfig().public.baseUrl + '/logout';
   },
 );
 
