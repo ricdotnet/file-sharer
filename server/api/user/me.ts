@@ -2,7 +2,7 @@ import { findCookie, findUserById, getCookie } from '#imports';
 import { COOKIE_NAME } from '~/utils/constants';
 import { TUserAuthenticatedTokenPayload, TUserResult } from '~/server/utils/types';
 import { generateCookie, generateToken } from '~/server/utils/auth';
-import { Logger } from '@ricdotnet/logger/dist';
+import { Logger } from '@ricdotnet/logger/dist/index';
 
 export default defineEventHandler(async (event) => {
   const isRefresh = true;

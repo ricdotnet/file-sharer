@@ -4,7 +4,7 @@ import { AUTH_TOKEN_EXPIRE, COOKIE_EXPIRE, COOKIE_NAME, REFRESH_TOKEN_EXPIRE } f
 import crypto from 'crypto';
 import type { H3Event } from 'h3';
 import { saveCookie, updateCookie } from '~/server/utils/db';
-import { Logger } from '@ricdotnet/logger/dist';
+import { Logger } from '@ricdotnet/logger/dist/index';
 
 export function generateToken(payload: TUserAuthenticatedTokenPayload | {}, type: 'auth' | 'refresh' = 'auth'): string {
   const secret = process.env.SECRET;
