@@ -20,6 +20,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Trigger webhook
+      run: |
+        echo ${{ secrets.ACTIONS_WEBHOOK }}
+        # # # curl -d '{"content": "Hello from an action"}' -H "Content-Type: application/json" -X POST ${{ secrets.ACTIONS_WEBHOOK }}
+
     - name: Log in to the Container registry
       uses: docker/login-action@v3.3.0
       with:
@@ -33,6 +38,3 @@ jobs:
         context: .
         push: true
 
-    - name: Trigger webhook
-      run: |
-        echo ${{ secrets.ACTIONS_WEBHOOK }}
