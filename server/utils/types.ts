@@ -11,6 +11,10 @@ export interface ICookie {
   refresh_token: string;
 }
 
+export interface IUserUploadDefaults {
+  is_private: boolean;
+}
+
 export type TUserResult = IUser & { id: number };
 export type TUserAuthenticatedTokenPayload = Omit<TUserResult, 'password'>;
 export type TUserAuthenticated = Omit<IUser, 'password'> & { id: number, token: string };

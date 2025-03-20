@@ -6,6 +6,7 @@ import { Logger } from '@ricdotnet/logger/dist/index.js';
 import { createFile } from '../utils/db';
 import { MAX_FILE_SIZE } from '~/utils/constants';
 import { isValidAuthentication } from '~/server/utils/auth';
+import { userUploadDefaults } from '../utils/utils';
 
 export default defineEventHandler(async (event) => {
   const { tokenData, error } = await isValidAuthentication(event);
@@ -34,14 +35,6 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const token = event.headers.get('Authorization');
-
-  if (!token) {
-    Logger.get()
-          .error('Tried to upload a file without a token');
-    return sendRedirect(event, '/error', 400);
-  }
-
   const file = multipart[0];
 
   if (file.data.length > MAX_FILE_SIZE) {
@@ -63,9 +56,7 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, '/error', 500);
   }
 
-  // If isPrivate is not set then it will be true by default, if it is set, we check for its bool value
-  const _isPrivate = multipart[2]?.data.toString('utf-8');
-  const isPrivate = _isPrivate ? _isPrivate === 'true' : true;
+  const { is_private: isPrivate } = await userUploadDefaults(tokenData!.id);
 
   const isImage = multipart[1]?.data.toString('utf-8') === 'true';
 
