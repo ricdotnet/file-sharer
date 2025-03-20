@@ -32,4 +32,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ghcr.io/${{ github.repository }}:latest
+
+    - name: Trigger webhook
+      run: |
+        echo ${{ secrets.ACTIONS_WEBHOOK }}
