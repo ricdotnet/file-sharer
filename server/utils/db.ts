@@ -16,7 +16,7 @@ const access: PoolOptions = {
 
 const db: mysql.Pool = mysql.createPool(access);
 
-async function findUserByUsername(username: string) {
+export async function findUserByUsername(username: string) {
   let conn;
   let rows;
 
@@ -33,7 +33,7 @@ async function findUserByUsername(username: string) {
   return rows;
 }
 
-async function findUserByEmail(email: string) {
+export async function findUserByEmail(email: string) {
   let conn;
   let rows;
 
@@ -51,7 +51,7 @@ async function findUserByEmail(email: string) {
   return rows;
 }
 
-async function findUserById(id: number) {
+export async function findUserById(id: number) {
   let conn;
   let rows;
 
@@ -69,7 +69,7 @@ async function findUserById(id: number) {
   return rows;
 }
 
-async function createUser(username: string, password: string, email: string) {
+export async function createUser(username: string, password: string, email: string) {
   let conn;
 
   const hashedPass = await argon.hash(password);
@@ -87,7 +87,7 @@ async function createUser(username: string, password: string, email: string) {
   }
 }
 
-async function createFile(userId: number, ogName: string, fileName: string,
+export async function createFile(userId: number, ogName: string, fileName: string,
                           options: { is_private: boolean, is_image: boolean }) {
   let conn;
 
@@ -104,7 +104,7 @@ async function createFile(userId: number, ogName: string, fileName: string,
   }
 }
 
-async function findFilesByUserId(userId: number) {
+export async function findFilesByUserId(userId: number) {
   let conn;
   let rows;
 
@@ -122,7 +122,7 @@ async function findFilesByUserId(userId: number) {
   return rows;
 }
 
-async function findFileByFilename(filename: string) {
+export async function findFileByFilename(filename: string) {
   let conn;
   let rows;
 
@@ -140,7 +140,7 @@ async function findFileByFilename(filename: string) {
   return rows;
 }
 
-async function deleteFileById(owner: number, id: number) {
+export async function deleteFileById(owner: number, id: number) {
   let rows;
   let conn;
 
@@ -160,7 +160,7 @@ async function deleteFileById(owner: number, id: number) {
   return rows;
 }
 
-async function updateFileById(owner: number, id: number, isPrivate: boolean) {
+export async function updateFileById(owner: number, id: number, isPrivate: boolean) {
   let conn;
 
   try {
@@ -176,7 +176,7 @@ async function updateFileById(owner: number, id: number, isPrivate: boolean) {
   }
 }
 
-async function saveCookie(owner: number, cookie: string, refreshToken: string) {
+export async function saveCookie(owner: number, cookie: string, refreshToken: string) {
   let conn;
 
   try {
@@ -192,7 +192,7 @@ async function saveCookie(owner: number, cookie: string, refreshToken: string) {
   }
 }
 
-async function updateCookie(oldCookie: string, cookie: string, refreshToken: string) {
+export async function updateCookie(oldCookie: string, cookie: string, refreshToken: string) {
   let conn;
 
   try {
@@ -208,7 +208,7 @@ async function updateCookie(oldCookie: string, cookie: string, refreshToken: str
   }
 }
 
-async function deleteCookieByValue(value: string) {
+export async function deleteCookieByValue(value: string) {
   let conn;
 
   try {
@@ -224,7 +224,7 @@ async function deleteCookieByValue(value: string) {
   }
 }
 
-async function findCookie(cookie: string) {
+export async function findCookie(cookie: string) {
   let conn;
   let rows;
 
@@ -242,7 +242,7 @@ async function findCookie(cookie: string) {
   return rows;
 }
 
-async function clearExpiredCookies() {
+export async function clearExpiredCookies() {
   let conn;
 
   try {
@@ -257,19 +257,20 @@ async function clearExpiredCookies() {
   }
 }
 
-export {
-  createUser,
-  findUserByUsername,
-  findUserByEmail,
-  findUserById,
-  createFile,
-  findFilesByUserId,
-  findFileByFilename,
-  deleteFileById,
-  updateFileById,
-  saveCookie,
-  updateCookie,
-  deleteCookieByValue,
-  findCookie,
-  clearExpiredCookies,
-};
+export async function findUserUploadDefaults(userId: number) {
+  let conn;
+  let rows;
+
+  try {
+    conn = await db.getConnection();
+    [rows] = await conn.query('SELECT * FROM user_upload_defaults WHERE user = ?', [userId]);
+  } catch (err: any) {
+    Logger.get()
+          .error(`Error in findUserUploadDefaults: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+
+  return rows;
+}
