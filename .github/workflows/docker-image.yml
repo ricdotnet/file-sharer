@@ -13,7 +13,7 @@ jobs:
 
   build_docker_image:
     if: github.event.pull_request.user.login != 'dependabot[bot]'
-    name: Build Docker Image
+    name: Build docker image
     runs-on: ubuntu-latest
     needs: verify_build
     continue-on-error: true
@@ -36,5 +36,6 @@ jobs:
         push: true
         tags: ghcr.io/${{ github.repository }}:latest
 
-    - name: Send report
-      uses: ./.github/workflows/report.yml
+  send_report:
+    name: Send workflow report
+    uses: ./.github/workflows/report.yml
