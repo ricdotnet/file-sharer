@@ -8,6 +8,7 @@ on:
 
 jobs:
   verify_build:
+    name: Verify build
     uses: ./.github/workflows/verify-build.yml
 
   build_docker_image:
