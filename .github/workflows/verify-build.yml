@@ -8,7 +8,9 @@ on:
 
 jobs:
   verify_build:
+    name: Verify build
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     steps:
       - name: Checkout

@@ -1,0 +1,15 @@
+name: Actions report
+
+on:
+  workflow_call:
+
+jobs:
+  send_report:
+    name: Send status report
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger webhook
+        run: |
+          echo ${{ jobs }}
+          curl -d '{"content": "Actions have finished."}' -H "Content-Type: application/json" -X POST ${{ secrets.ACTIONS_WEBHOOK }}
