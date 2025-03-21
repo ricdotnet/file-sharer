@@ -39,3 +39,4 @@ jobs:
   send_report:
     name: Send workflow report
     uses: ./.github/workflows/report.yml
+    needs: build_docker_image
