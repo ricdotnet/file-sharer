@@ -25,7 +25,7 @@
     "@nuxt/devtools": "latest",
     "@pinia/nuxt": "latest",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.13.13",
     "nuxt": "3.16.0"
   },
   "packageManager": "yarn@3.8.7"
