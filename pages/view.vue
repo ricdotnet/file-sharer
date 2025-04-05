@@ -59,7 +59,9 @@
       description: 'Sharing files made simple.',
       ogDescription: 'Sharing files made simple.',
       ogImage: `${baseUrl}/api/download/${file}`,
+      ogImageSecureUrl: `${baseUrl}/api/download/${file}`,
       ogVideo: `${baseUrl}/api/download/${file}`,
+      ogVideoSecureUrl: `${baseUrl}/api/download/${file}`,
       twitterCard: 'summary_large_image',
     });
   }
