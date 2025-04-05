@@ -68,6 +68,7 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, '/error', 400);
   }
 
+  // TODO: add mimetype to db
   const fileName = `${randomBytes}-${file[0].originalFilename ?? 'NO_NAME'}`;
   await createFile(tokenData!.id, file[0].originalFilename ?? 'NO_NAME', fileName, {
     is_private: isPrivate,

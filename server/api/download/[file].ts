@@ -85,7 +85,7 @@ export default defineEventHandler(async (event: H3Event) => {
     if (!rangeHeader) {
       setResponseHeaders(event, {
         'content-length': fileSize,
-        'content-type': 'video/mov',
+        'content-type': 'video/other', // TODO: update with correct mimetype
         'accept-ranges': 'bytes',
       });
 
@@ -111,7 +111,7 @@ export default defineEventHandler(async (event: H3Event) => {
       'Content-Range': `bytes ${start}-${end}/${fileSize}`,
       'Accept-Ranges': 'bytes',
       'Content-Length': chunkSize.toString(),
-      'Content-Type': 'video/mp4',
+      'Content-Type': 'video/other', // TODO: update with correct mimetype
     });
 
     return fsl.createReadStream(path.join(config.UPLOADS_PATH(), filename), { start, end });

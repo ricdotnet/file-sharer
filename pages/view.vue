@@ -58,12 +58,7 @@
       ogTitle: `File Sharer - ${file}`,
       description: 'Sharing files made simple.',
       ogDescription: 'Sharing files made simple.',
-      ogImage: `https://placehold.co/600x400`,
-      ogVideo: `${baseUrl}/api/download/${file}`,
-      ogVideoSecureUrl: `${baseUrl}/api/download/${file}`,
-      ogUrl: 'https://files.ricr.dev/view/bf152c093ec1545f-Screen%20Recording%202025-04-05%20at%2009.39.41.mov',
-      // @ts-expect-error ignore
-      ogVideoType: 'video.other',
+      ogImage: `${baseUrl}/api/download/${file}`,
       twitterCard: 'summary_large_image',
     });
   }
