@@ -58,8 +58,8 @@
       ogTitle: `File Sharer - ${file}`,
       description: 'Sharing files made simple.',
       ogDescription: 'Sharing files made simple.',
-      ogImage: `${baseUrl}/api/download/${file}`,
-      ogImageSecureUrl: `${baseUrl}/api/download/${file}`,
+      ogImage: `https://placehold.co/600x400`,
+      ogImageSecureUrl: `https://placehold.co/600x400`,
       ogVideo: `${baseUrl}/api/download/${file}`,
       ogVideoSecureUrl: `${baseUrl}/api/download/${file}`,
       // @ts-expect-error ignore
