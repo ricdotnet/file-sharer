@@ -7,7 +7,7 @@
       Could not display this file.
     </span>
     <div v-else-if="isVideo" class="video-container">
-      <video :src="`/api/download/${file}`" autoplay controls></video>
+      <video :src="`/api/download/${file}`" preload="metadata" controls></video>
       <Button label="Share" @click="onClickShare" />
     </div>
     <span v-else-if="isImage">
