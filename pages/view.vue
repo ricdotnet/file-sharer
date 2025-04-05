@@ -62,6 +62,8 @@
       ogImageSecureUrl: `${baseUrl}/api/download/${file}`,
       ogVideo: `${baseUrl}/api/download/${file}`,
       ogVideoSecureUrl: `${baseUrl}/api/download/${file}`,
+      // @ts-expect-error ignore
+      ogVideoType: 'text/hml',
       twitterCard: 'summary_large_image',
     });
   }
