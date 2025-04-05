@@ -35,9 +35,7 @@
       return;
     }
 
-    // @ts-expect-error is_image exists in response
     isImage.value = response.is_image;
-    // @ts-expect-error is_video exists in response
     isVideo.value = response.is_video;
 
     loadingFile.value = false;
@@ -61,6 +59,7 @@
       description: 'Sharing files made simple.',
       ogDescription: 'Sharing files made simple.',
       ogImage: `${baseUrl}/api/download/${file}`,
+      ogVideo: `${baseUrl}/api/download/${file}`,
       twitterCard: 'summary_large_image',
     });
   }
