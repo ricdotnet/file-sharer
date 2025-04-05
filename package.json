@@ -15,6 +15,7 @@
     "@ricdotnet/logger": "^0.3.3",
     "argon2": "^0.41.1",
     "axios": "^1.8.3",
+    "formidable": "^3.5.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.13.0",
     "nuxt-api-shield": "^0.8.0",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@pinia/nuxt": "latest",
+    "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.10",
     "nuxt": "3.16.0"

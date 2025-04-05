@@ -2063,6 +2063,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/formidable@npm:^3.4.5":
+  version: 3.4.5
+  resolution: "@types/formidable@npm:3.4.5"
+  dependencies:
+    "@types/node": "*"
+  checksum: 27384c8459e44f5e167922927bd31fcd1259555062faacaa490b52f8896a0a5614918ee4ec6ec9123c1418ac127908270c1182a2441d49681b37dc34737c3646
+  languageName: node
+  linkType: hard
+
 "@types/http-proxy@npm:^1.17.16":
   version: 1.17.16
   resolution: "@types/http-proxy@npm:1.17.16"
@@ -2624,6 +2633,13 @@ __metadata:
   version: 2.0.1
   resolution: "argparse@npm:2.0.1"
   checksum: 83644b56493e89a254bae05702abf3a1101b4fa4d0ca31df1c9985275a5a5bd47b3c27b7fa0b71098d41114d8ca000e6ed90cad764b306f8a503665e4d517ced
+  languageName: node
+  linkType: hard
+
+"asap@npm:^2.0.0":
+  version: 2.0.6
+  resolution: "asap@npm:2.0.6"
+  checksum: b296c92c4b969e973260e47523207cd5769abd27c245a68c26dc7a0fe8053c55bb04360237cb51cab1df52be939da77150ace99ad331fb7fb13b3423ed73ff3d
   languageName: node
   linkType: hard
 
@@ -3718,6 +3734,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dezalgo@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "dezalgo@npm:1.0.4"
+  dependencies:
+    asap: ^2.0.0
+    wrappy: 1
+  checksum: 895389c6aead740d2ab5da4d3466d20fa30f738010a4d3f4dcccc9fc645ca31c9d10b7e1804ae489b1eb02c7986f9f1f34ba132d409b043082a86d9a4e745624
+  languageName: node
+  linkType: hard
+
 "diff@npm:^7.0.0":
   version: 7.0.0
   resolution: "diff@npm:7.0.0"
@@ -4280,6 +4306,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"formidable@npm:^3.5.2":
+  version: 3.5.2
+  resolution: "formidable@npm:3.5.2"
+  dependencies:
+    dezalgo: ^1.0.4
+    hexoid: ^2.0.0
+    once: ^1.4.0
+  checksum: 7c7972e8a15d45e6d2315a54d77f0900e5c610aff9b5730de326e2b34630604e1eff6c9d666e5504fba4c8818ccaed682d76a4fdb718b160c6afa2c250bf6a76
+  languageName: node
+  linkType: hard
+
 "fraction.js@npm:^4.3.7":
   version: 4.3.7
   resolution: "fraction.js@npm:4.3.7"
@@ -4661,6 +4698,13 @@ __metadata:
   version: 2.0.0
   resolution: "hash-sum@npm:2.0.0"
   checksum: efeeacf09ecbd467202865403c3a1991fa15d4f4903c1148ecbe13223fdbf9ec6d7dc661e17e5ce6e776cd70d67b6ee4c82e0171318962435be45c1155175f3f
+  languageName: node
+  linkType: hard
+
+"hexoid@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "hexoid@npm:2.0.0"
+  checksum: 69a92b2bcd7c81c16557de017c59511643e3cb1f0d6e9e9b705859b798bfd059088e4d3cc85e9fe0a9e431007430f15393303c3e74320b5c4c28cb64fc7d8bb4
   languageName: node
   linkType: hard
 
@@ -6359,10 +6403,12 @@ __metadata:
     "@nuxt/devtools": latest
     "@pinia/nuxt": latest
     "@ricdotnet/logger": ^0.3.3
+    "@types/formidable": ^3.4.5
     "@types/jsonwebtoken": ^9.0.9
     "@types/node": ^22.13.10
     argon2: ^0.41.1
     axios: ^1.8.3
+    formidable: ^3.5.2
     jsonwebtoken: ^9.0.2
     mysql2: ^3.13.0
     nuxt: 3.16.0
@@ -6567,7 +6613,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"once@npm:^1.3.0":
+"once@npm:^1.3.0, once@npm:^1.4.0":
   version: 1.4.0
   resolution: "once@npm:1.4.0"
   dependencies:
