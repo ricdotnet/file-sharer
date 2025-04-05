@@ -1201,7 +1201,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:^3.12.2, @nuxt/kit@npm:^3.12.3, @nuxt/kit@npm:^3.9.0":
+"@nuxt/kit@npm:^3.12.2, @nuxt/kit@npm:^3.9.0":
   version: 3.13.1
   resolution: "@nuxt/kit@npm:3.13.1"
   dependencies:
@@ -1226,6 +1226,36 @@ __metadata:
     unimport: ^3.11.1
     untyped: ^1.4.2
   checksum: 9c4a75430fa95824d5a876843d4a5fe72b6ac862f2afa514042a5153999bf7dc57831640627362974fb1a6cd2c1523d3b7b5edd874ecd423cf23f308d8687ca3
+  languageName: node
+  linkType: hard
+
+"@nuxt/kit@npm:^3.15.0":
+  version: 3.16.2
+  resolution: "@nuxt/kit@npm:3.16.2"
+  dependencies:
+    c12: ^3.0.2
+    consola: ^3.4.2
+    defu: ^6.1.4
+    destr: ^2.0.3
+    errx: ^0.1.0
+    exsolve: ^1.0.4
+    globby: ^14.1.0
+    ignore: ^7.0.3
+    jiti: ^2.4.2
+    klona: ^2.0.6
+    knitwork: ^1.2.0
+    mlly: ^1.7.4
+    ohash: ^2.0.11
+    pathe: ^2.0.3
+    pkg-types: ^2.1.0
+    scule: ^1.3.0
+    semver: ^7.7.1
+    std-env: ^3.8.1
+    ufo: ^1.5.4
+    unctx: ^2.4.1
+    unimport: ^4.1.3
+    untyped: ^2.0.0
+  checksum: 297d98a6aaf45c8c027285c7b5b8ff2403e320a03ca44efb3eae816adfed78af49b1b5df219ab63dd4525b2e0376c3b0a2881fcfbc2fb831a8c3bf0fc292b480
   languageName: node
   linkType: hard
 
@@ -2472,6 +2502,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acorn@npm:^8.14.1":
+  version: 8.14.1
+  resolution: "acorn@npm:8.14.1"
+  bin:
+    acorn: bin/acorn
+  checksum: 260d9bb6017a1b6e42d31364687f0258f78eb20210b36ef2baad38fd619d78d4e95ff7dde9b3dbe0d81f137f79a8d651a845363a26e6985997f7b71145dc5e94
+  languageName: node
+  linkType: hard
+
 "agent-base@npm:6, agent-base@npm:^6.0.2":
   version: 6.0.2
   resolution: "agent-base@npm:6.0.2"
@@ -3310,6 +3349,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"consola@npm:^3.4.2":
+  version: 3.4.2
+  resolution: "consola@npm:3.4.2"
+  checksum: 32d1339e0505842f033ca34cb4572a841281caa367f438b785d3b284ab2a06134f009e605908480402c5f57f56c1e3210090c37e6417923416f76ce730d39361
+  languageName: node
+  linkType: hard
+
 "console-control-strings@npm:^1.1.0":
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
@@ -3380,13 +3426,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cron@npm:^3.1.7":
-  version: 3.1.7
-  resolution: "cron@npm:3.1.7"
+"cron@npm:^3.3.1":
+  version: 3.5.0
+  resolution: "cron@npm:3.5.0"
   dependencies:
     "@types/luxon": ~3.4.0
-    luxon: ~3.4.0
-  checksum: d98ee5297543c138221d96dd49270bf6576db80134e6041f4ce4a3c0cb6060863d76910209b34fee66fbf134461449ec3bd283d6a76d1c50da220cde7fc10c65
+    luxon: ~3.5.0
+  checksum: 4fa321201ea7d9ee64411f12e18c1fe6d3fd7c83b33a97ccdcb81f6f2db8c0d3f3b2e23d2b4f70ee85ad30a915e86e05c31ee8ee8f2c385be26b877fce1abc5d
   languageName: node
   linkType: hard
 
@@ -5615,10 +5661,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"luxon@npm:~3.4.0":
-  version: 3.4.4
-  resolution: "luxon@npm:3.4.4"
-  checksum: 36c1f99c4796ee4bfddf7dc94fa87815add43ebc44c8934c924946260a58512f0fd2743a629302885df7f35ccbd2d13f178c15df046d0e3b6eb71db178f1c60c
+"luxon@npm:~3.5.0":
+  version: 3.5.0
+  resolution: "luxon@npm:3.5.0"
+  checksum: f290fe5788c8e51e748744f05092160d4be12150dca70f9fadc0d233e53d60ce86acd82e7d909a114730a136a77e56f0d3ebac6141bbb82fd310969a4704825b
   languageName: node
   linkType: hard
 
@@ -6413,19 +6459,19 @@ __metadata:
     mysql2: ^3.13.0
     nuxt: 3.16.0
     nuxt-api-shield: ^0.8.0
-    nuxt-cron: ^1.6.0
+    nuxt-cron: ^1.8.0
     pinia: ^3.0.1
   languageName: unknown
   linkType: soft
 
-"nuxt-cron@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "nuxt-cron@npm:1.6.0"
+"nuxt-cron@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "nuxt-cron@npm:1.8.0"
   dependencies:
-    "@nuxt/kit": ^3.12.3
-    cron: ^3.1.7
+    "@nuxt/kit": ^3.15.0
+    cron: ^3.3.1
     fast-glob: ^3.3.2
-  checksum: 442d4815b36d7ad218bbd6c7704a23fe472ec401e65b24a54c3b1256372468ebfe0f0702e980d941c5da6def05cc7c13860b9793277c0ed004ab9ba8ee4ef160
+  checksum: 7c3e1e05b1f53d70657dff30f5eb5e5160e38393859a1a6fb474c30b2957c99d045e74ad82f3ba25c08df65fe69794d372c76a15e20c73be00ae74ee98ea0ccd
   languageName: node
   linkType: hard
 
@@ -8563,6 +8609,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unimport@npm:^4.1.3":
+  version: 4.1.3
+  resolution: "unimport@npm:4.1.3"
+  dependencies:
+    acorn: ^8.14.1
+    escape-string-regexp: ^5.0.0
+    estree-walker: ^3.0.3
+    local-pkg: ^1.1.1
+    magic-string: ^0.30.17
+    mlly: ^1.7.4
+    pathe: ^2.0.3
+    picomatch: ^4.0.2
+    pkg-types: ^2.1.0
+    scule: ^1.3.0
+    strip-literal: ^3.0.0
+    tinyglobby: ^0.2.12
+    unplugin: ^2.2.2
+    unplugin-utils: ^0.2.4
+  checksum: 3f21a33d4f579a0ee04549bd257db78d7addb3987429dc67d022cd0bd06a6d86f8b120f3972f3a906158cc0a6807c0d4646fb9a28452a8a9de3d431e52419194
+  languageName: node
+  linkType: hard
+
 "unique-filename@npm:^3.0.0":
   version: 3.0.0
   resolution: "unique-filename@npm:3.0.0"
@@ -8670,6 +8738,16 @@ __metadata:
     acorn: ^8.14.0
     webpack-virtual-modules: ^0.6.2
   checksum: 1d95fe15ca47c71434c2b9bf696e5e6436022b56e5685b9602e4b5cdf4008125ed1491c8fab0d464d8a2f360b7fed645143019d3198e98e13b42bcfc5c9902a8
+  languageName: node
+  linkType: hard
+
+"unplugin@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "unplugin@npm:2.2.2"
+  dependencies:
+    acorn: ^8.14.1
+    webpack-virtual-modules: ^0.6.2
+  checksum: bddcfce652548bd370e024e4019ff46c4b3e8195a67f1f250c789dda460d9bb4b3d54afe0e8a76b1c15c672fbb0b244ea1260019b1c3656f52e42ea658cce68a
   languageName: node
   linkType: hard
 
