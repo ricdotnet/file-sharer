@@ -1,4 +1,4 @@
-export const MAX_FILE_SIZE = 100_000_000; // 100 MB
+export const MAX_FILE_SIZE = 150_000_000; // 150 MB
 export const MAX_VIDEO_SIZE = 500_000_000; // 500 MB
 export const COOKIE_NAME = 'file-sharer';
 export const AUTH_TOKEN_EXPIRE = '60m';
