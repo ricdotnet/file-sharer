@@ -36,9 +36,9 @@ jobs:
         push: true
         tags: ghcr.io/${{ github.repository }}:latest
 
-  send_report:
-    name: Send workflow report
-    needs: build_docker_image
-    env:
-      docker_image_status: ${{ needs.build_docker_image.result }}
-    uses: ./.github/workflows/report.yml
+#  send_report:
+#    name: Send workflow report
+#    needs: build_docker_image
+#    env:
+#      docker_image_status: ${{ needs.build_docker_image.result }}
+#    uses: ./.github/workflows/report.yml
