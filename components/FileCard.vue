@@ -12,9 +12,16 @@
       {{ formatShort(new Date(file.created)) }}
     </div>
     <div class="card-actions">
-      <a target="_blank" :href="`/api/download/${file.filename}`">
-        <ArrowDownOnSquareIcon class="icon" />
-      </a>
+      <span v-if="file.is_image || file.is_video">
+        <a target="_blank" :href="`/view/${file.filename}`">
+          <PlayIcon class="icon" />
+        </a>
+      </span>
+      <span v-else>
+        <a target="_blank" :href="`/api/download/${file.filename}`">
+          <ArrowDownOnSquareIcon class="icon" />
+        </a>
+      </span>
       <IconButton @click="(e: MouseEvent) => onClickLock(e, file.id)">
         <LockClosedIcon v-if="file.is_private" class="icon" />
         <LockOpenIcon v-else class="icon" />
@@ -40,6 +47,7 @@
     LockClosedIcon,
     LockOpenIcon,
     TrashIcon,
+    PlayIcon,
   } from '@heroicons/vue/16/solid';
 
   const { authToken } = useUserStore();

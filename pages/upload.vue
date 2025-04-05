@@ -20,7 +20,7 @@
   import { type Target } from '~/types';
   import { useDropdownArea, useToaster, useUserStore } from '#imports';
   import { type AxiosProgressEvent } from 'axios';
-  import { MAX_FILE_SIZE } from '~/utils/constants';
+  import { MAX_FILE_SIZE, MAX_VIDEO_SIZE } from '~/utils/constants';
   import request from '~/utils/request';
 
   const { authToken } = useUserStore();
@@ -45,8 +45,17 @@
     }
 
     file.value = target.files[0] as File;
+    const fileType = file.value.type;
+    const isVideo = fileType.includes('video/');
 
-    if (file.value.size > MAX_FILE_SIZE) {
+    if (isVideo && file.value.size > MAX_VIDEO_SIZE) {
+      addToast({
+        message: 'The video selected is too large',
+        type: 'error',
+      });
+
+      return;
+    } else if (!isVideo && file.value.size > MAX_FILE_SIZE) {
       addToast({
         message: 'The file selected is too large',
         type: 'error',
@@ -74,11 +83,19 @@
       if (file.value.type.includes('image/')) {
         form.append('is_image', 'true');
       }
+
+      if (file.value.type.includes('video/')) {
+        form.append('is_video', 'true');
+      }
     } else if (fileToUpload.value) {
       form.append('file', fileToUpload.value, fileToUpload.value.name);
 
       if (fileToUpload.value.type.includes('image/')) {
         form.append('is_image', 'true');
+      }
+
+      if (fileToUpload.value.type.includes('video/')) {
+        form.append('is_video', 'true');
       }
     }
 

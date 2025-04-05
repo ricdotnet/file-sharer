@@ -38,5 +38,7 @@ jobs:
 
   send_report:
     name: Send workflow report
-    uses: ./.github/workflows/report.yml
     needs: build_docker_image
+    env:
+      docker_image_status: ${{ needs.build_docker_image.result }}
+    uses: ./.github/workflows/report.yml

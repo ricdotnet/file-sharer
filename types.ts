@@ -6,6 +6,8 @@ export interface IFile {
   canDelete: boolean;
   original_filename: string;
   is_private: boolean;
+  is_image: boolean;
+  is_video: boolean;
 }
 
 export interface Target extends EventTarget {
