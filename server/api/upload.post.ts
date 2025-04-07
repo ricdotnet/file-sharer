@@ -5,6 +5,8 @@ import { MAX_FILE_SIZE, MAX_VIDEO_SIZE } from '~/utils/constants';
 import { isValidAuthentication } from '~/server/utils/auth';
 import formidable from 'formidable';
 import config from '~/config';
+import { exec } from 'node:child_process';
+import { ensureDir } from '~/server/utils/io';
 
 export default defineEventHandler(async (event) => {
   const { tokenData, error } = await isValidAuthentication(event);
@@ -75,6 +77,27 @@ export default defineEventHandler(async (event) => {
     is_image: isImage,
     is_video: isVideo,
   });
+
+  // if is video generate thumbnail after writing the file
+  if (isVideo) {
+    await ensureDir('thumbnails');
+
+    const thumbnailPath = `${config.UPLOADS_PATH()}/thumbnails/${fileName}-thumbnail.png`;
+    const filepath = `${config.UPLOADS_PATH()}/${fileName}`;
+    const command = `ffmpeg -i "${filepath}" -ss 00:00:01.000 -vframes 1 "${thumbnailPath}"`;
+
+    await new Promise((resolve, reject) => {
+      exec(command, (error) => {
+        if (error) {
+          Logger.get()
+                .error(`Error generating thumbnail: ${error}`);
+          reject(error);
+        } else {
+          resolve(thumbnailPath);
+        }
+      });
+    });
+  }
 
   if (isImage) {
     return fileName;
