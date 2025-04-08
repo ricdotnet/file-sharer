@@ -104,13 +104,13 @@ async function createFile(userId: number, ogName: string, fileName: string, uuid
   }
 }
 
-async function createThumbnail(name: string, videoId: number) {
+async function createThumbnail(name: string, mediaId: number) {
   let conn;
 
   try {
     conn = await db.getConnection();
-    const preparedStatement = await conn.prepare('INSERT INTO thumbnails (name, video_id) VALUES (?, ?)');
-    await preparedStatement.execute([name, videoId]);
+    const preparedStatement = await conn.prepare('INSERT INTO thumbnails (name, media_id) VALUES (?, ?)');
+    await preparedStatement.execute([name, mediaId]);
   } catch (err: any) {
     Logger.get()
           .error(`Error in creteThumbnail: ${err.message}`);
