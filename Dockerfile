@@ -1,4 +1,4 @@
-FROM jrottenberg/ffmpeg:4.1-alpine AS ffmeg
+FROM jrottenberg/ffmpeg:4.1-alpine AS ffmpeg
 
 FROM node:20-alpine3.20 AS builder
 
