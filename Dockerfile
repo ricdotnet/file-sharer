@@ -14,6 +14,10 @@ RUN yarn build
 
 FROM node:20-alpine3.20 AS production
 
+RUN apt-get -y update
+RUN apt-get -y upgrade
+RUN apt-get install -y ffmpeg
+
 WORKDIR /app
 
 COPY --from=builder /builder/.output /app
