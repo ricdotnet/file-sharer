@@ -68,11 +68,15 @@
         ...seoMeta,
         ogImage: `${baseUrl}/media/t/${response.filename}-thumbnail.png`,
         ogVideo: `${baseUrl}/media/${response.filename}`,
+        ogVideoType: 'video/mp4',
+        ogType: 'video.other',
+        twitterCard: 'player',
       });
     } else if (response.is_image) {
       useSeoMeta({
         ...seoMeta,
         ogImage: `${baseUrl}/api/download/${file}`,
+        twitterCard: 'summary_large_image',
       });
     }
   }
