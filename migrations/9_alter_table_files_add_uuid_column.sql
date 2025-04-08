@@ -1,0 +1,2 @@
+ALTER TABLE files ADD COLUMN uuid VARCHAR(36) NOT NULL;
+UPDATE files SET uuid = UUID() WHERE uuid IS NULL OR uuid = '';
