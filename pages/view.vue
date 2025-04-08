@@ -29,7 +29,14 @@
   const { file } = route.params;
 
   onMounted(async () => {
-    const response = await $fetch(`/api/files/${file}`);
+    let response;
+
+    try {
+      response = await $fetch(`/api/files/${file}`);
+    } catch (error) {
+      console.log('err:', error);
+      return;
+    }
 
     if (!response) {
       loadingFile.value = false;
@@ -54,30 +61,35 @@
 
   if (import.meta.server) {
     const baseUrl = process.env.NUXT_BASE_URL;
-    const response = await $fetch(`/api/files/${file}`);
 
-    const seoMeta = {
-      title: `File Sharer`,
-      ogTitle: `File Sharer`,
-      description: response.original_filename,
-      ogDescription: response.original_filename,
-    }
+    try {
+      const response = await $fetch(`/api/files/${file}`);
 
-    if (response.is_video) {
-      useSeoMeta({
-        ...seoMeta,
-        ogImage: `${baseUrl}/media/t/${response.filename}-thumbnail.png`,
-        ogVideo: `${baseUrl}/media/${response.filename}`,
-        ogVideoType: 'video/mp4',
-        ogType: 'video.other',
-        twitterCard: 'player',
-      });
-    } else if (response.is_image) {
-      useSeoMeta({
-        ...seoMeta,
-        ogImage: `${baseUrl}/api/download/${response.filename}`,
-        twitterCard: 'summary_large_image',
-      });
+      const seoMeta = {
+        title: `File Sharer`,
+        ogTitle: `File Sharer`,
+        description: response.original_filename,
+        ogDescription: response.original_filename,
+      };
+
+      if (response.is_video) {
+        useSeoMeta({
+          ...seoMeta,
+          ogImage: `${baseUrl}/media/t/${response.filename}-thumbnail.png`,
+          ogVideo: `${baseUrl}/media/${response.filename}`,
+          ogVideoType: 'video/mp4',
+          ogType: 'video.other',
+          twitterCard: 'player',
+        });
+      } else if (response.is_image) {
+        useSeoMeta({
+          ...seoMeta,
+          ogImage: `${baseUrl}/api/download/${response.filename}`,
+          twitterCard: 'summary_large_image',
+        });
+      }
+    } catch (error) {
+      console.log('err:', error);
     }
   }
 </script>
