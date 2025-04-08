@@ -1,3 +1,5 @@
+FROM jrottenberg/ffmpeg:4.1-alpine AS ffmeg
+
 FROM node:20-alpine3.20 AS builder
 
 WORKDIR /builder
@@ -14,9 +16,7 @@ RUN yarn build
 
 FROM node:20-alpine3.20 AS production
 
-RUN apt-get -y update
-RUN apt-get -y upgrade
-RUN apt-get install -y ffmpeg
+COPY --from=ffmpeg / /
 
 WORKDIR /app
 
