@@ -87,17 +87,33 @@ async function createUser(username: string, password: string, email: string) {
   }
 }
 
-async function createFile(userId: number, ogName: string, fileName: string,
+async function createFile(userId: number, ogName: string, fileName: string, uuid: string,
                           options: { is_private: boolean, is_image: boolean, is_video: boolean }) {
   let conn;
 
   try {
     conn = await db.getConnection();
-    const preparedStatement = await conn.prepare('INSERT INTO files (owner, original_filename, filename, is_private, is_image, is_video) VALUES (?, ?, ?, ?, ?, ?)');
-    await preparedStatement.execute([userId, ogName, fileName, options.is_private, options.is_image, options.is_video]);
+    const preparedStatement = await conn.prepare('INSERT INTO files (owner, original_filename, filename, is_private, is_image, is_video, uuid) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    await preparedStatement.execute([userId, ogName, fileName, options.is_private, options.is_image, options.is_video, uuid]);
   } catch (err: any) {
     Logger.get()
           .error(`Error in createFile: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+}
+
+async function createThumbnail(name: string, videoId: number) {
+  let conn;
+
+  try {
+    conn = await db.getConnection();
+    const preparedStatement = await conn.prepare('INSERT INTO thumbnails (name, video_id) VALUES (?, ?)');
+    await preparedStatement.execute([name, videoId]);
+  } catch (err: any) {
+    Logger.get()
+          .error(`Error in creteThumbnail: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -132,6 +148,42 @@ async function findFileByFilename(filename: string) {
   } catch (err: any) {
     Logger.get()
           .error(`Error in findFileByFilename: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+
+  return rows;
+}
+
+async function findFileByUuid(uuid: string) {
+  let conn;
+  let rows;
+
+  try {
+    conn = await db.getConnection();
+    [rows] = await conn.query('SELECT * FROM files WHERE uuid = ?', [uuid]);
+  } catch (err: any) {
+    Logger.get()
+          .error(`Error in findFileByUuid: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+
+  return rows;
+}
+
+async function findThumbnailByName(name: string) {
+  let conn;
+  let rows;
+
+  try {
+    conn = await db.getConnection();
+    [rows] = await conn.query('SELECT * FROM thumbnails WHERE name = ?', [name]);
+  } catch (err: any) {
+    Logger.get()
+          .error(`Error in findThumbnailByName: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -263,8 +315,11 @@ export {
   findUserByEmail,
   findUserById,
   createFile,
+  createThumbnail,
   findFilesByUserId,
   findFileByFilename,
+  findFileByUuid,
+  findThumbnailByName,
   deleteFileById,
   updateFileById,
   saveCookie,

@@ -1,5 +1,5 @@
 import { H3Event } from 'h3';
-import { findFileByFilename } from '~/server/utils/db';
+import { findFileByUuid } from '~/server/utils/db';
 
 export default defineEventHandler(async (event: H3Event) => {
   const fileName = getRouterParam(event, 'id');
@@ -8,7 +8,7 @@ export default defineEventHandler(async (event: H3Event) => {
     return;
   }
 
-  const [file] = await findFileByFilename(decodeURI(fileName)) as any[];
+  const [file] = await findFileByUuid(decodeURI(fileName)) as any[];
 
   return { ...file };
 });

@@ -7,11 +7,11 @@
       Could not display this file.
     </span>
     <div v-else-if="isVideo" class="video-container">
-      <video :src="`/api/download/${file}`" preload="metadata" controls></video>
+      <video :src="`/media/${filenameSrc}`" preload="metadata" controls></video>
       <Button label="Share" @click="onClickShare" />
     </div>
     <span v-else-if="isImage">
-      <img :src="`/api/download/${file}`" alt="File" />
+      <img :src="`/api/download/${filenameSrc}`" alt="File" />
     </span>
   </template>
 </template>
@@ -22,6 +22,7 @@
   const loadingFile = ref(true);
   const isImage = ref(false);
   const isVideo = ref(false);
+  const filenameSrc = ref('');
 
   const { addToast } = useToaster();
   const route = useRoute();
@@ -37,6 +38,7 @@
 
     isImage.value = response.is_image;
     isVideo.value = response.is_video;
+    filenameSrc.value = response.filename;
 
     loadingFile.value = false;
   });
@@ -52,15 +54,27 @@
 
   if (import.meta.server) {
     const baseUrl = process.env.NUXT_BASE_URL;
+    const response = await $fetch(`/api/files/${file}`);
 
-    useSeoMeta({
-      title: `File Sharer - ${file}`,
-      ogTitle: `File Sharer - ${file}`,
-      description: 'Sharing files made simple.',
-      ogDescription: 'Sharing files made simple.',
-      ogImage: `${baseUrl}/api/download/${file}`,
-      twitterCard: 'summary_large_image',
-    });
+    const seoMeta = {
+      title: `File Sharer`,
+      ogTitle: `File Sharer`,
+      description: response.original_filename,
+      ogDescription: response.original_filename,
+    }
+
+    if (response.is_video) {
+      useSeoMeta({
+        ...seoMeta,
+        ogImage: `${baseUrl}/media/t/${response.filename}-thumbnail.png`,
+        ogVideo: `${baseUrl}/media/${response.filename}`,
+      });
+    } else if (response.is_image) {
+      useSeoMeta({
+        ...seoMeta,
+        ogImage: `${baseUrl}/api/download/${file}`,
+      });
+    }
   }
 </script>
 
