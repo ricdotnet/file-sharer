@@ -75,7 +75,7 @@
     } else if (response.is_image) {
       useSeoMeta({
         ...seoMeta,
-        ogImage: `${baseUrl}/api/download/${file}`,
+        ogImage: `${baseUrl}/api/download/${response.filename}`,
         twitterCard: 'summary_large_image',
       });
     }
