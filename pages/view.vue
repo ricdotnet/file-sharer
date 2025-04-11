@@ -7,28 +7,37 @@
       Could not display this file.
     </span>
     <div v-else-if="isVideo" class="video-container">
-      <video :src="`/api/download/${file}`" preload="metadata" controls></video>
+      <video :src="`/media/${filenameSrc}`" preload="metadata" controls></video>
       <Button label="Share" @click="onClickShare" />
     </div>
     <span v-else-if="isImage">
-      <img :src="`/api/download/${file}`" alt="File" />
+      <img :src="`/api/download/${filenameSrc}`" alt="File" />
     </span>
   </template>
 </template>
 
 <script setup lang="ts">
   import { useRoute } from '#vue-router';
+  import { useRequestHeaders } from '#app/composables/ssr';
 
   const loadingFile = ref(true);
   const isImage = ref(false);
   const isVideo = ref(false);
+  const filenameSrc = ref('');
 
   const { addToast } = useToaster();
   const route = useRoute();
   const { file } = route.params;
 
   onMounted(async () => {
-    const response = await $fetch(`/api/files/${file}`);
+    let response;
+
+    try {
+      response = await $fetch(`/api/files/${file}`);
+    } catch (error) {
+      console.log('err:', error);
+      return;
+    }
 
     if (!response) {
       loadingFile.value = false;
@@ -37,6 +46,7 @@
 
     isImage.value = response.is_image;
     isVideo.value = response.is_video;
+    filenameSrc.value = response.filename;
 
     loadingFile.value = false;
   });
@@ -53,14 +63,37 @@
   if (import.meta.server) {
     const baseUrl = process.env.NUXT_BASE_URL;
 
-    useSeoMeta({
-      title: `File Sharer - ${file}`,
-      ogTitle: `File Sharer - ${file}`,
-      description: 'Sharing files made simple.',
-      ogDescription: 'Sharing files made simple.',
-      ogImage: `${baseUrl}/api/download/${file}`,
-      twitterCard: 'summary_large_image',
-    });
+    try {
+      const response = await $fetch(`/api/files/${file}`, {
+        headers: useRequestHeaders(),
+      });
+
+      const seoMeta = {
+        title: `File Sharer`,
+        ogTitle: `File Sharer`,
+        description: response.original_filename,
+        ogDescription: response.original_filename,
+      };
+
+      if (response.is_video) {
+        useSeoMeta({
+          ...seoMeta,
+          ogImage: `${baseUrl}/media/t/${response.filename}-thumbnail.png`,
+          ogVideo: `${baseUrl}/media/${response.filename}`,
+          ogVideoType: 'video/mp4',
+          ogType: 'video.other',
+          twitterCard: 'player',
+        });
+      } else if (response.is_image) {
+        useSeoMeta({
+          ...seoMeta,
+          ogImage: `${baseUrl}/api/download/${response.filename}`,
+          twitterCard: 'summary_large_image',
+        });
+      }
+    } catch (error) {
+      console.log('err:', error);
+    }
   }
 </script>
 

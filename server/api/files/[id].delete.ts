@@ -21,10 +21,14 @@ export default defineEventHandler(async (event: H3Event) => {
     return;
   }
 
-  // @ts-ignore
-  const [file] = await deleteFileById(tokenData!.id, +id);
+  const [file] = await deleteFileById(tokenData!.id, +id) as any[];
   const filePath = path.join(config.UPLOADS_PATH(), file.filename);
   await fs.rm(filePath);
+
+  if (file.is_video) {
+    const thumbnailPath = path.join(config.UPLOADS_PATH(), 'thumbnails', `${file.filename}-thumbnail.png`);
+    await fs.rm(thumbnailPath);
+  }
 
   setResponseStatus(event, 204);
 

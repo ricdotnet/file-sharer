@@ -13,7 +13,7 @@
     </div>
     <div class="card-actions">
       <span v-if="file.is_image || file.is_video">
-        <a target="_blank" :href="`/view/${file.filename}`">
+        <a target="_blank" :href="`/view/${file.uuid}`">
           <PlayIcon class="icon" />
         </a>
       </span>

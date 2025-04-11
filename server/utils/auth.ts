@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { AUTH_TOKEN_EXPIRE, COOKIE_EXPIRE, COOKIE_NAME, REFRESH_TOKEN_EXPIRE } from '~/utils/constants';
 import crypto from 'crypto';
 import type { H3Event } from 'h3';
-import { saveCookie, updateCookie } from '~/server/utils/db';
+import { findCookie, saveCookie, updateCookie } from '~/server/utils/db';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 
 export function generateToken(payload: TUserAuthenticatedTokenPayload | {}, type: 'auth' | 'refresh' = 'auth'): string {
@@ -68,4 +68,20 @@ export async function isValidAuthentication(event: H3Event) {
   }
 
   return { tokenData };
+}
+
+export async function hasFileAccess(event: H3Event, ownerId: number) {
+  const cookie = getCookie(event, COOKIE_NAME);
+
+  if (!cookie) {
+    return false;
+  }
+
+  const [cookieData] = await findCookie(cookie) as any[];
+
+  if (!cookieData) {
+    return false;
+  }
+
+  return cookieData.owner === ownerId;
 }
