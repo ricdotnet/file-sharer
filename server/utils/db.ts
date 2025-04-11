@@ -192,6 +192,24 @@ async function findThumbnailByName(name: string) {
   return rows;
 }
 
+async function findThumbnailByMediaId(mediaId: number) {
+  let conn;
+  let rows;
+
+  try {
+    conn = await db.getConnection();
+    [rows] = await conn.query('SELECT * FROM thumbnails WHERE media_id = ?', [mediaId]);
+  } catch (err: any) {
+    Logger.get()
+          .error(`Error in findThumbnailByMediaId: ${err.message}`);
+    throw err;
+  } finally {
+    conn?.release();
+  }
+
+  return rows;
+}
+
 async function deleteFileById(owner: number, id: number) {
   let rows;
   let conn;
@@ -320,6 +338,7 @@ export {
   findFileByFilename,
   findFileByUuid,
   findThumbnailByName,
+  findThumbnailByMediaId,
   deleteFileById,
   updateFileById,
   saveCookie,

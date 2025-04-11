@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
   import { useRoute } from '#vue-router';
+  import { useRequestHeaders } from '#app/composables/ssr';
 
   const loadingFile = ref(true);
   const isImage = ref(false);
@@ -63,7 +64,9 @@
     const baseUrl = process.env.NUXT_BASE_URL;
 
     try {
-      const response = await $fetch(`/api/files/${file}`);
+      const response = await $fetch(`/api/files/${file}`, {
+        headers: useRequestHeaders(),
+      });
 
       const seoMeta = {
         title: `File Sharer`,
