@@ -1,7 +1,9 @@
 import axios, { type AxiosResponse } from 'axios';
 import { useUserStore } from '#imports';
 
-const axiosInstance = axios.create({});
+const axiosInstance = axios.create({
+  withCredentials: true,
+});
 
 axiosInstance.interceptors.response.use(
   response => response,
