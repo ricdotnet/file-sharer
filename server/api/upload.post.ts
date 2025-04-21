@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
   // TODO: add mimetype to db
   const fileName = file[0].newFilename;
   await createFile(tokenData!.id, file[0].originalFilename ?? 'NO_NAME', fileName, uuid, {
-    is_private: isPrivate,
+    is_private: !isVideo && !isImage,
     is_image: isImage,
     is_video: isVideo,
   });
