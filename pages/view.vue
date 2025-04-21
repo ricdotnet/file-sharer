@@ -78,7 +78,7 @@
       if (response.is_video) {
         useSeoMeta({
           ...seoMeta,
-          ogImage: `${baseUrl}/media/t/${response.filename}-thumbnail.png`,
+          ogImage: `${baseUrl}/media/t/${response.thumbnail}`,
           ogVideo: `${baseUrl}/media/${response.filename}`,
           ogVideoType: 'video/mp4',
           ogType: 'video.other',

@@ -26,7 +26,7 @@ export default defineEventHandler(async (event: H3Event) => {
   await fs.rm(filePath);
 
   if (file.is_video) {
-    const thumbnailPath = path.join(config.UPLOADS_PATH(), 'thumbnails', `${file.filename}-thumbnail.png`);
+    const thumbnailPath = path.join(config.UPLOADS_PATH(), 'thumbnails', `${file.uuid}-thumbnail.png`);
     await fs.rm(thumbnailPath);
   }
 

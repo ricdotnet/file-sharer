@@ -1,5 +1,5 @@
 import { H3Event } from 'h3';
-import { findFileByUuid } from '~/server/utils/db';
+import { findFileByUuid, findThumbnailByMediaId } from '~/server/utils/db';
 import { hasFileAccess } from '~/server/utils/auth';
 
 export default defineEventHandler(async (event: H3Event) => {
@@ -16,6 +16,14 @@ export default defineEventHandler(async (event: H3Event) => {
       statusCode: 401,
       message: 'Unauthorized',
     });
+  }
+
+  if (file.is_video) {
+    const [thumbnail] = await findThumbnailByMediaId(file.id) as any[];
+
+    if (thumbnail) {
+      file.thumbnail = thumbnail.name;
+    }
   }
 
   return { ...file };
