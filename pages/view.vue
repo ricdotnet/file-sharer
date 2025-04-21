@@ -7,7 +7,7 @@
       Could not display this file.
     </span>
     <div v-else-if="isVideo" class="video-container">
-      <video :src="`/media/${filenameSrc}`" preload="metadata" controls></video>
+      <video :src="`/media/${filenameSrc}`" preload="metadata" :poster="poster" controls></video>
       <Button label="Share" @click="onClickShare" />
     </div>
     <span v-else-if="isImage">
@@ -24,6 +24,7 @@
   const isImage = ref(false);
   const isVideo = ref(false);
   const filenameSrc = ref('');
+  const poster = ref('');
 
   const { addToast } = useToaster();
   const route = useRoute();
@@ -47,6 +48,7 @@
     isImage.value = response.is_image;
     isVideo.value = response.is_video;
     filenameSrc.value = response.filename;
+    poster.value = `/media/t/${response.thumbnail}`;
 
     loadingFile.value = false;
   });
@@ -78,7 +80,7 @@
       if (response.is_video) {
         useSeoMeta({
           ...seoMeta,
-          ogImage: `${baseUrl}/media/t/${response.filename}-thumbnail.png`,
+          ogImage: `${baseUrl}/media/t/${response.thumbnail}`,
           ogVideo: `${baseUrl}/media/${response.filename}`,
           ogVideoType: 'video/mp4',
           ogType: 'video.other',

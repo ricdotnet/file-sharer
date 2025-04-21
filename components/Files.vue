@@ -63,9 +63,8 @@
         return;
       }
 
-      filteredFiles.value = files.value
-                                 .filter(({ original_filename }) => original_filename.toLowerCase()
-                                                                                     .includes(filter.toLowerCase()));
+      filteredFiles.value = files.value.filter(({ original_filename }) => (
+        original_filename.toLowerCase().includes(filter.toLowerCase())));
     });
   });
 </script>
