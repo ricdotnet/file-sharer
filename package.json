@@ -19,7 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.13.0",
     "nuxt-api-shield": "^0.8.0",
-    "nuxt-cron": "^1.6.0",
+    "nuxt-cron": "^1.8.0",
     "pinia": "^3.0.1"
   },
   "devDependencies": {
