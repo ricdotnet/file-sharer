@@ -2097,13 +2097,13 @@ __metadata:
   linkType: hard
 
 "@pinia/nuxt@npm:latest":
-  version: 0.10.1
-  resolution: "@pinia/nuxt@npm:0.10.1"
+  version: 0.11.0
+  resolution: "@pinia/nuxt@npm:0.11.0"
   dependencies:
     "@nuxt/kit": ^3.9.0
   peerDependencies:
-    pinia: ^3.0.1
-  checksum: f31c441a407986bedaa8825b25ab5a51fdcd68c60f4673140b5f3bab988310d7c56d74ded54641761d2fdee06e527cb5bfb11789f201431cfbf3f83841ae76aa
+    pinia: ^3.0.2
+  checksum: 16dd00a142e1f39b19cc088e5a653a4ca0e5ff06693d896c83bf2b5398370a891eb86ea357779ac881d36e51b29f0d8853f679d6ccea3509791f7b6e9129fc9b
   languageName: node
   linkType: hard
 
