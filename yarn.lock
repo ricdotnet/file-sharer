@@ -8077,7 +8077,7 @@ __metadata:
     nuxt: 3.16.2
     nuxt-api-shield: ^0.8.0
     nuxt-cron: ^1.8.0
-    pinia: ^3.0.1
+    pinia: ^3.0.2
   languageName: unknown
   linkType: soft
 
@@ -8643,9 +8643,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "pinia@npm:3.0.1"
+"pinia@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "pinia@npm:3.0.2"
   dependencies:
     "@vue/devtools-api": ^7.7.2
   peerDependencies:
@@ -8654,7 +8654,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: f2a5e8bfb537f2aff72ea80361cc837b6f328a7c3328e7091c1ec3709859a0c26b7dc75d9bf0ba22f9adfb8445974a3a683fe995b383a0805fc833365884a8c5
+  checksum: 9d3a7e7cd91c6b561bb0a5d753052fa096d43bf86a65393f6ae1d5dc7b6d0c452328bb685cef6784de29275e461ecff564168be90f8a48e677305dc1665c2073
   languageName: node
   linkType: hard
 
