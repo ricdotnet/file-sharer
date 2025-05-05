@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   const isRefresh = true;
   const cookie = getCookie(event, COOKIE_NAME);
 
-  Logger.get().info('Database host:', process.env.DB_HOST);
+  Logger.get().info('env:', process.env);
 
   if (!cookie) {
     return createError({ statusCode: 401, message: 'Cookie is not available' });
