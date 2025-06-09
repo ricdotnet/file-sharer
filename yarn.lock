@@ -2692,12 +2692,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.14.1":
-  version: 22.14.1
-  resolution: "@types/node@npm:22.14.1"
+"@types/node@npm:^22.15.30":
+  version: 22.15.30
+  resolution: "@types/node@npm:22.15.30"
   dependencies:
     undici-types: ~6.21.0
-  checksum: e22363f40ac8290da2bb5261c2b348241fd93b000908cefd3c56575df9d4f6b8d102fc8631275eac7ec4a9e0ac4f38f01c9d8104ebbda76c936aef96fd1e55f3
+  checksum: c380ad176575dc847a119e63afe457f3481c0095ef1720605d42b3133cac1c5980179643ce67c9a314c83b9a45f2b17bde5f15b29d8aa1d17e0a43318273829b
   languageName: node
   linkType: hard
 
@@ -8068,7 +8068,7 @@ __metadata:
     "@ricdotnet/logger": ^0.3.3
     "@types/formidable": ^3.4.5
     "@types/jsonwebtoken": ^9.0.9
-    "@types/node": ^22.14.1
+    "@types/node": ^22.15.30
     argon2: ^0.41.1
     axios: ^1.9.0
     formidable: ^3.5.2
