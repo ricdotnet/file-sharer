@@ -1,13 +1,14 @@
 <template>
-  <template v-if="loadingFile">
-    Loading ....
-  </template>
+  <template v-if="loadingFile"> Loading .... </template>
   <template v-else>
-    <span v-if="!isImage && !isVideo">
-      Could not display this file.
-    </span>
+    <span v-if="!isImage && !isVideo"> Could not display this file. </span>
     <div v-else-if="isVideo" class="video-container">
-      <video :src="`/media/${filenameSrc}`" preload="metadata" :poster="poster" controls></video>
+      <video
+        :src="`/media/${filenameSrc}`"
+        preload="metadata"
+        :poster="poster"
+        controls
+      ></video>
       <Button label="Share" @click="onClickShare" />
     </div>
     <span v-else-if="isImage">
@@ -17,108 +18,118 @@
 </template>
 
 <script setup lang="ts">
-  import { useRoute } from '#vue-router';
-  import { useRequestHeaders } from '#app/composables/ssr';
+import { useRoute } from '#vue-router';
+import { useRequestHeaders } from '#app/composables/ssr';
 
-  const loadingFile = ref(true);
-  const isImage = ref(false);
-  const isVideo = ref(false);
-  const filenameSrc = ref('');
-  const poster = ref('');
+const loadingFile = ref(true);
+const isImage = ref(false);
+const isVideo = ref(false);
+const filenameSrc = ref('');
+const poster = ref('');
 
-  const { addToast } = useToaster();
-  const route = useRoute();
-  const { file } = route.params;
+const { addToast } = useToaster();
+const route = useRoute();
+const { file } = route.params;
 
-  onMounted(async () => {
-    let response;
+onMounted(async () => {
+  let response;
 
-    try {
-      response = await $fetch(`/api/files/${file}`);
-    } catch (error) {
-      console.log('err:', error);
-      return;
-    }
+  try {
+    response = await $fetch(`/api/files/${file}`);
+  } catch (error) {
+    console.log('err:', error);
+    return;
+  }
 
-    if (!response) {
-      loadingFile.value = false;
-      return;
-    }
-
-    isImage.value = response.is_image;
-    isVideo.value = response.is_video;
-    filenameSrc.value = response.filename;
-    poster.value = `/media/t/${response.thumbnail}`;
-
+  if (!response) {
     loadingFile.value = false;
+    return;
+  }
+
+  isImage.value = response.is_image;
+  isVideo.value = response.is_video;
+  filenameSrc.value = response.filename;
+  poster.value = `/media/t/${response.thumbnail}`;
+
+  loadingFile.value = false;
+});
+
+const onClickShare = () => {
+  navigator.clipboard.writeText(location.href);
+
+  addToast({
+    type: 'success',
+    message: 'Link copied to clipboard',
   });
+};
 
-  const onClickShare = () => {
-    navigator.clipboard.writeText(location.href);
+if (import.meta.server) {
+  const baseUrl = process.env.NUXT_BASE_URL;
 
-    addToast({
-      type: 'success',
-      message: 'Link copied to clipboard',
+  try {
+    const response = await $fetch(`/api/files/${file}`, {
+      headers: useRequestHeaders(),
     });
-  };
 
-  if (import.meta.server) {
-    const baseUrl = process.env.NUXT_BASE_URL;
+    const seoMeta = {
+      title: `File Sharer`,
+      ogTitle: `File Sharer`,
+      description: response.original_filename,
+      ogDescription: response.original_filename,
+    };
 
-    try {
-      const response = await $fetch(`/api/files/${file}`, {
-        headers: useRequestHeaders(),
+    if (response.is_video) {
+      useSeoMeta({
+        ...seoMeta,
+        ogImage: `${baseUrl}/media/t/${response.thumbnail}`,
+        ogVideo: `${baseUrl}/media/${response.filename}`,
+        ogVideoType: 'video/mp4',
+        ogType: 'video.other',
+        twitterCard: 'player',
       });
 
-      const seoMeta = {
-        title: `File Sharer`,
-        ogTitle: `File Sharer`,
-        description: response.original_filename,
-        ogDescription: response.original_filename,
-      };
-
-      if (response.is_video) {
-        useSeoMeta({
-          ...seoMeta,
-          ogImage: `${baseUrl}/media/t/${response.thumbnail}`,
-          ogVideo: `${baseUrl}/media/${response.filename}`,
-          ogVideoType: 'video/mp4',
-          ogType: 'video.other',
-          twitterCard: 'player',
-        });
-      } else if (response.is_image) {
-        useSeoMeta({
-          ...seoMeta,
-          ogImage: `${baseUrl}/api/download/${response.filename}`,
-          twitterCard: 'summary_large_image',
-        });
-      }
-    } catch (error) {
-      console.log('err:', error);
+      useHead({
+        link: [
+          {
+            rel: 'alternate',
+            type: 'application/json+oembed',
+            href: `${baseUrl}/media/oembed/${file}`,
+          },
+        ],
+      });
+    } else if (response.is_image) {
+      useSeoMeta({
+        ...seoMeta,
+        ogImage: `${baseUrl}/api/download/${response.filename}`,
+        twitterCard: 'summary_large_image',
+      });
     }
+  } catch (error) {
+    console.log('err:', error);
   }
+}
 </script>
 
 <style scoped>
-  .title {
-    text-align: center;
-    padding-block: 1.5rem;
-  }
+.title {
+  text-align: center;
+  padding-block: 1.5rem;
+}
 
-  img {
-    max-width: 100%;
-  }
+img {
+  max-width: 100%;
+}
 
-  video {
-    max-width: 100%;
-    max-height: 75vh;
-  }
+video {
+  max-width: 100%;
+  max-height: 75vh;
+}
 
-  .video-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    justify-content: center;
-    width: 100%;
-  }
+.video-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
 </style>
