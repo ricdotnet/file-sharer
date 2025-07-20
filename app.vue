@@ -3,6 +3,10 @@
     <NuxtLayout>
       <NuxtPage />
 
+      <ClientOnly>
+        <div class="footer">Current version: {{ currentVersion }}</div>
+      </ClientOnly>
+
       <UploadImageDialog :is-open="isPreviewing" />
     </NuxtLayout>
 
@@ -25,6 +29,7 @@ import {
 } from '#imports';
 
 const isLoading = ref(true);
+const currentVersion = useState();
 
 const route = useRoute();
 
@@ -34,6 +39,15 @@ const { isAuthenticated } = storeToRefs(userStore);
 const { registerKeyEvents, removeKeyEvents, isPreviewing } = useGlobalUpload();
 const { dropdownArea, registerDropdownAreaEvents, removeDropdownAreaEvents } =
   useDropdownArea();
+
+if (import.meta.server) {
+  const path = await import('node:path');
+  const fs = await import('node:fs/promises');
+  const currentDir = process.cwd();
+
+  const version = await fs.readFile(path.join(currentDir, 'version'));
+  currentVersion.value = version.toString();
+}
 
 if (import.meta.client) {
   await userStore.authenticate();
@@ -64,6 +78,12 @@ isLoading.value = false;
 <style scoped>
 .show {
   opacity: 1 !important;
+}
+
+.footer {
+  color: rgba(255, 255, 255, 0.2);
+  margin-top: 4rem;
+  margin-bottom: 2rem;
 }
 
 .dropdown-area {

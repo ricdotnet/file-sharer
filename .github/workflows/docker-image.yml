@@ -47,6 +47,8 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ steps.semantic.outputs.new_release_version }}
+          build-args: |
+            NEW_VERSION=${{ steps.semantic.outputs.new_release_version }}
 
   # send_report:
   #   name: Send workflow report
