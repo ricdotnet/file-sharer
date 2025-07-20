@@ -1,4 +1,4 @@
-import { Logger } from '@ricdotnet/logger/dist';
+import { Logger } from '@ricdotnet/logger/dist/index.js';
 
 const matcher = new RegExp(
   '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)'
