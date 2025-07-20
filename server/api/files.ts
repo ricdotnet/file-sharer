@@ -12,8 +12,7 @@ export default defineEventHandler(async (event) => {
   const { tokenData, error } = await isValidAuthentication(event);
 
   if (error) {
-    Logger.get()
-          .error(`Error occurred: ${error}`);
+    Logger.get().error(`Error occurred: ${error}`);
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
@@ -22,8 +21,14 @@ export default defineEventHandler(async (event) => {
   // @ts-ignore
   for (let file of _files) {
     const filePath = path.join(config.UPLOADS_PATH(), file.filename);
+    let fileInfo;
 
-    const fileInfo = await fs.stat(filePath);
+    try {
+      fileInfo = await fs.stat(filePath);
+    } catch (error) {
+      Logger.get().error(`Error occurred: ${error} for file ${filePath}`);
+      continue;
+    }
 
     files.push({
       ...file,
