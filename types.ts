@@ -1,5 +1,6 @@
 export interface IFile {
   id: number;
+  uuid: string;
   filename: string;
   size: number;
   created: Date;
