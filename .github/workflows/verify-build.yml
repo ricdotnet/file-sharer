@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v4
 
       - name: Install dependencies
-        run: corepack enable && yarn install
+        run: corepack enable && yarn
 
       - name: Build for production
         run: yarn build
