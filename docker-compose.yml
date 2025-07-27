@@ -10,6 +10,14 @@ services:
     image: ghcr.io/ricdotnet/file-sharer:0.0.5
     container_name: file-sharer
     restart: unless-stopped
+    environment:
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - DB_PORT
+      - NUXT_BASE_URL
+      - NUXT_APP_LIST_VIEW_ENABLED=
+      - SECRET
     volumes:
       - bucket:/file-sharer/uploads
     networks:
