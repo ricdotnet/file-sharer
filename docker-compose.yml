@@ -1,5 +1,5 @@
 volumes:
-  bucket:
+  file-sharer_bucket:
 
 networks:
   dokploy-network:
@@ -20,6 +20,6 @@ services:
       - NUXT_APP_LIST_VIEW_ENABLED
       - SECRET
     volumes:
-      - bucket:/file-sharer/uploads
+      - file-sharer_bucket:/file-sharer/uploads
     networks:
       - dokploy-network
