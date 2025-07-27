@@ -1,5 +1,6 @@
 volumes:
   file-sharer_bucket:
+    external: true
 
 networks:
   dokploy-network:
