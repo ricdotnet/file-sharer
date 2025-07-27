@@ -1,11 +1,9 @@
-version: "3.8"
-
 volumes:
   bucket:
 
 services:
   file-sharer:
-    image: file-sharer:latest
+    image: ghcr.io/ricdotnet/file-sharer:0.0.5
     container_name: file-sharer
     build:
       context: .
