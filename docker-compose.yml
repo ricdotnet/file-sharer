@@ -13,10 +13,11 @@ services:
     environment:
       - DB_USER
       - DB_PASSWORD
+      - DB_DATABASE
       - DB_HOST
       - DB_PORT
       - NUXT_BASE_URL
-      - NUXT_APP_LIST_VIEW_ENABLED=
+      - NUXT_APP_LIST_VIEW_ENABLED
       - SECRET
     volumes:
       - bucket:/file-sharer/uploads
