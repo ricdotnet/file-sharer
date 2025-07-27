@@ -1,6 +1,10 @@
 volumes:
   bucket:
 
+networks:
+  dokploy-network:
+    external: true
+
 services:
   file-sharer:
     image: ghcr.io/ricdotnet/file-sharer:0.0.5
@@ -8,3 +12,5 @@ services:
     restart: unless-stopped
     volumes:
       - bucket:/file-sharer/uploads
+    networks:
+      - dokploy-network
