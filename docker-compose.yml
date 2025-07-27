@@ -5,9 +5,6 @@ services:
   file-sharer:
     image: ghcr.io/ricdotnet/file-sharer:0.0.5
     container_name: file-sharer
-    build:
-      context: .
-      dockerfile: ./Dockerfile
     restart: unless-stopped
     volumes:
       - bucket:/file-sharer/uploads
