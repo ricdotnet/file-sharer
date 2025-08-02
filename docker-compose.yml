@@ -8,7 +8,7 @@ networks:
 
 services:
   file-sharer:
-    image: ghcr.io/ricdotnet/file-sharer:0.0.5
+    image: ghcr.io/ricdotnet/file-sharer:0.0.6
     container_name: file-sharer
     restart: unless-stopped
     environment:
