@@ -28,7 +28,7 @@
     "@pinia/nuxt": "latest",
     "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^24.0.15",
+    "@types/node": "^24.3.0",
     "nuxt": "3.16.2"
   },
   "packageManager": "yarn@3.8.7"
