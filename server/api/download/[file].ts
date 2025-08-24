@@ -9,6 +9,7 @@ import type { H3Event } from 'h3';
 
 // TODO: refactor later
 export default defineEventHandler(async (event: H3Event) => {
+  const { digest } = getQuery(event);
   let filename = getRouterParam(event, 'file');
   let file: Buffer;
   let isImage = false;
@@ -37,7 +38,7 @@ export default defineEventHandler(async (event: H3Event) => {
       return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
     }
 
-    if (fileResult.is_private) {
+    if (fileResult.is_private && fileResult.digest !== digest) {
       const cookie = getCookie(event, 'file-sharer');
       if (!cookie) {
         Logger.get()
