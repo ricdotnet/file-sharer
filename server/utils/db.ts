@@ -2,6 +2,7 @@ import { Logger } from '@ricdotnet/logger/dist/index.js';
 import mysql, { PoolOptions } from 'mysql2/promise';
 import * as argon from 'argon2';
 import { COOKIE_EXPIRE } from '~/utils/constants';
+import { randomBytes } from 'node:crypto';
 
 const env = process.env;
 
@@ -90,11 +91,12 @@ async function createUser(username: string, password: string, email: string) {
 async function createFile(userId: number, ogName: string, fileName: string, uuid: string,
                           options: { is_private: boolean, is_image: boolean, is_video: boolean }) {
   let conn;
+  const digest = randomBytes(8).toString('hex');
 
   try {
     conn = await db.getConnection();
-    const preparedStatement = await conn.prepare('INSERT INTO files (owner, original_filename, filename, is_private, is_image, is_video, uuid) VALUES (?, ?, ?, ?, ?, ?, ?)');
-    await preparedStatement.execute([userId, ogName, fileName, options.is_private, options.is_image, options.is_video, uuid]);
+    const preparedStatement = await conn.prepare('INSERT INTO files (owner, original_filename, filename, is_private, is_image, is_video, uuid, digest) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+    await preparedStatement.execute([userId, ogName, fileName, options.is_private, options.is_image, options.is_video, uuid, digest]);
   } catch (err: any) {
     Logger.get()
           .error(`Error in createFile: ${err.message}`);

@@ -18,12 +18,15 @@ fs.readdir('./migrations', async (err, files) => {
 
   for (let file of _files) {
     const sql = fs.readFileSync(`./migrations/${file}`, 'utf8');
+    const parts = sql.split(';').filter(Boolean);
 
-    try {
-      await connection.query(sql);
-      console.log(`Migration ${file} applied`);
-    } catch (err) {
-      console.error(`Migration ${file} failed: ${err.message}`);
+    for await (const part of parts) {
+      try {
+        await connection.query(part);
+        console.log(`Migration ${file} applied`);
+      } catch (err) {
+        console.error(`Migration ${file} failed: ${err.message}`);
+      }
     }
   }
 

@@ -180,8 +180,10 @@ async function onClickLock(event: MouseEvent, id: number) {
 }
 
 async function copyLinkToClipboard() {
+  const linkToCopy = `/api/download/${props.file.filename}${props.file.is_private ? '?digest=' + props.file.digest : ''}`
+
   try {
-    await useCopyUrlToClipboard().copy(`/api/download/${props.file.filename}`);
+    await useCopyUrlToClipboard().copy(linkToCopy);
     addToast({ message: 'File URL copied to clipboard.', type: 'info' });
   } catch (err) {
     console.log(err);
