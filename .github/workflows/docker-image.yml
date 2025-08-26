@@ -61,5 +61,6 @@ jobs:
       docker_image_status: ${{ needs.build_docker_image.result }}
       docker_image_name: ghcr.io/${{ github.repository }}:${{ needs.build_docker_image.outputs.image_tag }}
       new_release_version: ${{ needs.build_docker_image.outputs.image_tag }}
+      repository: "https://github.com/${{ github.repository }}"
     secrets:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
