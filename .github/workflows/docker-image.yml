@@ -50,10 +50,14 @@ jobs:
           build-args: |
             NEW_VERSION=${{ steps.semantic.outputs.new_release_version }}
 
-  # send_report:
-  #   name: Send workflow report
-  #   needs: build_docker_image
-  #   env:
-  #     docker_image_status: ${{ needs.build_docker_image.result }}
-  #     docker_image_name: ghcr.io/${{ github.repository }}:${{ steps.semantic.outputs.new_release_version }}
-  #   uses: ./.github/workflows/report.yml
+  send_docker_image_report:
+    name: Send docker image report
+    needs: build_docker_image
+    uses: ricdotnet-org/workflows/.github/workflows/docker-image-report.yml@main
+    with:
+      project: ${{ github.event.repository.name }}
+      docker_image_status: ${{ needs.build_docker_image.result }}
+      docker_image_name: ghcr.io/${{ github.repository }}:${{ needs.build_docker_image.outputs.image_tag }}
+      new_release_version: ${{ needs.build_docker_image.outputs.image_tag }}
+    secrets:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
