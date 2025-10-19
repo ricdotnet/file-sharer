@@ -1,19 +1,37 @@
 import { TUserAuthenticatedTokenPayload } from './types';
 import jwt from 'jsonwebtoken';
-import { AUTH_TOKEN_EXPIRE, COOKIE_EXPIRE, COOKIE_NAME, REFRESH_TOKEN_EXPIRE } from '~/utils/constants';
+import {
+  API_TOKEN_EXPIRE,
+  AUTH_TOKEN_EXPIRE,
+  COOKIE_EXPIRE,
+  COOKIE_NAME,
+  REFRESH_TOKEN_EXPIRE
+} from '~/utils/constants';
 import crypto from 'crypto';
 import type { H3Event } from 'h3';
 import { findCookie, saveCookie, updateCookie } from '~/server/utils/db';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 
-export function generateToken(payload: TUserAuthenticatedTokenPayload | {}, type: 'auth' | 'refresh' = 'auth'): string {
+export function generateToken(payload: TUserAuthenticatedTokenPayload | {}, type: 'auth' | 'refresh' | 'api' = 'auth'): string {
   const secret = process.env.SECRET;
 
   if (!secret) {
     throw new Error('Missing secret');
   }
 
-  return jwt.sign(payload, secret, { expiresIn: type === 'auth' ? AUTH_TOKEN_EXPIRE : REFRESH_TOKEN_EXPIRE });
+  let expire;
+  switch (type) {
+    case 'refresh':
+      expire = REFRESH_TOKEN_EXPIRE;
+      break;
+    case 'api':
+      expire = API_TOKEN_EXPIRE;
+      break;
+    default:
+      expire = AUTH_TOKEN_EXPIRE;
+  }
+
+  return jwt.sign(payload, secret, { expiresIn: expire });
 }
 
 export async function generateCookie(event: H3Event, userId: number, isRefresh = false) {

@@ -4,7 +4,10 @@
       <span class="title">FileSharer</span>
 
       <ClientOnly>
-        <div v-if="isAuthenticated">
+        <div v-if="isAuthenticated" class="authenticated-block">
+          <div>
+            <Button label="Get API Token" @click="() => onGetApiTokenClick()"/>
+          </div>
           <div class="links">
             <NuxtLink to="/">Files</NuxtLink>
             <NuxtLink to="/upload">Upload</NuxtLink>
@@ -17,10 +20,26 @@
 </template>
 
 <script setup lang="ts">
-  import { useUserStore, storeToRefs } from '#imports';
+import { useUserStore, storeToRefs, useToaster } from '#imports';
+import request from '~/utils/request';
 
   const userStore = useUserStore();
+  const { addToast } = useToaster();
   const { isAuthenticated } = storeToRefs(userStore);
+
+  const onGetApiTokenClick = async () => {
+    const { data } = await request(`/api/user/api-token`, {
+      headers: {
+        Authorization: userStore.authToken,
+      }
+    });
+
+    await navigator.clipboard.writeText(data?.apiToken);
+    addToast({
+      message: 'API Token copied to clipboard.',
+      type: 'success',
+    });
+  }
 </script>
 
 <style scoped>
@@ -39,6 +58,13 @@
 
       .title {
         font-size: 2rem;
+      }
+
+      .authenticated-block {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4rem;
       }
 
       .links {

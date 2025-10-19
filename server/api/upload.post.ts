@@ -100,7 +100,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (isImage) {
-    return fileName;
+    return { fileName, share: `${process.env.NUXT_APP_URL}/view/${uuid}` };
   }
 
   return sendRedirect(event, '/');
