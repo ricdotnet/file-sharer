@@ -99,7 +99,7 @@ export default defineEventHandler(async (event) => {
     await createThumbnail(`${uuid}-thumbnail.png`, videoMetadata.id);
   }
 
-  if (isImage) {
+  if (isImage || isVideo) {
     return { fileName, share: `${process.env.NUXT_APP_URL}/view/${uuid}` };
   }
 
