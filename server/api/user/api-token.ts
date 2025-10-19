@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
-  const apiToken = generateToken({ username: tokenData.username, id: tokenData.id, email: tokenData.email }, 'auth');
+  const apiToken = generateToken({ username: tokenData.username, id: tokenData.id, email: tokenData.email }, 'api');
 
   return {
     apiToken,
