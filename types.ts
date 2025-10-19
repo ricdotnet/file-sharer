@@ -10,6 +10,7 @@ export interface IFile {
   is_image: boolean;
   is_video: boolean;
   digest: string;
+  thumbnail?: string;
 }
 
 export interface Target extends EventTarget {

@@ -1,6 +1,6 @@
 <template>
   <template v-if="loadingFile"> Loading .... </template>
-  <template v-else>
+  <div v-else class="content">
     <span v-if="!isImage && !isVideo"> Could not display this file. </span>
     <div v-else-if="isVideo" class="video-container">
       <video
@@ -9,12 +9,14 @@
         :poster="poster"
         controls
       ></video>
+    </div>
+    <div v-else-if="isImage">
+      <img :src="`/api/download/${filenameSrc}`" alt="File" />
+    </div>
+    <div v-if="isImage || isVideo">
       <Button label="Share" @click="onClickShare" />
     </div>
-    <span v-else-if="isImage">
-      <img :src="`/api/download/${filenameSrc}`" alt="File" />
-    </span>
-  </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -111,11 +113,6 @@ if (import.meta.server) {
 </script>
 
 <style scoped>
-.title {
-  text-align: center;
-  padding-block: 1.5rem;
-}
-
 img {
   max-width: 100%;
 }
@@ -123,6 +120,17 @@ img {
 video {
   max-width: 100%;
   max-height: 75vh;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title {
+  text-align: center;
+  padding-block: 1.5rem;
 }
 
 .video-container {

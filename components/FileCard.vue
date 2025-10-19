@@ -4,6 +4,7 @@
     class="file"
     :style="{ '--x': `${x}px`, '--y': `${y}px` }"
   >
+    <img v-if="file.is_image || file.is_video" class="image" :src="getSourceUrl(file)" :alt="file.filename" />
     <div class="card-title" :title="file.original_filename">
       {{ sliceTitle(file.original_filename) }}
     </div>
@@ -193,6 +194,15 @@ async function copyLinkToClipboard() {
     });
   }
 }
+
+function getSourceUrl(file: IFile) {
+  if (file.is_video && file.thumbnail) {
+    return `/media/t/${file.thumbnail}`;
+  }
+  if (file.is_image) {
+    return `/api/download/${file.filename}`;
+  }
+}
 </script>
 
 <style scoped>
@@ -219,6 +229,10 @@ async function copyLinkToClipboard() {
 
   &:hover {
     border: 1px solid var(--air-blue);
+
+    .image {
+      transform: scale(105%);
+    }
   }
 
   &::before {
@@ -233,6 +247,15 @@ async function copyLinkToClipboard() {
     inset: -1px;
     position: absolute;
     z-index: -1;
+  }
+
+  .image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.2;
+    transition: all 200ms ease-in-out;
   }
 }
 

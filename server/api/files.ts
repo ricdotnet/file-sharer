@@ -3,7 +3,7 @@ import path from 'path';
 import { IFile } from '~/types';
 import config from '~/config';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
-import { findFilesByUserId } from '../utils/db';
+import { findFilesByUserId, findThumbnailByMediaId } from '../utils/db';
 import { isValidAuthentication } from '~/server/utils/auth';
 
 export default defineEventHandler(async (event) => {
@@ -28,6 +28,14 @@ export default defineEventHandler(async (event) => {
     } catch (error) {
       Logger.get().error(`Error occurred: ${error} for file ${filePath}`);
       continue;
+    }
+
+    if (file.is_video) {
+      const [thumbnail] = await findThumbnailByMediaId(file.id) as any[];
+
+      if (thumbnail) {
+        file.thumbnail = thumbnail.name;
+      }
     }
 
     files.push({

@@ -17,8 +17,6 @@ export default defineEventHandler(async (event) => {
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
-  const randomBytes = crypto.randomBytes(8).toString('hex');
-
   const multipart = formidable({
     maxFileSize: MAX_VIDEO_SIZE,
     uploadDir: config.UPLOADS_PATH(),
@@ -37,12 +35,8 @@ export default defineEventHandler(async (event) => {
 
   // TODO: refactor and correct if wrong
   if (file.length > 1) {
-    // const hasTypeCount = multipart.filter((item) => 'type' in item);
-
-    // if (hasTypeCount.length > 1) {
     Logger.get().error('Tried to upload multiple files');
     return sendRedirect(event, '/error', 400);
-    // }
   }
 
   const token = event.headers.get('Authorization');
@@ -70,7 +64,8 @@ export default defineEventHandler(async (event) => {
 
   // TODO: add mimetype to db
   const fileName = file[0].newFilename;
-  await createFile(tokenData!.id, file[0].originalFilename ?? 'NO_NAME', fileName, uuid, {
+  const fileNameToStore = fields.file_name?.length ? fields.file_name[0] : file[0].originalFilename;
+  await createFile(tokenData!.id, fileNameToStore ?? 'NO_NAME', fileName, uuid, {
     is_private: !isVideo && !isImage,
     is_image: isImage,
     is_video: isVideo,
