@@ -44,12 +44,11 @@ export async function generateCookie(
 ) {
   const cookie = crypto.randomBytes(16).toString('hex');
 
-  console.log('\n\n\nCOOKIE EXPIRE:', COOKIE_EXPIRE, '\n\n\n');
   setCookie(event, COOKIE_NAME, cookie, {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    expires: COOKIE_EXPIRE,
+    expires: COOKIE_EXPIRE(),
   });
 
   const refreshToken = generateToken({}, 'refresh');
