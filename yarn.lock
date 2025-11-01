@@ -8048,13 +8048,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt-api-shield@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "nuxt-api-shield@npm:0.8.0"
+"nuxt-api-shield@npm:^0.8.4":
+  version: 0.8.4
+  resolution: "nuxt-api-shield@npm:0.8.4"
   dependencies:
     "@nuxt/kit": ^3.12.2
     defu: ^6.1.4
-  checksum: 3b2e0d062462c1e5b2911e4386d1072a08514bc3b49e536d4113656eb85d035b0841460aa2b31944149f09d7e2f39e4d2e83812601cb5e282d5a164304fece8e
+  checksum: dd2aa3872941740a2e0d5d67c7245824172625364b0a6464eaeb0ce40d2ca2a0d72142e6ff36fa6501d074945fc1424e4f344751afc04cb94e098154d17caef8
   languageName: node
   linkType: hard
 
@@ -8075,7 +8075,7 @@ __metadata:
     jsonwebtoken: ^9.0.2
     mysql2: ^3.14.2
     nuxt: 3.16.2
-    nuxt-api-shield: ^0.8.0
+    nuxt-api-shield: ^0.8.4
     nuxt-cron: ^1.8.0
     pinia: ^3.0.1
   languageName: unknown
@@ -10510,11 +10510,11 @@ __metadata:
 
 "typescript@patch:typescript@^5.4.4#~builtin<compat/typescript>":
   version: 5.8.3
-  resolution: "typescript@patch:typescript@npm%3A5.8.3#~builtin<compat/typescript>::version=5.8.3&hash=b45daf"
+  resolution: "typescript@patch:typescript@npm%3A5.8.3#~builtin<compat/typescript>::version=5.8.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 1b503525a88ff0ff5952e95870971c4fb2118c17364d60302c21935dedcd6c37e6a0a692f350892bafcef6f4a16d09073fe461158547978d2f16fbe4cb18581c
+  checksum: f1743b6850976b3debf7cbd53d2bc0b67e75d47eb6410db564c8bb475e92a8a48f8a3fcd14d89cf93426835281c31a8f8a94dad90be4dc899279a898532ba97f
   languageName: node
   linkType: hard
 
