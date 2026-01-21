@@ -44,7 +44,7 @@ import request from '~/utils/request';
 
 <style scoped>
   nav {
-    background-color: var(--gun-metal);
+    background-color: var(--zinc-100);
     padding-block: 1rem;
     padding-inline: 2rem;
     display: flex;

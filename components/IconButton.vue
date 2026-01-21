@@ -18,7 +18,7 @@
     outline: none;
 
     &:focus-visible {
-      outline: 2px solid var(--air-blue);
+      outline: 2px solid var(--teal-50);
     }
   }
 </style>

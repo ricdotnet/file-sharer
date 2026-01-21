@@ -4,41 +4,41 @@
     class="file"
     :style="{ '--x': `${x}px`, '--y': `${y}px` }"
   >
-    <img v-if="file.is_image || file.is_video" class="image" :src="getSourceUrl(file)" :alt="file.filename" />
+    <img v-if="file.is_image || file.is_video" class="image" :src="getSourceUrl(file)" :alt="file.filename"/>
     <div class="card-title" :title="file.original_filename">
       {{ sliceTitle(file.original_filename) }}
     </div>
     <div class="icon-group">
-      <CircleStackIcon class="icon" />
+      <CircleStackIcon class="icon"/>
       <span>{{ convertSize(file.size) }}</span>
     </div>
     <div class="icon-group">
-      <CalendarDaysIcon class="icon" />
+      <CalendarDaysIcon class="icon"/>
       {{ formatShort(new Date(file.created)) }}
     </div>
     <div class="card-actions">
       <span v-if="file.is_image || file.is_video">
         <a target="_blank" :href="`/view/${file.uuid}`">
-          <PlayIcon class="icon" />
+          <PlayIcon class="icon"/>
         </a>
       </span>
       <span v-else>
         <a target="_blank" :href="`/api/download/${file.filename}`">
-          <ArrowDownOnSquareIcon class="icon" />
+          <ArrowDownOnSquareIcon class="icon"/>
         </a>
       </span>
       <IconButton @click="(e: MouseEvent) => onClickLock(e, file.id)">
-        <LockClosedIcon v-if="file.is_private" class="icon" />
-        <LockOpenIcon v-else class="icon" />
+        <LockClosedIcon v-if="file.is_private" class="icon"/>
+        <LockOpenIcon v-else class="icon"/>
       </IconButton>
       <IconButton
         v-if="file.canDelete"
         @click="(e: MouseEvent) => onClickDelete(e, file.id)"
       >
-        <TrashIcon class="icon" />
+        <TrashIcon class="icon"/>
       </IconButton>
       <IconButton @click="copyLinkToClipboard">
-        <ClipboardDocumentCheckIcon class="icon" />
+        <ClipboardDocumentCheckIcon class="icon"/>
       </IconButton>
     </div>
   </div>
@@ -206,16 +206,32 @@ function getSourceUrl(file: IFile) {
 </script>
 
 <style scoped>
+@media (max-width: 768px) {
+  .file {
+    height: fit-content;
+  }
+
+  .card-actions {
+    top: 2rem;
+    right: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .file {
+    height: 200px;
+  }
+}
+
 .file {
   padding: 2rem 2.5rem;
-  border: 1px solid var(--gun-metal);
+  border: 1px solid var(--zinc-90);
   border-radius: 1.1rem;
   box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.5);
   position: relative;
   overflow: hidden;
 
-  /* width: 200px; */
-  height: 200px;
+  width: auto;
 
   display: flex;
   flex-direction: column;
@@ -228,7 +244,7 @@ function getSourceUrl(file: IFile) {
   }
 
   &:hover {
-    border: 1px solid var(--air-blue);
+    border: 1px solid var(--teal-50);
 
     .image {
       transform: scale(105%);

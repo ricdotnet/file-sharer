@@ -18,7 +18,7 @@
 <style scoped>
   .input {
     box-sizing: border-box;
-    border: 1px solid var(--gun-metal);
+    border: 1px solid var(--zinc-90);
     border-radius: 0.5rem;
     padding: 1rem 1rem;
     color: white;

@@ -129,7 +129,7 @@
     opacity: 0;
 
     &:focus + .file-select {
-      outline: 2px solid var(--air-blue);
+      outline: 2px solid var(--teal-50);
       outline-offset: 4px;
     }
   }
@@ -147,17 +147,17 @@
     transition: ease-in-out 150ms;
 
     &[data-selected="false"] {
-      border: 0.3rem dashed var(--gun-metal);
+      border: 0.3rem dashed var(--zinc-90);
       color: var(--text-dim);
     }
 
     &[data-selected="true"] {
-      border: 0.3rem dashed var(--air-blue);
+      border: 0.3rem dashed var(--teal-50);
       color: white;
     }
 
     &:hover {
-      border: 0.3rem dashed var(--air-blue);
+      border: 0.3rem dashed var(--teal-50);
     }
   }
 
@@ -171,7 +171,7 @@
     border-radius: 1rem;
     padding-block: 2rem;
     margin-block: 2rem;
-    border: 0.3rem dashed var(--gun-metal);
+    border: 0.3rem dashed var(--zinc-90);
     position: relative;
 
     cursor: pointer;
@@ -180,7 +180,7 @@
     transition: ease-in-out 150ms;
 
     &:hover {
-      border: 0.3rem dashed var(--air-blue);
+      border: 0.3rem dashed var(--teal-50);
     }
 
     .clear-message {

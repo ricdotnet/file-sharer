@@ -99,7 +99,7 @@
     max-width: 600px;
     max-height: min(400px, 80vh);
 
-    background-color: var(--rich-black);
+    background-color: var(--zinc-100);
     padding: 1rem;
     border-radius: 5px;
   }

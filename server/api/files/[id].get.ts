@@ -10,8 +10,9 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   const [file] = await findFileByUuid(decodeURI(fileName)) as any[];
+  const isFileOwner = await hasFileAccess(event, file.owner);
 
-  if (file.is_private && !await hasFileAccess(event, file.owner)) {
+  if (file.is_private && !isFileOwner) {
     throw createError({
       statusCode: 401,
       message: 'Unauthorized',
@@ -26,5 +27,5 @@ export default defineEventHandler(async (event: H3Event) => {
     }
   }
 
-  return { ...file };
+  return { ...file, canDelete: isFileOwner };
 });

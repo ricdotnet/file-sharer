@@ -95,7 +95,7 @@ isLoading.value = false;
   height: 100vh;
 
   background-color: #000000bb;
-  outline: 0.3rem dashed var(--air-blue);
+  outline: 0.3rem dashed var(--teal-50);
   outline-offset: -1.33rem;
 
   display: flex;

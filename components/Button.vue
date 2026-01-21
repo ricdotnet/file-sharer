@@ -20,7 +20,7 @@
   }
 
   .button {
-    border: 1px solid var(--gun-metal);
+    border: 1px solid var(--zinc-90);
     padding: 1rem 2rem;
     cursor: pointer;
     border-radius: 0.5rem;
@@ -32,11 +32,11 @@
     gap: 1rem;
 
     &:focus-visible {
-      outline: 2px solid var(--air-blue);
+      outline: 2px solid var(--teal-50);
     }
 
     &:hover {
-      border: 1px solid var(--air-blue);
+      border: 1px solid var(--teal-50);
     }
   }
 </style>

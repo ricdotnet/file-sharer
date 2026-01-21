@@ -40,7 +40,7 @@
     cursor: pointer;
 
     background-color: rgba(12, 38, 51, 0.2);
-    border: 1px solid var(--gun-metal);
+    border: 1px solid var(--zinc-90);
 
     display: flex;
     align-items: center;

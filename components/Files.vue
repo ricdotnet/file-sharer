@@ -79,19 +79,19 @@
   .files-container {
     margin-top: 2rem;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 1.25rem;
   }
 
-  @media (max-width: 900px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     .files-container {
       grid-template-columns: 1fr 1fr;
     }
   }
 
-  @media (max-width: 528px) {
+  @media (min-width: 1024px) {
     .files-container {
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
     }
   }
 
