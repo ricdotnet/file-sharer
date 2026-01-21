@@ -14,6 +14,7 @@ export default defineEventHandler(async (event: H3Event) => {
   let file: Buffer;
   let isImage = false;
   let isVideo = false;
+  let originalFilename;
 
   if (!filename) {
     return;
@@ -33,7 +34,7 @@ export default defineEventHandler(async (event: H3Event) => {
     filename = decodeURI(filename);
 
     // biome-ignore lint/suspicious/noExplicitAny: allow any
-    const [fileResult] = await findFileByFilename(filename) as any[];
+    const [fileResult] = (await findFileByFilename(filename)) as any[];
     if (!fileResult) {
       return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
     }
@@ -41,34 +42,46 @@ export default defineEventHandler(async (event: H3Event) => {
     if (fileResult.is_private && fileResult.digest !== digest) {
       const cookie = getCookie(event, 'file-sharer');
       if (!cookie) {
-        Logger.get()
-              .warn(`User tried to access private file ${filename} without a cookie`);
-        return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
+        Logger.get().warn(
+          `User tried to access private file ${filename} without a cookie`
+        );
+        return createError({
+          statusCode: 404,
+          message: Messages.FILE_NOT_FOUND,
+        });
       }
 
-      const [cookieResult] = await findCookie(cookie) as ICookie[];
+      const [cookieResult] = (await findCookie(cookie)) as ICookie[];
       if (!cookieResult) {
-        Logger.get()
-              .warn(`User tried to access private file ${filename} with an invalid cookie`);
-        return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
+        Logger.get().warn(
+          `User tried to access private file ${filename} with an invalid cookie`
+        );
+        return createError({
+          statusCode: 404,
+          message: Messages.FILE_NOT_FOUND,
+        });
       }
 
       if (cookieResult.owner !== fileResult.owner) {
-        Logger.get()
-              .warn(`User ${cookieResult.owner} tried to access file ${filename} owned by ${fileResult.owner}`);
-        return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
+        Logger.get().warn(
+          `User ${cookieResult.owner} tried to access file ${filename} owned by ${fileResult.owner}`
+        );
+        return createError({
+          statusCode: 404,
+          message: Messages.FILE_NOT_FOUND,
+        });
       }
     }
 
     isImage = fileResult.is_image;
     isVideo = fileResult.is_video;
+    originalFilename = fileResult.original_filename;
 
     file = await fs.readFile(path.join(config.UPLOADS_PATH(), filename));
   }
 
   if (!file) {
-    Logger.get()
-          .warn(`File not found in the file system: ${filename}`);
+    Logger.get().warn(`File not found in the file system: ${filename}`);
     return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
   }
 
@@ -115,12 +128,17 @@ export default defineEventHandler(async (event: H3Event) => {
       'Content-Type': 'video/other', // TODO: update with correct mimetype
     });
 
-    return fsl.createReadStream(path.join(config.UPLOADS_PATH(), filename), { start, end });
+    return fsl.createReadStream(path.join(config.UPLOADS_PATH(), filename), {
+      start,
+      end,
+    });
   } else {
     setResponseHeaders(event, {
       'content-type': 'application/octet-stream',
       'content-length': file.length,
-      'content-disposition': `attachment; filename="${filename}"`,
+      'content-disposition': `attachment; filename="${
+        originalFilename ?? filename
+      }"`,
     });
   }
 

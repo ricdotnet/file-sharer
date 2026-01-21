@@ -5,14 +5,17 @@ import {
   AUTH_TOKEN_EXPIRE,
   COOKIE_EXPIRE,
   COOKIE_NAME,
-  REFRESH_TOKEN_EXPIRE
+  REFRESH_TOKEN_EXPIRE,
 } from '~/utils/constants';
 import crypto from 'crypto';
 import type { H3Event } from 'h3';
 import { findCookie, saveCookie, updateCookie } from '~/server/utils/db';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 
-export function generateToken(payload: TUserAuthenticatedTokenPayload | {}, type: 'auth' | 'refresh' | 'api' = 'auth'): string {
+export function generateToken(
+  payload: TUserAuthenticatedTokenPayload | {},
+  type: 'auth' | 'refresh' | 'api' = 'auth'
+): string {
   const secret = process.env.SECRET;
 
   if (!secret) {
@@ -34,15 +37,18 @@ export function generateToken(payload: TUserAuthenticatedTokenPayload | {}, type
   return jwt.sign(payload, secret, { expiresIn: expire });
 }
 
-export async function generateCookie(event: H3Event, userId: number, isRefresh = false) {
-  const cookie = crypto.randomBytes(16)
-                       .toString('hex');
+export async function generateCookie(
+  event: H3Event,
+  userId: number,
+  isRefresh = false
+) {
+  const cookie = crypto.randomBytes(16).toString('hex');
 
   setCookie(event, COOKIE_NAME, cookie, {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    expires: COOKIE_EXPIRE,
+    expires: COOKIE_EXPIRE(),
   });
 
   const refreshToken = generateToken({}, 'refresh');
@@ -65,8 +71,7 @@ export async function isValidAuthentication(event: H3Event) {
   const authToken = getHeader(event, 'authorization');
 
   if (!secret) {
-    Logger.get()
-          .error('SECRET was not found in the environment');
+    Logger.get().error('SECRET was not found in the environment');
     throw createError({ statusCode: 500, message: 'Something went wrong.' });
   }
 
@@ -79,8 +84,7 @@ export async function isValidAuthentication(event: H3Event) {
   try {
     tokenData = jwt.verify(authToken, secret) as TUserAuthenticatedTokenPayload;
   } catch (err) {
-    Logger.get()
-          .error(`Error occurred: ${err}`);
+    Logger.get().error(`Error occurred: ${err}`);
 
     return { error: err };
   }
@@ -95,7 +99,7 @@ export async function hasFileAccess(event: H3Event, ownerId: number) {
     return false;
   }
 
-  const [cookieData] = await findCookie(cookie) as any[];
+  const [cookieData] = (await findCookie(cookie)) as any[];
 
   if (!cookieData) {
     return false;
