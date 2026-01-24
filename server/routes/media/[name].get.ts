@@ -1,9 +1,9 @@
 import { H3Event } from 'h3';
-import { findFileByFilename } from '~/server/utils/db';
+import { findFileByFilename } from '~~/server/utils/db';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
-import config from '~/config';
+import config from '~~/config';
 
 export default defineEventHandler(async (event: H3Event) => {
   const name = getRouterParam(event, 'name');
@@ -23,11 +23,11 @@ export default defineEventHandler(async (event: H3Event) => {
   });
 
   // Credit to CHATGIPITTY
-  const match = rangeHeader.match(/bytes=(\d+)-(\d*)/);
+  const match = rangeHeader.match(/bytes=(\d+)-(\d*)/) as Array<string> | null;
   const options: { start?: number; end?: number; } = {};
 
   if (match) {
-    const start = parseInt(match[1], 10);
+    const start = parseInt(match[1] as string, 10);
     const end = match[2] ? parseInt(match[2], 10) : fileSize - 1;
     const chunkSize = end - start + 1;
 

@@ -1,3 +1,6 @@
+import { findFileByUuid, findThumbnailByMediaId } from '~~/server/utils/db';
+import { hasFileAccess } from '~~/server/utils/auth';
+
 export default defineEventHandler(async (event) => {
   const fileName = getRouterParam(event, 'id');
 

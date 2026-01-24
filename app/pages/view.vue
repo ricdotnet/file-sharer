@@ -1,5 +1,5 @@
 <template>
-  <template v-if="loadingFile"> Loading .... </template>
+  <template v-if="loadingFile"> Loading ....</template>
   <div v-else class="content">
     <span v-if="!isImage && !isVideo"> Could not display this file. </span>
     <div v-else-if="isVideo" class="video-container">
@@ -11,11 +11,11 @@
       ></video>
     </div>
     <div v-else-if="isImage">
-      <img :src="`/api/download/${filenameSrc}`" alt="File" />
+      <img :src="`/api/download/${filenameSrc}`" alt="File"/>
     </div>
     <div class="buttons-row" v-if="isImage || isVideo">
-      <Button label="Share" @click="onClickShare" />
-      <Button v-if="isAuthenticated && canDelete" label="Delete" @click="(e: MouseEvent) => onClickDelete(e, fileId)" />
+      <Button label="Share" @click="onClickShare"/>
+      <Button v-if="isAuthenticated && canDelete" label="Delete" @click="(e: MouseEvent) => onClickDelete(e, fileId)"/>
     </div>
   </div>
 </template>
@@ -26,6 +26,7 @@ import { useRequestHeaders } from '#app/composables/ssr';
 import { useUserStore } from '~/stores/useUserStore';
 import { useToaster } from '~/composables/useToaster';
 import { storeToRefs } from '#imports';
+import type { IFile } from '~~/types';
 
 const loadingFile = ref(true);
 const isImage = ref(false);
@@ -46,7 +47,7 @@ onMounted(async () => {
   let response;
 
   try {
-    response = await $fetch(`/api/files/${file}`);
+    response = await $fetch(`/api/files/${file}`) as IFile;
   } catch (error) {
     console.log('err:', error);
     return;

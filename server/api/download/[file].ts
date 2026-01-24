@@ -1,11 +1,12 @@
 import fs from 'node:fs/promises';
 import fsl from 'node:fs';
 import path from 'node:path';
-import config from '~/config';
-import { findCookie, findFileByFilename } from '~/server/utils/db';
-import { Messages } from '#imports';
+import config from '~~/config';
+import { findCookie, findFileByFilename } from '~~/server/utils/db';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 import type { H3Event } from 'h3';
+import { Messages } from '~~/server/utils/messages';
+import type { ICookie } from '~~/server/utils/types';
 
 // TODO: refactor later
 export default defineEventHandler(async (event: H3Event) => {
@@ -115,7 +116,7 @@ export default defineEventHandler(async (event: H3Event) => {
       });
     }
 
-    const start = parseInt(match[1], 10);
+    const start = parseInt(match[1] as string, 10);
     const end = match[2] ? parseInt(match[2], 10) : fileSize - 1;
     const chunkSize = end - start + 1;
 
@@ -136,9 +137,7 @@ export default defineEventHandler(async (event: H3Event) => {
     setResponseHeaders(event, {
       'content-type': 'application/octet-stream',
       'content-length': file.length,
-      'content-disposition': `attachment; filename="${
-        originalFilename ?? filename
-      }"`,
+      'content-disposition': `attachment; filename="${originalFilename ?? filename}"`,
     });
   }
 

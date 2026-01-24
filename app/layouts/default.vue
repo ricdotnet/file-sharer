@@ -5,7 +5,7 @@
   </div>
 
   <Transition name="toast" mode="out-in">
-    <div v-if="toasts.length" class="toast" @click="removeToast">
+    <div v-if="toasts.length > 0" class="toast" @click="removeToast">
       <ExclamationCircleIcon class="icon" v-if="toasts[0].type === 'error'"/>
       <InformationCircleIcon class="icon" v-else-if="toasts[0].type === 'info'"/>
       <CheckCircleIcon class="icon" v-else/>

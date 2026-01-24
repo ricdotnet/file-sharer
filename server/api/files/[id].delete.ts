@@ -1,10 +1,10 @@
 import path from 'path';
 import fs from 'fs/promises';
 import { H3Event } from 'h3';
-import { deleteFileById } from '~/server/utils/db';
-import config from '~/config';
+import { deleteFileById } from '~~/server/utils/db';
+import config from '~~/config';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
-import { isValidAuthentication } from '~/server/utils/auth';
+import { isValidAuthentication } from '~~/server/utils/auth';
 
 export default defineEventHandler(async (event: H3Event) => {
   const { tokenData, error } = await isValidAuthentication(event);

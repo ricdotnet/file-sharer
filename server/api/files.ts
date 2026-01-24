@@ -1,10 +1,10 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { IFile } from '~/types';
-import config from '~/config';
+import type { IFile } from '~~/types';
+import config from '~~/config';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 import { findFilesByUserId, findThumbnailByMediaId } from '../utils/db';
-import { isValidAuthentication } from '~/server/utils/auth';
+import { isValidAuthentication } from '~~/server/utils/auth';
 
 export default defineEventHandler(async (event) => {
   const files: IFile[] = [];

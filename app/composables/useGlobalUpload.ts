@@ -32,6 +32,8 @@ export const useGlobalUpload = () => {
         const items = await navigator.clipboard.read();
         for (const item of items) {
           const types = item.types.filter(t => t.includes('image/'));
+          if (types.length === 0) continue;
+
           const blob = await item.getType(types[0]);
 
           imageType.value = types[0].split('/')[1];

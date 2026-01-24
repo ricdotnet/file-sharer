@@ -1,5 +1,5 @@
 import { Logger } from '@ricdotnet/logger/dist/index.js';
-import mysql, { PoolOptions } from 'mysql2/promise';
+import mysql, { type PoolOptions } from 'mysql2/promise';
 import * as argon from 'argon2';
 import { COOKIE_EXPIRE } from '~/utils/constants';
 import { randomBytes } from 'node:crypto';

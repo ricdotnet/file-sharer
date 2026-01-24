@@ -1,4 +1,4 @@
-import { TUserAuthenticatedTokenPayload } from './types';
+import type { TUserAuthenticatedTokenPayload } from './types';
 import jwt from 'jsonwebtoken';
 import {
   API_TOKEN_EXPIRE,
@@ -9,7 +9,7 @@ import {
 } from '~/utils/constants';
 import crypto from 'crypto';
 import type { H3Event } from 'h3';
-import { findCookie, saveCookie, updateCookie } from '~/server/utils/db';
+import { findCookie, saveCookie, updateCookie } from './db';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 
 export function generateToken(
@@ -34,6 +34,7 @@ export function generateToken(
       expire = AUTH_TOKEN_EXPIRE;
   }
 
+  // @ts-ignore
   return jwt.sign(payload, secret, { expiresIn: expire });
 }
 

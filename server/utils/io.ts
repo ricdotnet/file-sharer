@@ -1,6 +1,6 @@
 import fsp from 'fs/promises';
 import path from 'path';
-import config from '~/config';
+import config from '~~/config';
 
 export const ensureDir = async (dir: string) => {
   try {

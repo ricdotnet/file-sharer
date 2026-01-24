@@ -1,8 +1,8 @@
-import { findCookie, findUserById, getCookie } from '#imports';
 import { COOKIE_NAME } from '~/utils/constants';
-import { TUserAuthenticatedTokenPayload, TUserResult } from '~/server/utils/types';
-import { generateCookie, generateToken } from '~/server/utils/auth';
+import type { ICookie, TUserAuthenticatedTokenPayload, TUserResult } from '~~/server/utils/types';
+import { generateCookie, generateToken } from '~~/server/utils/auth';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
+import { findCookie, findUserById } from '~~/server/utils/db';
 
 export default defineEventHandler(async (event) => {
   const isRefresh = true;
@@ -18,6 +18,9 @@ export default defineEventHandler(async (event) => {
   }
 
   const cookieData = cookieRows[0];
+  if (!cookieData) {
+    return createError({ statusCode: 401, message: 'Cookie is not valid' });
+  }
 
   if (new Date(cookieData.expires) < new Date()) {
     // cookie is expired
