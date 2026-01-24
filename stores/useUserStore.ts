@@ -4,8 +4,13 @@ import axios from 'axios';
 export const useUserStore = defineStore('user', () => {
   const isAuthenticated = ref(false);
   const authToken = ref<string | undefined>();
+  const path = useRoute().path;
 
   async function authenticate() {
+    if (path.includes('/login')) {
+      return;
+    }
+
     try {
       const { data } = await axios<{
         isAuthenticated: boolean;

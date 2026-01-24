@@ -13,6 +13,10 @@ export default defineEventHandler(async (event) => {
   }
 
   const cookieRows = await findCookie(cookie) as ICookie[];
+  if (!cookieRows.length) {
+    return createError({ statusCode: 401, message: 'Cookie is not valid' });
+  }
+
   const cookieData = cookieRows[0];
 
   if (new Date(cookieData.expires) < new Date()) {
