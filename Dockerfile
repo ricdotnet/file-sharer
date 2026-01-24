@@ -3,8 +3,7 @@ FROM node:20-alpine3.20 AS builder
 WORKDIR /builder
 
 COPY ./package.json /builder/package.json
-COPY ./yarn.lock /builder/yarn.lock
-COPY ./.yarnrc.yml /builder/.yarnrc.yml
+COPY ./package-lock.json /builder/package-lock.json
 
 RUN npm ci
 
