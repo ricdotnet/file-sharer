@@ -1,12 +1,12 @@
 import crypto from 'node:crypto';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
-import { createFile, createThumbnail } from '../utils/db';
+import { createFile, createThumbnail, findFileByUuid } from '~~/server/utils/db';
 import { MAX_FILE_SIZE, MAX_VIDEO_SIZE } from '~/utils/constants';
-import { isValidAuthentication } from '~/server/utils/auth';
+import { isValidAuthentication } from '~~/server/utils/auth';
 import formidable from 'formidable';
-import config from '~/config';
+import config from '~~/config';
 import { exec } from 'node:child_process';
-import { ensureDir } from '~/server/utils/io';
+import { ensureDir } from '~~/server/utils/io';
 
 export default defineEventHandler(async (event) => {
   const { tokenData, error } = await isValidAuthentication(event);
@@ -46,24 +46,30 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, '/error', 400);
   }
 
-  // If isPrivate is not set then it will be true by default, if it is set, we check for its bool value
+  // If isPrivate is not set, then it will be true by default, if it is set, we check for its bool value
   const isPrivate = fields.is_private ? fields.is_private[0] === 'true' : false;
 
+  // @ts-ignore file is not undefined
   const isImage = file[0].mimetype?.startsWith('image/') ?? false;
+  // @ts-ignore file is not undefined
   const isVideo = file[0].mimetype?.startsWith('video/') ?? false;
 
+  // @ts-ignore file is not undefined
   if (isVideo && file[0].size > MAX_VIDEO_SIZE) {
     Logger.get().error('Tried to upload a video larger than the allowed size');
     return sendRedirect(event, '/error', 400);
   }
 
+  // @ts-ignore file is not undefined
   if (!isVideo && file[0].size > MAX_FILE_SIZE) {
     Logger.get().error('Tried to upload a file larger than the allowed size');
     return sendRedirect(event, '/error', 400);
   }
 
   // TODO: add mimetype to db
+  // @ts-ignore file is not undefined
   const fileName = file[0].newFilename;
+  // @ts-ignore file is not undefined
   const fileNameToStore = fields.file_name?.length ? fields.file_name[0] : file[0].originalFilename;
   await createFile(tokenData!.id, fileNameToStore ?? 'NO_NAME', fileName, uuid, {
     is_private: !isVideo && !isImage,

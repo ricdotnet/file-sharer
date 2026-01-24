@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { IFile } from '~/types';
+import type { IFile } from '~~/types';
 import { useUserStore } from '#imports';
 
 export const useFileStore = defineStore('file', () => {
@@ -35,5 +35,13 @@ export const useFileStore = defineStore('file', () => {
     });
   }
 
-  return { files, fetchFiles, removeFile, updatePrivacy };
+  function filteredFiles(filter?: string) {
+    if (!filter || filter.length === 0) {
+      return files.value;
+    }
+
+    return files.value.filter((file) => file.original_filename.includes(filter));
+  }
+
+  return { filteredFiles, fetchFiles, removeFile, updatePrivacy };
 });

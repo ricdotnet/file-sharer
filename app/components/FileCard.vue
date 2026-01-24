@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import type { IFile } from '~/types';
+import type { IFile } from '~~/types';
 import {
   useCopyUrlToClipboard,
   useDate,

@@ -1,5 +1,5 @@
 import { COOKIE_NAME } from '~/utils/constants';
-import { deleteCookieByValue } from '~/server/utils/db';
+import { deleteCookieByValue } from '~~/server/utils/db';
 
 export default defineEventHandler(async (event) => {
   const cookie = getCookie(event, COOKIE_NAME);

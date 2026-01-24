@@ -29,7 +29,7 @@
     "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^24.0.15",
-    "nuxt": "3.16.2"
-  },
-  "packageManager": "yarn@3.8.7"
+    "nuxt": "^4.3.0",
+    "vite-tsconfig-paths": "^6.0.5"
+  }
 }

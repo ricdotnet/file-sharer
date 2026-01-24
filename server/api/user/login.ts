@@ -1,8 +1,8 @@
-import { findUserByUsername } from '~/server/utils/db';
-import { IUser, TUserAuthenticated, TUserAuthenticatedTokenPayload, TUserResult } from '~/server/utils/types';
-import { Messages } from '~/server/utils/messages';
+import { findUserByUsername } from '~~/server/utils/db';
+import type { IUser, TUserAuthenticated, TUserAuthenticatedTokenPayload, TUserResult } from '~~/server/utils/types';
+import { Messages } from '~~/server/utils/messages';
 import * as argon from 'argon2';
-import { generateCookie, generateToken } from '~/server/utils/auth';
+import { generateCookie, generateToken } from '~~/server/utils/auth';
 
 export default defineEventHandler(async (event) => {
   if (event.method !== 'POST') {
