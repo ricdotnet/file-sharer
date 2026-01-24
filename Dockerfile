@@ -6,11 +6,11 @@ COPY ./package.json /builder/package.json
 COPY ./yarn.lock /builder/yarn.lock
 COPY ./.yarnrc.yml /builder/.yarnrc.yml
 
-RUN corepack enable && yarn install
+RUN npm ci
 
 COPY . .
 
-RUN yarn build
+RUN npm run build
 
 FROM node:20-alpine3.20 AS production
 
