@@ -1,16 +1,13 @@
 volumes:
   file-sharer_bucket:
-    external: true
-
-networks:
-  dokploy-network:
-    external: true
 
 services:
   file-sharer:
-    image: ghcr.io/ricdotnet/file-sharer:0.1.0
+    image: file-sharer:latest
     container_name: file-sharer
     restart: unless-stopped
+    ports:
+      - 3000:3000
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -22,5 +19,3 @@ services:
       - SECRET
     volumes:
       - file-sharer_bucket:/file-sharer/uploads
-    networks:
-      - dokploy-network
