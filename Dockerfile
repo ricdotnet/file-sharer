@@ -14,16 +14,13 @@ FROM node:24-alpine3.22 AS production
 
 WORKDIR /app
 
-RUN mkdir -p /file-sharer/uploads && chown -R node:node /file-sharer/uploads
-
 ARG NEW_VERSION
 RUN echo "$NEW_VERSION" > version
 
-COPY --from=builder --chown=node:node /builder/.output /app
+COPY --from=builder /builder/.output /app
 COPY --from=mwader/static-ffmpeg:7.1.1 /ffmpeg /usr/local/bin/
 COPY --from=mwader/static-ffmpeg:7.1.1 /ffprobe /usr/local/bin/
 
-USER node
 EXPOSE 3000
 
 ENTRYPOINT ["node", "./server/index.mjs"]
