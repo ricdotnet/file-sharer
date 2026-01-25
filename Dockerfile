@@ -14,6 +14,8 @@ FROM node:24-alpine3.22 AS production
 
 WORKDIR /app
 
+RUN mkdir -p /file-sharer/uploads && chown -R node:node /file-sharer/uploads
+
 ARG NEW_VERSION
 RUN echo "$NEW_VERSION" > version
 
