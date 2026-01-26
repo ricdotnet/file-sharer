@@ -1,9 +1,8 @@
-import assert from 'node:assert';
 import { exec } from 'node:child_process';
 import crypto from 'node:crypto';
+import fs from 'node:fs/promises';
 
 import { Logger } from '@ricdotnet/logger/dist/index.js';
-import formidable from 'formidable';
 
 import { MAX_FILE_SIZE, MAX_VIDEO_SIZE } from '~/utils/constants';
 import config from '~~/config';
@@ -20,25 +19,10 @@ export default defineEventHandler(async (event) => {
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
-  const multipart = formidable({
-    maxFileSize: MAX_VIDEO_SIZE,
-    uploadDir: config.UPLOADS_PATH(),
-    filename: (_, __, { originalFilename }) => {
-      const extension = originalFilename?.split('.').pop();
+  const files = await readMultipartFormData(event);
 
-      return `${uuid}.${extension}`;
-    },
-  });
-  const [fields, { file }] = await multipart.parse(event.node.req);
-
-  if (!file || !file.length) {
+  if (!files || !files.length) {
     Logger.get().error('No files uploaded');
-    return sendRedirect(event, '/error', 400);
-  }
-
-  // TODO: refactor and correct if wrong
-  if (file.length > 1) {
-    Logger.get().error('Tried to upload multiple files');
     return sendRedirect(event, '/error', 400);
   }
 
@@ -49,31 +33,35 @@ export default defineEventHandler(async (event) => {
     return sendRedirect(event, '/error', 400);
   }
 
-  // If isPrivate is not set, then it will be true by default, if it is set, we check for its bool value
-  const _isPrivate = fields.is_private ? fields.is_private[0] === 'true' : false;
+  const file = files.find(f => f.name === 'file');
+  if (!file || !file.data) {
+    Logger.get().error('No file uploaded');
+    return sendRedirect(event, '/error', 400);
+  }
 
-  assert(file[0]);
-  const isImage = file[0].mimetype?.startsWith('image/') ?? false;
-  const isVideo = file[0].mimetype?.startsWith('video/') ?? false;
+  const isImage = file.type?.startsWith('image/') || false;
+  const isVideo = file.type?.startsWith('video/') || false;
 
-  if (isVideo && file[0].size > MAX_VIDEO_SIZE) {
+  if (isVideo && file.data.length > MAX_VIDEO_SIZE) {
     Logger.get().error('Tried to upload a video larger than the allowed size');
     return sendRedirect(event, '/error', 400);
   }
 
-  if (!isVideo && file[0].size > MAX_FILE_SIZE) {
+  if (!isVideo && file.data.length > MAX_FILE_SIZE) {
     Logger.get().error('Tried to upload a file larger than the allowed size');
     return sendRedirect(event, '/error', 400);
   }
 
   // TODO: add mimetype to db
-  const fileName = file[0].newFilename;
-  const fileNameToStore = fields.file_name?.length ? fields.file_name[0] : file[0].originalFilename;
-  await createFile(tokenData!.id, fileNameToStore ?? 'NO_NAME', fileName, uuid, {
+  const fileName = file.filename ?? 'NO_NAME';
+  await createFile(tokenData!.id, fileName, uuid, uuid, {
     is_private: !isVideo && !isImage,
     is_image: isImage,
     is_video: isVideo,
   });
+
+  // TODO: write to temp folder, create thumbnail and remove
+  await fs.writeFile(`${config.UPLOADS_PATH()}/${fileName}`, file.data);
 
   // if is video generate thumbnail after writing the file
   if (isVideo) {
