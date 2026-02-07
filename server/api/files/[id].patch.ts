@@ -1,7 +1,8 @@
-import { H3Event } from 'h3';
-import { updateFileById } from '~~/server/utils/db';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
+import type { H3Event } from 'h3';
+
 import { isValidAuthentication } from '~~/server/utils/auth';
+import { updateFileById } from '~~/server/utils/db';
 
 export default defineEventHandler(async (event: H3Event) => {
   const { tokenData, error } = await isValidAuthentication(event);

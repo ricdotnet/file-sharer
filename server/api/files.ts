@@ -1,14 +1,15 @@
 import fs from 'fs/promises';
 import path from 'path';
-import type { IFile } from '~~/types';
-import config from '~~/config';
+
 import { Logger } from '@ricdotnet/logger/dist/index.js';
-import { findFilesByUserId, findThumbnailByMediaId } from '../utils/db';
+
+import config from '~~/config';
 import { isValidAuthentication } from '~~/server/utils/auth';
+import type { IFile } from '~~/types';
+
+import { findFilesByUserId, findThumbnailByMediaId } from '../utils/db';
 
 export default defineEventHandler(async (event) => {
-  const files: IFile[] = [];
-
   const { tokenData, error } = await isValidAuthentication(event);
 
   if (error) {
@@ -16,10 +17,10 @@ export default defineEventHandler(async (event) => {
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
-  const _files = await findFilesByUserId(tokenData!.id);
+  const files: IFile[] = [];
+  const fileRows = await findFilesByUserId(tokenData!.id) as any[];
 
-  // @ts-ignore
-  for (let file of _files) {
+  for (const file of fileRows) {
     const filePath = path.join(config.UPLOADS_PATH(), file.filename);
     let fileInfo;
 

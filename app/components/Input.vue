@@ -1,9 +1,9 @@
 <template>
-  <input class="input" :id="id" :name="name" :type="type || 'text'" :placeholder="placeholder" v-model="model" />
+  <input :id="id" v-model="model" class="input" :name="name" :type="type || 'text'" :placeholder="placeholder" >
 </template>
 
 <script setup lang="ts">
-  import type { InputTypeHTMLAttribute } from '@vue/runtime-dom';
+  import type { InputTypeHTMLAttribute } from 'vue';
 
   defineProps<{
     id: string;
@@ -12,7 +12,10 @@
     placeholder?: string;
   }>();
 
-  const model = defineModel();
+  const model = defineModel({
+    required: true,
+    type: String,
+  });
 </script>
 
 <style scoped>

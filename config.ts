@@ -1,15 +1,15 @@
 import { Logger } from '@ricdotnet/logger/dist/index.js';
+import { LogLevels } from '@ricdotnet/logger/dist/src/Constants';
 
 const logLevel = process.env.NODE_ENV === 'development'
-  ? 'debug'
-  : 'info';
+  ? LogLevels.DEBUG
+  : LogLevels.INFO;
 
-// @ts-ignore
 new Logger({ logToFile: true, level: logLevel });
 
 export default {
   UPLOADS_PATH: () => {
-    if (process.env.NODE_ENV === 'development') return 'server/uploads';
+    if (process.env.NODE_ENV === 'development') {return 'server/uploads';}
 
     return '/file-sharer/uploads';
   },

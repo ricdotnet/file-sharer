@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
 import axios from 'axios';
+import { defineStore } from 'pinia';
 
 export const useUserStore = defineStore('user', () => {
   const isAuthenticated = ref(false);
@@ -19,7 +19,7 @@ export const useUserStore = defineStore('user', () => {
 
       isAuthenticated.value = data.isAuthenticated;
       authToken.value = data.authToken;
-    } catch (_error) {
+    } catch {
       isAuthenticated.value = false;
       authToken.value = undefined;
     }

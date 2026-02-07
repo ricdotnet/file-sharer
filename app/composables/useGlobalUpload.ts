@@ -1,8 +1,10 @@
 import { ref } from 'vue';
-import { useUserStore, request } from '#imports';
+
+import assert from 'node:assert';
+
+import { request, useUserStore } from '#imports';
 
 const imageType = ref('');
-// biome-ignore lint/suspicious/noExplicitAny: allow any here
 const imageFile = ref<any>();
 const fileName = ref('');
 const isPreviewing = ref(false);
@@ -22,7 +24,6 @@ export const useGlobalUpload = () => {
     window.removeEventListener('keyup', keyUpHandler);
   };
 
-  // biome-ignore lint/suspicious/noExplicitAny: allow any here
   const keyDownHandler = async (e: any) => {
     if (!isMetaKeyPressed.value && (e.key === 'Meta' || e.key === 'Control')) {
       isMetaKeyPressed.value = true;
@@ -32,23 +33,25 @@ export const useGlobalUpload = () => {
         const items = await navigator.clipboard.read();
         for (const item of items) {
           const types = item.types.filter(t => t.includes('image/'));
-          if (types.length === 0) continue;
+          if (types.length === 0) {
+            continue;
+          }
 
+          assert(types[0]);
           const blob = await item.getType(types[0]);
 
-          imageType.value = types[0].split('/')[1];
+          imageType.value = types[0].split('/')[1] as 'png' | 'jpeg' | 'webp';
           imageFile.value = blob;
           fileName.value = `clipboard.${imageType.value}`;
 
           isPreviewing.value = true;
         }
-      } catch (err) {
+      } catch {
         // silently catch any error
       }
     }
   };
 
-  // biome-ignore lint/suspicious/noExplicitAny: allow any here
   const keyUpHandler = (e: any) => {
     if (isMetaKeyPressed.value && (e.key === 'Meta' || e.key === 'Control')) {
       isMetaKeyPressed.value = false;

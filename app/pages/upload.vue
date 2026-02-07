@@ -6,7 +6,7 @@
     </span>
 
     <span v-else>
-      <input class="file" ref="fileRef" id="file-select" type="file" name="file" @change="onChange" title=""/>
+      <input id="file-select" ref="fileRef" class="file" type="file" name="file" title="" @change="onChange">
       <label class="file-select" for="file-select" :data-selected="fileSelected">
         {{ filename }}
       </label>
@@ -17,11 +17,12 @@
 </template>
 
 <script setup lang="ts">
-import { type Target } from '~~/types';
+import type { AxiosProgressEvent } from 'axios';
+
 import { useDropdownArea, useToaster, useUserStore } from '#imports';
-import { type AxiosProgressEvent } from 'axios';
 import { MAX_FILE_SIZE, MAX_VIDEO_SIZE } from '~/utils/constants';
 import request from '~/utils/request';
+import type { Target } from '~~/types';
 
 const { authToken } = useUserStore();
 const { fileToUpload, setFileToUpload } = useDropdownArea();
@@ -112,7 +113,7 @@ async function onSubmit(event: Event) {
         progress.value = Math.round(percentComplete * 100);
       },
     });
-  } catch (_) {
+  } catch {
     addToast({
       type: 'error',
       message: 'Error while uploading file',

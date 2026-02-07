@@ -1,5 +1,6 @@
 import fsp from 'fs/promises';
 import path from 'path';
+
 import config from '~~/config';
 
 export const ensureDir = async (dir: string) => {
@@ -8,4 +9,4 @@ export const ensureDir = async (dir: string) => {
   } catch (error) {
     console.error(`Error creating directory ${path}:`, error);
   }
-}
+};

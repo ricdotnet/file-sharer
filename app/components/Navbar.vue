@@ -23,16 +23,17 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore, storeToRefs, useToaster } from '#imports';
-import request from '~/utils/request';
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/16/solid';
+
+import { storeToRefs, useToaster, useUserStore } from '#imports';
+import request from '~/utils/request';
 
 const userStore = useUserStore();
 const { addToast } = useToaster();
 const { isAuthenticated } = storeToRefs(userStore);
 
 const onGetApiTokenClick = async () => {
-  const { data } = await request(`/api/user/api-token`, {
+  const { data } = await request('/api/user/api-token', {
     headers: {
       Authorization: userStore.authToken,
     }
@@ -43,7 +44,7 @@ const onGetApiTokenClick = async () => {
     message: 'API Token copied to clipboard.',
     type: 'success',
   });
-}
+};
 </script>
 
 <style scoped>

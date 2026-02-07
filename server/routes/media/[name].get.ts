@@ -1,9 +1,11 @@
-import { H3Event } from 'h3';
-import { findFileByFilename } from '~~/server/utils/db';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
+
+import type { H3Event } from 'h3';
+
 import config from '~~/config';
+import { findFileByFilename } from '~~/server/utils/db';
 
 export default defineEventHandler(async (event: H3Event) => {
   const name = getRouterParam(event, 'name');

@@ -1,10 +1,8 @@
-import type { IFile } from '~~/types';
-import { generateToken, isValidAuthentication } from '~~/server/utils/auth';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 
-export default defineEventHandler(async (event) => {
-  const files: IFile[] = [];
+import { generateToken, isValidAuthentication } from '~~/server/utils/auth';
 
+export default defineEventHandler(async (event) => {
   const { tokenData, error } = await isValidAuthentication(event);
 
   if (error) {
@@ -13,7 +11,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (!tokenData) {
-    Logger.get().error(`Token data is missing`);
+    Logger.get().error('Token data is missing');
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 

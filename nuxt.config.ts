@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     enabled: true,
   },
 
-  modules: ['@pinia/nuxt', 'nuxt-cron', 'nuxt-api-shield'],
+  modules: ['@pinia/nuxt', 'nuxt-cron', 'nuxt-api-shield', '@nuxt/eslint'],
 
   cron: {
     timeZone: 'Europe/London',

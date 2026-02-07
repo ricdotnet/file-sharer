@@ -1,6 +1,6 @@
-import { findUserByUsername, findUserByEmail, createUser } from '~~/server/utils/db';
-import type { IUser } from '~~/server/utils/types';
+import { createUser,findUserByEmail, findUserByUsername } from '~~/server/utils/db';
 import { Messages } from '~~/server/utils/messages';
+import type { IUser } from '~~/server/utils/types';
 
 export default defineEventHandler(async (event) => {
   if (event.method !== 'POST') {

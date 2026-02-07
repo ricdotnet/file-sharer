@@ -4,7 +4,7 @@
     class="file"
     :style="{ '--x': `${x}px`, '--y': `${y}px` }"
   >
-    <img v-if="file.is_image || file.is_video" class="image" :src="getSourceUrl(file)" :alt="file.filename"/>
+    <img v-if="file.is_image || file.is_video" class="image" :src="getSourceUrl(file)" :alt="file.filename">
     <div class="card-title" :title="file.original_filename">
       {{ sliceTitle(file.original_filename) }}
     </div>
@@ -45,14 +45,6 @@
 </template>
 
 <script setup lang="ts">
-import type { IFile } from '~~/types';
-import {
-  useCopyUrlToClipboard,
-  useDate,
-  useFileStore,
-  useToaster,
-  useUserStore,
-} from '#imports';
 import {
   ArrowDownOnSquareIcon,
   CalendarDaysIcon,
@@ -60,9 +52,18 @@ import {
   ClipboardDocumentCheckIcon,
   LockClosedIcon,
   LockOpenIcon,
-  TrashIcon,
   PlayIcon,
+  TrashIcon,
 } from '@heroicons/vue/16/solid';
+
+import {
+  useCopyUrlToClipboard,
+  useDate,
+  useFileStore,
+  useToaster,
+  useUserStore,
+} from '#imports';
+import type { IFile } from '~~/types';
 
 const { authToken } = useUserStore();
 const { removeFile, updatePrivacy } = useFileStore();
@@ -125,7 +126,7 @@ async function onClickDelete(event: MouseEvent, id: number) {
       method: 'DELETE',
       headers: { authorization: authToken! },
     });
-  } catch (_) {
+  } catch {
     addToast({
       type: 'error',
       message: 'Error while trying to delete the file',
@@ -161,7 +162,7 @@ async function onClickLock(event: MouseEvent, id: number) {
       headers: { Authorization: authToken! },
       data: { is_private: !props.file.is_private },
     });
-  } catch (_) {
+  } catch {
     addToast({
       type: 'error',
       message: 'Error while trying to lock or unlock the file',
@@ -181,7 +182,7 @@ async function onClickLock(event: MouseEvent, id: number) {
 }
 
 async function copyLinkToClipboard() {
-  const linkToCopy = `/api/download/${props.file.filename}${props.file.is_private ? '?digest=' + props.file.digest : ''}`
+  const linkToCopy = `/api/download/${props.file.filename}${props.file.is_private ? '?digest=' + props.file.digest : ''}`;
 
   try {
     await useCopyUrlToClipboard().copy(linkToCopy);

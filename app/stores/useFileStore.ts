@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import type { IFile } from '~~/types';
+
 import { useUserStore } from '#imports';
+import type { IFile } from '~~/types';
 
 export const useFileStore = defineStore('file', () => {
   const files = ref<IFile[]>([]);

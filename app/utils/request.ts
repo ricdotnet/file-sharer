@@ -1,4 +1,5 @@
 import axios, { type AxiosResponse } from 'axios';
+
 import { useUserStore } from '#imports';
 
 const axiosInstance = axios.create({

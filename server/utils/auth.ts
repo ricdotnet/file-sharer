@@ -1,5 +1,10 @@
-import type { TUserAuthenticatedTokenPayload } from './types';
+import crypto from 'crypto';
+
+import { Logger } from '@ricdotnet/logger/dist/index.js';
+import type { H3Event } from 'h3';
 import jwt from 'jsonwebtoken';
+import type { StringValue } from 'ms';
+
 import {
   API_TOKEN_EXPIRE,
   AUTH_TOKEN_EXPIRE,
@@ -7,13 +12,12 @@ import {
   COOKIE_NAME,
   REFRESH_TOKEN_EXPIRE,
 } from '~/utils/constants';
-import crypto from 'crypto';
-import type { H3Event } from 'h3';
+
 import { findCookie, saveCookie, updateCookie } from './db';
-import { Logger } from '@ricdotnet/logger/dist/index.js';
+import type { TUserAuthenticatedTokenPayload } from './types';
 
 export function generateToken(
-  payload: TUserAuthenticatedTokenPayload | {},
+  payload: TUserAuthenticatedTokenPayload | object,
   type: 'auth' | 'refresh' | 'api' = 'auth'
 ): string {
   const secret = process.env.SECRET;
@@ -22,7 +26,7 @@ export function generateToken(
     throw new Error('Missing secret');
   }
 
-  let expire;
+  let expire: StringValue;
   switch (type) {
     case 'refresh':
       expire = REFRESH_TOKEN_EXPIRE;
@@ -34,7 +38,6 @@ export function generateToken(
       expire = AUTH_TOKEN_EXPIRE;
   }
 
-  // @ts-ignore
   return jwt.sign(payload, secret, { expiresIn: expire });
 }
 

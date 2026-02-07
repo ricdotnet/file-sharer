@@ -10,15 +10,20 @@
     </div>
   </div> -->
   <div>
-    <div class="no-files" v-if="!filteredFiles().length"> You have no files stored with us.</div>
+    <div v-if="!filteredFiles().length" class="no-files"> You have no files stored with us.</div>
 
     <div class="filter-wrapper">
-      <Input v-if="filteredFiles().length" name="filter" id="filter" v-model="filterInput"
-             placeholder="Filter your files"/>
+      <Input
+        v-if="filteredFiles().length"
+        id="filter"
+        v-model="filterInput"
+        name="filter"
+        placeholder="Filter your files"
+      />
     </div>
 
     <div v-if="view === 'grid'" class="files-container">
-      <FileCard v-for="file in filteredFiles(filter)" :file="file"/>
+      <FileCard v-for="file in filteredFiles(filter)" :key="file.id" :file="file"/>
     </div>
     <div v-else>
       List view coming soon!
@@ -27,8 +32,8 @@
 </template>
 
 <script setup lang="ts">
-import FileCard from '~/components/FileCard.vue';
 import { useDebounce, useFileStore, watch } from '#imports';
+import FileCard from '~/components/FileCard.vue';
 import Input from '~/components/Input.vue';
 
 type View = 'grid' | 'list';

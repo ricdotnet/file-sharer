@@ -1,6 +1,8 @@
-import type { H3Event } from 'h3';
 import fsp from 'node:fs/promises';
 import path from 'path';
+
+import type { H3Event } from 'h3';
+
 import config from '~~/config';
 
 export default defineEventHandler(async (event: H3Event) => {

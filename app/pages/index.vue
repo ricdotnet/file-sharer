@@ -1,11 +1,11 @@
 <template>
   <ClientOnly>
-    <Files/>
+    <FileList/>
   </ClientOnly>
 </template>
 
 <script setup lang="ts">
-import Files from '~/components/Files.vue';
+import FileList from '~/components/FileList.vue';
 
 useHead({
   title: 'Your files',

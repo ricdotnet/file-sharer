@@ -2,24 +2,25 @@
   <div class="container">
     <Navbar/>
     <slot/>
+
+    <Transition name="toast" mode="out-in">
+      <div v-if="toasts.length > 0 && toasts[0]" class="toast" @click="removeToast">
+        <ExclamationCircleIcon v-if="toasts[0].type === 'error'" class="icon"/>
+        <InformationCircleIcon v-else-if="toasts[0].type === 'info'" class="icon"/>
+        <CheckCircleIcon v-else class="icon"/>
+
+        {{ toasts[0].message }}
+
+        <div class="hiding-timer" style="--duration: 5;"/>
+      </div>
+    </Transition>
   </div>
-
-  <Transition name="toast" mode="out-in">
-    <div v-if="toasts.length > 0" class="toast" @click="removeToast">
-      <ExclamationCircleIcon class="icon" v-if="toasts[0].type === 'error'"/>
-      <InformationCircleIcon class="icon" v-else-if="toasts[0].type === 'info'"/>
-      <CheckCircleIcon class="icon" v-else/>
-
-      {{ toasts[0].message }}
-
-      <div class="hiding-timer" style="--duration: 5;"></div>
-    </div>
-  </Transition>
 </template>
 
 <script setup lang="ts">
+import { CheckCircleIcon, ExclamationCircleIcon, InformationCircleIcon } from '@heroicons/vue/16/solid';
+
 import { useToaster } from '~/composables/useToaster';
-import { CheckCircleIcon, ExclamationCircleIcon, InformationCircleIcon } from "@heroicons/vue/16/solid";
 
 const { removeToast, toasts } = useToaster();
 </script>

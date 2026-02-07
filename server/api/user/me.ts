@@ -1,8 +1,9 @@
-import { COOKIE_NAME } from '~/utils/constants';
-import type { ICookie, TUserAuthenticatedTokenPayload, TUserResult } from '~~/server/utils/types';
-import { generateCookie, generateToken } from '~~/server/utils/auth';
 import { Logger } from '@ricdotnet/logger/dist/index.js';
+
+import { COOKIE_NAME } from '~/utils/constants';
+import { generateCookie, generateToken } from '~~/server/utils/auth';
 import { findCookie, findUserById } from '~~/server/utils/db';
+import type { ICookie, TUserAuthenticatedTokenPayload, TUserResult } from '~~/server/utils/types';
 
 export default defineEventHandler(async (event) => {
   const isRefresh = true;

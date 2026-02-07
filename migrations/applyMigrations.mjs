@@ -1,5 +1,6 @@
 import fs from 'fs';
-import { createConnection } from "mysql2/promise";
+
+import { createConnection } from 'mysql2/promise';
 
 const access = {
   user: process.env.DB_USER,

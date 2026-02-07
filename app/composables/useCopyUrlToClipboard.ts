@@ -7,4 +7,4 @@ export const useCopyUrlToClipboard = () => {
   };
 
   return { copy };
-}
+};

@@ -1,5 +1,5 @@
 <template>
-  <template v-if="loadingFile"> Loading ....</template>
+  <div v-if="loadingFile">Loading ....</div>
   <div v-else class="content">
     <span v-if="!isImage && !isVideo"> Could not display this file. </span>
     <div v-else-if="isVideo" class="video-container">
@@ -8,12 +8,12 @@
         preload="metadata"
         :poster="poster"
         controls
-      ></video>
+      />
     </div>
     <div v-else-if="isImage">
-      <img :src="`/api/download/${filenameSrc}`" alt="File"/>
+      <img :src="`/api/download/${filenameSrc}`" alt="File">
     </div>
-    <div class="buttons-row" v-if="isImage || isVideo">
+    <div v-if="isImage || isVideo" class="buttons-row">
       <Button label="Share" @click="onClickShare"/>
       <Button v-if="isAuthenticated && canDelete" label="Delete" @click="(e: MouseEvent) => onClickDelete(e, fileId)"/>
     </div>
@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from '#vue-router';
 import { useRequestHeaders } from '#app/composables/ssr';
-import { useUserStore } from '~/stores/useUserStore';
-import { useToaster } from '~/composables/useToaster';
 import { storeToRefs } from '#imports';
+import { useRoute } from '#vue-router';
+import { useToaster } from '~/composables/useToaster';
+import { useUserStore } from '~/stores/useUserStore';
 import type { IFile } from '~~/types';
 
 const loadingFile = ref(true);
@@ -91,7 +91,7 @@ async function onClickDelete(event: MouseEvent, id: number) {
       method: 'DELETE',
       headers: { authorization: authToken! },
     });
-  } catch (_) {
+  } catch {
     addToast({
       type: 'error',
       message: 'Error while trying to delete the file',
@@ -100,7 +100,7 @@ async function onClickDelete(event: MouseEvent, id: number) {
     return;
   }
 
-  await navigateTo('/');
+  navigateTo('/');
 }
 
 if (import.meta.server) {
@@ -114,8 +114,8 @@ if (import.meta.server) {
     canDelete.value = response.canDelete;
 
     const seoMeta = {
-      title: `File Sharer`,
-      ogTitle: `File Sharer`,
+      title: 'File Sharer',
+      ogTitle: 'File Sharer',
       description: response.original_filename,
       ogDescription: response.original_filename,
     };

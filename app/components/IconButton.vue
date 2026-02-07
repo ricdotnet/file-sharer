@@ -1,6 +1,6 @@
 <template>
   <button class="button">
-    <slot></slot>
+    <slot/>
   </button>
 </template>
 

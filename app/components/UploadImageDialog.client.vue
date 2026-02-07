@@ -2,13 +2,13 @@
   <div v-if="isOpen" class="overlay">
     <div class="dialog">
       <div class="dialog__content">
-        <img class="image-preview" src="" ref="previewRef" :alt="fileName"/>
+        <img ref="previewRef" class="image-preview" src="" :alt="fileName">
       </div>
     </div>
 
     <div class="actions">
-      <Button @click="doUploadFile" label="Upload" :is-actioning="isUploading"/>
-      <Button @click="closeDialog" label="Close" :disabled="isUploading"/>
+      <Button label="Upload" :is-actioning="isUploading" @click="doUploadFile"/>
+      <Button label="Close" :disabled="isUploading" @click="closeDialog"/>
     </div>
   </div>
 </template>

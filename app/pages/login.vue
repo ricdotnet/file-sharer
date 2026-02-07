@@ -5,12 +5,12 @@
 
       <div class="input-group">
         <label for="username">Username</label>
-        <input ref="usernameInput" id="username"/>
+        <input id="username" ref="usernameInput">
       </div>
 
       <div class="input-group">
         <label for="password">Password</label>
-        <input ref="passwordInput" id="password" type="password"/>
+        <input id="password" ref="passwordInput" type="password">
       </div>
 
       <Button type="submit" label="Login" :is-actioning="isLoggingIn"/>
@@ -20,10 +20,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import Button from '~/components/Button.vue';
-import { useAsyncData, useToaster, useUserStore } from '#imports';
 
-const { setIsAuthenticated, setAuthToken, isAuthenticated } = useUserStore();
+import { useAsyncData, useToaster, useUserStore } from '#imports';
+import Button from '~/components/Button.vue';
+
+const { setIsAuthenticated, setAuthToken } = useUserStore();
 const { addToast } = useToaster();
 
 const isLoggingIn = ref(false);
