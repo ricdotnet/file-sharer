@@ -28,7 +28,7 @@
     "@pinia/nuxt": "latest",
     "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^24.0.15",
+    "@types/node": "^25.2.1",
     "nuxt": "^4.3.0",
     "vite-tsconfig-paths": "^6.0.5"
   }
