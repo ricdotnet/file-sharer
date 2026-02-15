@@ -16,7 +16,7 @@
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
     "@ricdotnet/logger": "^0.3.3",
-    "argon2": "^0.41.1",
+    "argon2": "^0.44.0",
     "axios": "1.12.0",
     "formidable": "3.5.4",
     "jsonwebtoken": "^9.0.3",
