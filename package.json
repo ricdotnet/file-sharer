@@ -36,6 +36,6 @@
     "eslint-config-ricdotnet": "github:ricdotnet-org/eslint-config-ricdotnet",
     "nuxt": "^4.3.0",
     "typescript": "^5.9.3",
-    "vite-tsconfig-paths": "^6.0.5"
+    "vite-tsconfig-paths": "^6.1.0"
   }
 }
