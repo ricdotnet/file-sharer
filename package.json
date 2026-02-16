@@ -17,7 +17,7 @@
     "@heroicons/vue": "^2.2.0",
     "@ricdotnet/logger": "^0.3.3",
     "argon2": "^0.44.0",
-    "axios": "1.12.0",
+    "axios": "1.13.5",
     "formidable": "3.5.4",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.17.2",
