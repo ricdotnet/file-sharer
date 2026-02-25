@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "3.2.1",
-    "@nuxt/eslint": "^1.14.0",
+    "@nuxt/eslint": "^1.15.1",
     "@pinia/nuxt": "latest",
     "@types/formidable": "^3.4.6",
     "@types/jsonwebtoken": "^9.0.10",
