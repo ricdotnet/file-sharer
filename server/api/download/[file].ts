@@ -80,11 +80,11 @@ export default defineEventHandler(async (event: H3Event) => {
     isVideo = fileResult.is_video;
     originalFilename = fileResult.original_filename;
 
-    file = await fs.readFile(path.join(config.UPLOADS_PATH(), filename));
+    file = await fs.readFile(path.join(config.UPLOADS_PATH(), originalFilename));
   }
 
   if (!file) {
-    Logger.get().warn(`File not found in the file system: ${filename}`);
+    Logger.get().warn(`File not found in the file system: ${originalFilename}`);
     return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
   }
 
@@ -94,7 +94,7 @@ export default defineEventHandler(async (event: H3Event) => {
       'content-length': file.length,
     });
   } else if (isVideo) {
-    const fileStat = await fs.stat(path.join(config.UPLOADS_PATH(), filename));
+    const fileStat = await fs.stat(path.join(config.UPLOADS_PATH(), originalFilename));
 
     const fileSize = fileStat.size;
     const rangeHeader = getRequestHeader(event, 'range');

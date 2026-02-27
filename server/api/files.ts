@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   const fileRows = await findFilesByUserId(tokenData!.id) as any[];
 
   for (const file of fileRows) {
-    const filePath = path.join(config.UPLOADS_PATH(), file.filename);
+    const filePath = path.join(config.UPLOADS_PATH(), file.original_filename);
     let fileInfo;
 
     try {
