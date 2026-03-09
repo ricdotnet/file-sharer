@@ -29,7 +29,7 @@
     "@nuxt/devtools": "3.2.2",
     "@nuxt/eslint": "^1.15.1",
     "@pinia/nuxt": "latest",
-    "@types/formidable": "^3.4.6",
+    "@types/formidable": "^3.5.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.3.3",
     "eslint": "^9.39.2",
