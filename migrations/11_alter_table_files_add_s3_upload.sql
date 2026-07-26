@@ -1,0 +1,1 @@
+ALTER TABLE files ADD COLUMN `s3_upload` BOOLEAN NOT NULL DEFAULT false;

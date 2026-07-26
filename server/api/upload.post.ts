@@ -4,7 +4,9 @@ import fs from 'node:fs/promises';
 
 import { Logger } from '@ricdotnet/logger/dist/index.js';
 
+import { buildObjectKey, s3Client } from '#server/utils/s3';
 import { MAX_FILE_SIZE, MAX_VIDEO_SIZE } from '~/utils/constants';
+import { fileTypeFromMimeType } from '~~/common/fileType';
 import config from '~~/config';
 import { isValidAuthentication } from '~~/server/utils/auth';
 import { createFile, createThumbnail, findFileByUuid } from '~~/server/utils/db';
@@ -60,11 +62,24 @@ export default defineEventHandler(async (event) => {
     is_video: isVideo,
   });
 
-  // TODO: write to temp folder, create thumbnail and remove
-  await fs.writeFile(`${config.UPLOADS_PATH()}/${fileName}`, file.data);
+  try {
+    const fileType = fileTypeFromMimeType(file.type || 'Unknown');
+    const fileBuffer = Buffer.from(file.data);
+    await s3Client.putObject({
+      Bucket: process.env.AWS_S3_BUCKET_NAME!,
+      Key: buildObjectKey(fileType, uuid),
+      Body: fileBuffer,
+      ContentType: file.type,
+    });
+  } catch (error) {
+    Logger.get().error(`Error uploading file to s3: ${error}`);
+  }
 
   // if is video generate thumbnail after writing the file
   if (isVideo) {
+    // TODO: write to temp folder, create thumbnail and remove
+    await fs.writeFile(`${config.UPLOADS_PATH()}/${fileName}`, file.data);
+
     await ensureDir('thumbnails');
 
     const thumbnailPath = `${config.UPLOADS_PATH()}/thumbnails/${uuid}-thumbnail.png`;
