@@ -6,6 +6,7 @@ import type { IFile } from '~~/types';
 export const useFileStore = defineStore('file', () => {
   const files = ref<IFile[]>([]);
   const userStore = useUserStore();
+  const isMediaFilter = ref(false);
 
   async function fetchFiles() {
     if (!userStore.authToken) {
@@ -37,12 +38,21 @@ export const useFileStore = defineStore('file', () => {
   }
 
   function filteredFiles(filter?: string) {
+    const filtered = files.value.filter((file) => {
+      if (!isMediaFilter.value) { return !file.is_video && !file.is_image; }
+      return file.is_image || file.is_video;
+    });
+
     if (!filter || filter.length === 0) {
-      return files.value;
+      return filtered;
     }
 
-    return files.value.filter((file) => file.original_filename.includes(filter));
+    return filtered.filter((file) => file.original_filename.includes(filter));
   }
 
-  return { filteredFiles, fetchFiles, removeFile, updatePrivacy };
+  function updateMediaFilter() {
+    isMediaFilter.value = !isMediaFilter.value;
+  }
+
+  return { filteredFiles, fetchFiles, removeFile, updateMediaFilter, updatePrivacy };
 });

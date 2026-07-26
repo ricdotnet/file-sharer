@@ -79,7 +79,7 @@ async function createUser(username: string, password: string, email: string) {
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare(
-      'INSERT INTO users (username, password, email) VALUES (?, ?, ?)'
+      'INSERT INTO users (username, password, email) VALUES (?, ?, ?)',
     );
     await preparedStatement.execute([username, hashedPass, email]);
   } catch (err: any) {
@@ -95,7 +95,7 @@ async function createFile(
   ogName: string,
   fileName: string,
   uuid: string,
-  options: { is_private: boolean; is_image: boolean; is_video: boolean }
+  options: { is_private: boolean; is_image: boolean; is_video: boolean },
 ) {
   let conn;
   const digest = randomBytes(8).toString('hex');
@@ -103,7 +103,7 @@ async function createFile(
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare(
-      'INSERT INTO files (owner, original_filename, filename, is_private, is_image, is_video, uuid, digest) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+      'INSERT INTO files (owner, original_filename, filename, is_private, is_image, is_video, uuid, digest) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
     );
     await preparedStatement.execute([
       userId,
@@ -129,7 +129,7 @@ async function createThumbnail(name: string, mediaId: number) {
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare(
-      'INSERT INTO thumbnails (name, media_id) VALUES (?, ?)'
+      'INSERT INTO thumbnails (name, media_id) VALUES (?, ?)',
     );
     await preparedStatement.execute([name, mediaId]);
   } catch (err: any) {
@@ -239,10 +239,10 @@ async function deleteFileById(owner: number, id: number) {
     conn = await db.getConnection();
     [rows] = await conn.query(
       'SELECT * FROM files WHERE id = ? and owner = ?',
-      [id, owner]
+      [id, owner],
     );
     const preparedStatement = await conn.prepare(
-      'DELETE FROM files WHERE id = ? and owner = ?'
+      'DELETE FROM files WHERE id = ? and owner = ?',
     );
     await preparedStatement.execute([id, owner]);
   } catch (err: any) {
@@ -261,7 +261,7 @@ async function updateFileById(owner: number, id: number, isPrivate: boolean) {
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare(
-      'UPDATE files SET is_private = ? WHERE owner = ? and id = ?'
+      'UPDATE files SET is_private = ? WHERE owner = ? and id = ?',
     );
     await preparedStatement.execute([isPrivate, owner, id]);
   } catch (err: any) {
@@ -278,7 +278,7 @@ async function saveCookie(owner: number, cookie: string, refreshToken: string) {
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare(
-      'INSERT INTO cookies (owner, value, expires, refresh_token) VALUES (?, ?, ?, ?)'
+      'INSERT INTO cookies (owner, value, expires, refresh_token) VALUES (?, ?, ?, ?)',
     );
     await preparedStatement.execute([
       owner,
@@ -297,14 +297,14 @@ async function saveCookie(owner: number, cookie: string, refreshToken: string) {
 async function updateCookie(
   oldCookie: string,
   cookie: string,
-  refreshToken: string
+  refreshToken: string,
 ) {
   let conn;
 
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare(
-      'UPDATE cookies SET value = ?, expires = ?, refresh_token = ? WHERE value = ?'
+      'UPDATE cookies SET value = ?, expires = ?, refresh_token = ? WHERE value = ?',
     );
     await preparedStatement.execute([
       cookie,
@@ -326,7 +326,7 @@ async function deleteCookieByValue(value: string) {
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare(
-      'DELETE FROM cookies WHERE value = ?'
+      'DELETE FROM cookies WHERE value = ?',
     );
     await preparedStatement.execute([value]);
   } catch (err: any) {
@@ -362,7 +362,7 @@ async function clearExpiredCookies() {
   try {
     conn = await db.getConnection();
     await conn.query(
-      'DELETE FROM cookies WHERE expires < NOW() - INTERVAL 1 HOUR'
+      'DELETE FROM cookies WHERE expires < NOW() - INTERVAL 1 HOUR',
     );
   } catch (err: any) {
     Logger.get().error(`Error in clearExpiredCookies: ${err.message}`);

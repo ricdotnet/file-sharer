@@ -13,7 +13,7 @@
         <input id="password" ref="passwordInput" type="password">
       </div>
 
-      <Button type="submit" label="Login" :is-actioning="isLoggingIn"/>
+      <Button type="submit" label="Login" :is-actioning="isLoggingIn" />
     </form>
   </div>
 </template>

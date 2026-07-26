@@ -1,5 +1,5 @@
 <template>
-  <!-- <div class="icons">
+  <div class="icons">
     <IconButton @click="view = 'grid'">
       <TableCellsIcon class="icon" :class="view === 'grid' ? 'active-view' : ''" />
     </IconButton>
@@ -8,42 +8,47 @@
         <ListBulletIcon class="icon" :class="view === 'list' ? 'active-view' : ''" />
       </IconButton>
     </div>
-  </div> -->
+  </div>
   <div>
     <div v-if="!filteredFiles().length" class="no-files"> You have no files stored with us.</div>
 
     <div class="filter-wrapper">
-      <Input
-        v-if="filteredFiles().length"
-        id="filter"
-        v-model="filterInput"
-        name="filter"
-        placeholder="Filter your files"
-      />
+      <Input v-if="filteredFiles().length" id="filter" v-model="filterInput" name="filter"
+        placeholder="Filter your files" />
+      <Button label="Media" @click="onClickMediaFilterButton" />
     </div>
 
     <div v-if="view === 'grid'" class="files-container">
-      <FileCard v-for="file in filteredFiles(filter)" :key="file.id" :file="file"/>
+      <FileCard v-for="file in filteredFiles(filter)" :key="file.id" :file="file" />
     </div>
     <div v-else>
-      List view coming soon!
+      <div v-for="file in filteredFiles(filter)" :key="file.id">
+        {{ file }}
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import {
+  ListBulletIcon,
+  TableCellsIcon
+} from '@heroicons/vue/16/solid';
+
 import { useDebounce, useFileStore, watch } from '#imports';
 import FileCard from '~/components/FileCard.vue';
+import IconButton from '~/components/IconButton.vue';
 import Input from '~/components/Input.vue';
 
 type View = 'grid' | 'list';
 
 const view = ref<View>('grid');
-const filterInput = ref();
+const filterInput = ref('');
 const filter = ref('');
 
-const { filteredFiles, fetchFiles } = useFileStore();
+const { filteredFiles, fetchFiles, updateMediaFilter } = useFileStore();
 
+const config = useRuntimeConfig();
 const debounce = useDebounce();
 
 onBeforeMount(async () => {
@@ -55,6 +60,10 @@ watch(filterInput, () => {
     filter.value = filterInput.value;
   });
 });
+
+function onClickMediaFilterButton() {
+  updateMediaFilter();
+}
 </script>
 
 <style scoped>
@@ -106,5 +115,7 @@ watch(filterInput, () => {
 
 .filter-wrapper {
   margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
 }
 </style>
