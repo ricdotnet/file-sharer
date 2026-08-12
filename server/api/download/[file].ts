@@ -36,7 +36,6 @@ export default defineEventHandler(async (event: H3Event) => {
   } else {
     filename = decodeURI(filename);
 
-    // biome-ignore lint/suspicious/noExplicitAny: allow any
     const [fileResult] = (await findFileByFilename(filename)) as any[];
     if (!fileResult) {
       return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
@@ -80,11 +79,22 @@ export default defineEventHandler(async (event: H3Event) => {
     isVideo = fileResult.is_video;
     originalFilename = fileResult.original_filename;
 
-    file = await fs.readFile(path.join(config.UPLOADS_PATH(), filename));
+    if (fileResult.s3_upload) {
+      const s3Object = await s3Client.getObject({ Bucket: process.env.AWS_S3_BUCKET_NAME!, Key: originalFilename });
+      const s3Buffer = await s3Object.Body?.transformToByteArray();
+      if (!s3Buffer) {
+        Logger.get().warn(`File not found in S3: ${originalFilename}`);
+        return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
+      }
+
+      file = Buffer.from(s3Buffer);
+    } else {
+      file = await fs.readFile(path.join(config.UPLOADS_PATH(), originalFilename));
+    }
   }
 
   if (!file) {
-    Logger.get().warn(`File not found in the file system: ${filename}`);
+    Logger.get().warn(`File not found in the file system: ${originalFilename}`);
     return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
   }
 
@@ -94,7 +104,7 @@ export default defineEventHandler(async (event: H3Event) => {
       'content-length': file.length,
     });
   } else if (isVideo) {
-    const fileStat = await fs.stat(path.join(config.UPLOADS_PATH(), filename));
+    const fileStat = await fs.stat(path.join(config.UPLOADS_PATH(), originalFilename));
 
     const fileSize = fileStat.size;
     const rangeHeader = getRequestHeader(event, 'range');

@@ -103,7 +103,7 @@ async function createFile(
   try {
     conn = await db.getConnection();
     const preparedStatement = await conn.prepare(
-      'INSERT INTO files (owner, original_filename, filename, is_private, is_image, is_video, uuid, digest) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+      'INSERT INTO files (owner, original_filename, filename, is_private, is_image, is_video, uuid, digest, s3_upload) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)'
     );
     await preparedStatement.execute([
       userId,
