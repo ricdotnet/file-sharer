@@ -35,6 +35,10 @@
         label="Media"
         @click="onClickMediaFilterButton"
       />
+      <Button
+        v-if="selectedFiles().length > 0"
+        :label="`Delete (${selectedFiles().length})`"
+      />
     </div>
 
     <div
@@ -72,7 +76,8 @@
   const filterInput = ref('');
   const filter = ref('');
 
-  const { filteredFiles, fetchFiles, updateMediaFilter } = useFileStore();
+  const { filteredFiles, fetchFiles, updateMediaFilter, selectedFiles } =
+    useFileStore();
 
   const config = useRuntimeConfig();
   const debounce = useDebounce();
