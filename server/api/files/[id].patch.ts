@@ -8,8 +8,7 @@ export default defineEventHandler(async (event: H3Event) => {
   const { tokenData, error } = await isValidAuthentication(event);
 
   if (error) {
-    Logger.get()
-          .error(`Error occurred: ${error}`);
+    Logger.get().error(`Error occurred: ${error}`);
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 

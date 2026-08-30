@@ -46,7 +46,7 @@ export default defineEventHandler(async (event: H3Event) => {
       const cookie = getCookie(event, 'file-sharer');
       if (!cookie) {
         Logger.get().warn(
-          `User tried to access private file ${filename} without a cookie`
+          `User tried to access private file ${filename} without a cookie`,
         );
         return createError({
           statusCode: 404,
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event: H3Event) => {
       const [cookieResult] = (await findCookie(cookie)) as ICookie[];
       if (!cookieResult) {
         Logger.get().warn(
-          `User tried to access private file ${filename} with an invalid cookie`
+          `User tried to access private file ${filename} with an invalid cookie`,
         );
         return createError({
           statusCode: 404,
@@ -67,7 +67,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
       if (cookieResult.owner !== fileResult.owner) {
         Logger.get().warn(
-          `User ${cookieResult.owner} tried to access file ${filename} owned by ${fileResult.owner}`
+          `User ${cookieResult.owner} tried to access file ${filename} owned by ${fileResult.owner}`,
         );
         return createError({
           statusCode: 404,

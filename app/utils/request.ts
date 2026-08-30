@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.response.use(
-  response => response,
+  (response) => response,
   async (response: AxiosResponse) => {
     const originalRequestConfig = response.config;
 
@@ -26,3 +26,4 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
+

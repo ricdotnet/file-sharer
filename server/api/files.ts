@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const files: IFile[] = [];
-  const fileRows = await findFilesByUserId(tokenData!.id) as any[];
+  const fileRows = (await findFilesByUserId(tokenData!.id)) as any[];
 
   for (const file of fileRows) {
     const filePath = path.join(config.UPLOADS_PATH(), file.filename);
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
     }
 
     if (file.is_video) {
-      const [thumbnail] = await findThumbnailByMediaId(file.id) as any[];
+      const [thumbnail] = (await findThumbnailByMediaId(file.id)) as any[];
 
       if (thumbnail) {
         file.thumbnail = thumbnail.name;

@@ -1,6 +1,8 @@
 export default defineNuxtRouteMiddleware((to, _from) => {
   if (to.fullPath.includes('/upload')) {
-    if (import.meta.server) {return navigateTo('/');}
+    if (import.meta.server) {
+      return navigateTo('/');
+    }
 
     const authKey = localStorage.getItem('auth-key');
 

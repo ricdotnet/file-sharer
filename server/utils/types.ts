@@ -13,4 +13,7 @@ export interface ICookie {
 
 export type TUserResult = IUser & { id: number };
 export type TUserAuthenticatedTokenPayload = Omit<TUserResult, 'password'>;
-export type TUserAuthenticated = Omit<IUser, 'password'> & { id: number, token: string };
+export type TUserAuthenticated = Omit<IUser, 'password'> & {
+  id: number;
+  token: string;
+};

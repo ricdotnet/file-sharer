@@ -14,9 +14,11 @@ export default defineEventHandler(async (event: H3Event) => {
     return;
   }
 
-  const [fileMetadata] = await findFileByFilename(name) as any[];
+  const [fileMetadata] = (await findFileByFilename(name)) as any[];
 
-  const fileStat = await fsp.stat(path.join(config.UPLOADS_PATH(), fileMetadata.filename));
+  const fileStat = await fsp.stat(
+    path.join(config.UPLOADS_PATH(), fileMetadata.filename),
+  );
   const fileSize = fileStat.size;
   const rangeHeader = getRequestHeader(event, 'range') ?? '';
 
@@ -26,7 +28,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
   // Credit to CHATGIPITTY
   const match = rangeHeader.match(/bytes=(\d+)-(\d*)/) as Array<string> | null;
-  const options: { start?: number; end?: number; } = {};
+  const options: { start?: number; end?: number } = {};
 
   if (match) {
     const start = parseInt(match[1] as string, 10);
@@ -49,5 +51,8 @@ export default defineEventHandler(async (event: H3Event) => {
     'Access-Control-Allow-Origin': '*',
   });
 
-  return fs.createReadStream(path.join(config.UPLOADS_PATH(), fileMetadata.filename), options);
+  return fs.createReadStream(
+    path.join(config.UPLOADS_PATH(), fileMetadata.filename),
+    options,
+  );
 });

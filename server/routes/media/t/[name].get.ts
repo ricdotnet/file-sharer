@@ -12,7 +12,9 @@ export default defineEventHandler(async (event: H3Event) => {
     return;
   }
 
-  const thumbnail = await fsp.readFile(path.join(config.UPLOADS_PATH(), 'thumbnails', name));
+  const thumbnail = await fsp.readFile(
+    path.join(config.UPLOADS_PATH(), 'thumbnails', name),
+  );
 
   setResponseHeaders(event, {
     'Content-Length': thumbnail.length,

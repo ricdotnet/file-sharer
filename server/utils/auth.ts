@@ -18,7 +18,7 @@ import type { TUserAuthenticatedTokenPayload } from './types';
 
 export function generateToken(
   payload: TUserAuthenticatedTokenPayload | object,
-  type: 'auth' | 'refresh' | 'api' = 'auth'
+  type: 'auth' | 'refresh' | 'api' = 'auth',
 ): string {
   const secret = process.env.SECRET;
 
@@ -44,7 +44,7 @@ export function generateToken(
 export async function generateCookie(
   event: H3Event,
   userId: number,
-  isRefresh = false
+  isRefresh = false,
 ) {
   const cookie = crypto.randomBytes(16).toString('hex');
 

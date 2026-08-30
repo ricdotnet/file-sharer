@@ -12,8 +12,7 @@ export default defineEventHandler(async (event: H3Event) => {
   const { tokenData, error } = await isValidAuthentication(event);
 
   if (error) {
-    Logger.get()
-          .error(`Error occurred: ${error}`);
+    Logger.get().error(`Error occurred: ${error}`);
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
@@ -23,12 +22,16 @@ export default defineEventHandler(async (event: H3Event) => {
     return;
   }
 
-  const [file] = await deleteFileById(tokenData!.id, +id) as any[];
+  const [file] = (await deleteFileById(tokenData!.id, +id)) as any[];
   const filePath = path.join(config.UPLOADS_PATH(), file.filename);
   await fs.rm(filePath);
 
   if (file.is_video) {
-    const thumbnailPath = path.join(config.UPLOADS_PATH(), 'thumbnails', `${file.uuid}-thumbnail.png`);
+    const thumbnailPath = path.join(
+      config.UPLOADS_PATH(),
+      'thumbnails',
+      `${file.uuid}-thumbnail.png`,
+    );
     await fs.rm(thumbnailPath);
   }
 

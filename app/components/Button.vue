@@ -1,6 +1,12 @@
 <template>
-  <button class="button" :disabled="disabled || isActioning">
-    <Spinner v-if="isActioning" class="spinner" />
+  <button
+    class="button"
+    :disabled="disabled || isActioning"
+  >
+    <Spinner
+      v-if="isActioning"
+      class="spinner"
+    />
     {{ label }}
   </button>
 </template>

@@ -3,7 +3,12 @@ import * as argon from 'argon2';
 import { generateCookie, generateToken } from '~~/server/utils/auth';
 import { findUserByUsername } from '~~/server/utils/db';
 import { Messages } from '~~/server/utils/messages';
-import type { IUser, TUserAuthenticated, TUserAuthenticatedTokenPayload, TUserResult } from '~~/server/utils/types';
+import type {
+  IUser,
+  TUserAuthenticated,
+  TUserAuthenticatedTokenPayload,
+  TUserResult,
+} from '~~/server/utils/types';
 
 export default defineEventHandler(async (event) => {
   if (event.method !== 'POST') {
@@ -27,7 +32,10 @@ export default defineEventHandler(async (event) => {
     }
   } catch (err) {
     console.log(err);
-    return createError({ statusCode: 500, message: Messages.FAILED_TO_FIND_USER_BY_USERNAME });
+    return createError({
+      statusCode: 500,
+      message: Messages.FAILED_TO_FIND_USER_BY_USERNAME,
+    });
   }
 
   const user = rows[0] as TUserResult;
