@@ -1,5 +1,12 @@
 <template>
-  <input :id="id" v-model="model" class="input" :name="name" :type="type || 'text'" :placeholder="placeholder" >
+  <input
+    :id="id"
+    v-model="model"
+    class="input"
+    :name="name"
+    :type="type || 'text'"
+    :placeholder="placeholder"
+  />
 </template>
 
 <script setup lang="ts">

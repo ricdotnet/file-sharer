@@ -4,16 +4,25 @@
       <span class="title">FileSharer</span>
 
       <ClientOnly>
-        <div v-if="isAuthenticated" class="authenticated-block">
+        <div
+          v-if="isAuthenticated"
+          class="authenticated-block"
+        >
           <div>
-            <Button label="Get API Token" @click="() => onGetApiTokenClick()"/>
+            <Button
+              label="Get API Token"
+              @click="() => onGetApiTokenClick()"
+            />
           </div>
           <div class="links">
             <NuxtLink to="/">Files</NuxtLink>
             <NuxtLink to="/upload">Upload</NuxtLink>
-            <a href="/logout" class="logout">
+            <a
+              href="/logout"
+              class="logout"
+            >
               Logout
-              <ArrowRightStartOnRectangleIcon class="icon"/>
+              <ArrowRightStartOnRectangleIcon class="icon" />
             </a>
           </div>
         </div>
@@ -23,65 +32,65 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/16/solid';
+  import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/16/solid';
 
-import { storeToRefs, useToaster, useUserStore } from '#imports';
-import request from '~/utils/request';
+  import { storeToRefs, useToaster, useUserStore } from '#imports';
+  import request from '~/utils/request';
 
-const userStore = useUserStore();
-const { addToast } = useToaster();
-const { isAuthenticated } = storeToRefs(userStore);
+  const userStore = useUserStore();
+  const { addToast } = useToaster();
+  const { isAuthenticated } = storeToRefs(userStore);
 
-const onGetApiTokenClick = async () => {
-  const { data } = await request('/api/user/api-token', {
-    headers: {
-      Authorization: userStore.authToken,
-    }
-  });
+  const onGetApiTokenClick = async () => {
+    const { data } = await request('/api/user/api-token', {
+      headers: {
+        Authorization: userStore.authToken,
+      },
+    });
 
-  await navigator.clipboard.writeText(data?.apiToken);
-  addToast({
-    message: 'API Token copied to clipboard.',
-    type: 'success',
-  });
-};
+    await navigator.clipboard.writeText(data?.apiToken);
+    addToast({
+      message: 'API Token copied to clipboard.',
+      type: 'success',
+    });
+  };
 </script>
 
 <style scoped>
-nav {
-  background-color: var(--zinc-100);
-  padding-block: 1rem;
-  display: flex;
-  justify-content: center;
-
-  .container {
-    width: 100%;
+  nav {
+    background-color: var(--zinc-100);
+    padding-block: 1rem;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
 
-    .title {
-      font-size: 2rem;
-    }
-
-    .authenticated-block {
+    .container {
+      width: 100%;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 4rem;
-    }
+      align-items: center;
 
-    .links {
-      display: flex;
-      column-gap: 1.5rem;
-      font-size: 1.15rem;
-    }
+      .title {
+        font-size: 2rem;
+      }
 
-    .logout {
-      display: flex;
-      align-items: start;
-      gap: 0.5rem;
+      .authenticated-block {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4rem;
+      }
+
+      .links {
+        display: flex;
+        column-gap: 1.5rem;
+        font-size: 1.15rem;
+      }
+
+      .logout {
+        display: flex;
+        align-items: start;
+        gap: 0.5rem;
+      }
     }
   }
-}
 </style>

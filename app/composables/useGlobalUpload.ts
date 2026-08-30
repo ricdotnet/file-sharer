@@ -32,7 +32,7 @@ export const useGlobalUpload = () => {
       try {
         const items = await navigator.clipboard.read();
         for (const item of items) {
-          const types = item.types.filter(t => t.includes('image/'));
+          const types = item.types.filter((t) => t.includes('image/'));
           if (types.length === 0) {
             continue;
           }

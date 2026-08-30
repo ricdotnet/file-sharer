@@ -9,7 +9,9 @@ export function useToaster() {
   let removeTimer: ReturnType<typeof setTimeout> | null;
 
   const addToast = (toast: Toast) => {
-    if (removeTimer) {clearTimeout(removeTimer);}
+    if (removeTimer) {
+      clearTimeout(removeTimer);
+    }
     removeTimer = null;
 
     if (toasts.value.length > 0) {

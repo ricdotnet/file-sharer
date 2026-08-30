@@ -1,12 +1,10 @@
 <template>
   <button class="button">
-    <slot/>
+    <slot />
   </button>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
   .button {

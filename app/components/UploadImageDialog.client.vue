@@ -1,26 +1,50 @@
 <template>
-  <div v-if="isOpen" class="overlay">
+  <div
+    v-if="isOpen"
+    class="overlay"
+  >
     <div class="dialog">
       <div class="dialog__content">
-        <img ref="previewRef" class="image-preview" src="" :alt="fileName">
+        <img
+          ref="previewRef"
+          class="image-preview"
+          src=""
+          :alt="fileName"
+        />
       </div>
     </div>
 
     <div class="actions">
-      <Button label="Upload" :is-actioning="isUploading" @click="doUploadFile"/>
-      <Button label="Close" :disabled="isUploading" @click="closeDialog"/>
+      <Button
+        label="Upload"
+        :is-actioning="isUploading"
+        @click="doUploadFile"
+      />
+      <Button
+        label="Close"
+        :disabled="isUploading"
+        @click="closeDialog"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { storeToRefs, useCopyUrlToClipboard, useGlobalUpload, useRouter, useToaster, useUserStore } from '#imports';
+  import {
+    storeToRefs,
+    useCopyUrlToClipboard,
+    useGlobalUpload,
+    useRouter,
+    useToaster,
+    useUserStore,
+  } from '#imports';
 
   const { addToast } = useToaster();
   const userStore = useUserStore();
   const { isAuthenticated } = storeToRefs(userStore);
 
-  const { imageFile, fileName, uploadFile, resetFile, isUploading } = useGlobalUpload();
+  const { imageFile, fileName, uploadFile, resetFile, isUploading } =
+    useGlobalUpload();
 
   const previewRef = ref<HTMLImageElement | null>(null);
   const isLoadingPreview = ref(true);
@@ -70,7 +94,10 @@
         await useCopyUrlToClipboard().copy(`/view/${storedFilename}`);
       } catch (error) {
         console.error(error);
-        addToast({ message: 'Could not copy URL to clipboard.', type: 'error' });
+        addToast({
+          message: 'Could not copy URL to clipboard.',
+          type: 'error',
+        });
       }
       await useRouter().push(`/view/${storedFilename}`);
     }
@@ -88,7 +115,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #000000BB;
+    background-color: #000000bb;
     display: flex;
     flex-direction: column;
     justify-content: center;

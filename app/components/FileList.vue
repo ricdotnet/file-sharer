@@ -1,28 +1,57 @@
 <template>
   <div class="icons">
     <IconButton @click="view = 'grid'">
-      <TableCellsIcon class="icon" :class="view === 'grid' ? 'active-view' : ''" />
+      <TableCellsIcon
+        class="icon"
+        :class="view === 'grid' ? 'active-view' : ''"
+      />
     </IconButton>
     <div v-if="config.public.listViewEnabled">
       <IconButton @click="view = 'list'">
-        <ListBulletIcon class="icon" :class="view === 'list' ? 'active-view' : ''" />
+        <ListBulletIcon
+          class="icon"
+          :class="view === 'list' ? 'active-view' : ''"
+        />
       </IconButton>
     </div>
   </div>
   <div>
-    <div v-if="!filteredFiles().length" class="no-files"> You have no files stored with us.</div>
+    <div
+      v-if="!filteredFiles().length"
+      class="no-files"
+    >
+      You have no files stored with us.
+    </div>
 
     <div class="filter-wrapper">
-      <Input v-if="filteredFiles().length" id="filter" v-model="filterInput" name="filter"
-        placeholder="Filter your files" />
-      <Button label="Media" @click="onClickMediaFilterButton" />
+      <Input
+        v-if="filteredFiles().length"
+        id="filter"
+        v-model="filterInput"
+        name="filter"
+        placeholder="Filter your files"
+      />
+      <Button
+        label="Media"
+        @click="onClickMediaFilterButton"
+      />
     </div>
 
-    <div v-if="view === 'grid'" class="files-container">
-      <FileCard v-for="file in filteredFiles(filter)" :key="file.id" :file="file" />
+    <div
+      v-if="view === 'grid'"
+      class="files-container"
+    >
+      <FileCard
+        v-for="file in filteredFiles(filter)"
+        :key="file.id"
+        :file="file"
+      />
     </div>
     <div v-else>
-      <div v-for="file in filteredFiles(filter)" :key="file.id">
+      <div
+        v-for="file in filteredFiles(filter)"
+        :key="file.id"
+      >
         {{ file }}
       </div>
     </div>
@@ -30,92 +59,89 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ListBulletIcon,
-  TableCellsIcon
-} from '@heroicons/vue/16/solid';
+  import { ListBulletIcon, TableCellsIcon } from '@heroicons/vue/16/solid';
 
-import { useDebounce, useFileStore, watch } from '#imports';
-import FileCard from '~/components/FileCard.vue';
-import IconButton from '~/components/IconButton.vue';
-import Input from '~/components/Input.vue';
+  import { useDebounce, useFileStore, watch } from '#imports';
+  import FileCard from '~/components/FileCard.vue';
+  import IconButton from '~/components/IconButton.vue';
+  import Input from '~/components/Input.vue';
 
-type View = 'grid' | 'list';
+  type View = 'grid' | 'list';
 
-const view = ref<View>('grid');
-const filterInput = ref('');
-const filter = ref('');
+  const view = ref<View>('grid');
+  const filterInput = ref('');
+  const filter = ref('');
 
-const { filteredFiles, fetchFiles, updateMediaFilter } = useFileStore();
+  const { filteredFiles, fetchFiles, updateMediaFilter } = useFileStore();
 
-const config = useRuntimeConfig();
-const debounce = useDebounce();
+  const config = useRuntimeConfig();
+  const debounce = useDebounce();
 
-onBeforeMount(async () => {
-  await fetchFiles();
-});
-
-watch(filterInput, () => {
-  debounce(() => {
-    filter.value = filterInput.value;
+  onBeforeMount(async () => {
+    await fetchFiles();
   });
-});
 
-function onClickMediaFilterButton() {
-  updateMediaFilter();
-}
+  watch(filterInput, () => {
+    debounce(() => {
+      filter.value = filterInput.value;
+    });
+  });
+
+  function onClickMediaFilterButton() {
+    updateMediaFilter();
+  }
 </script>
 
 <style scoped>
-.loading {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-}
-
-.files-container {
-  margin-top: 2rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .files-container {
-    grid-template-columns: 1fr 1fr;
+  .loading {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
   }
-}
 
-@media (min-width: 1024px) {
   .files-container {
-    grid-template-columns: 1fr 1fr 1fr;
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
-}
 
-.icons {
-  margin-top: 1rem;
-  display: flex;
-  gap: 0.2rem;
-}
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .files-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 
-.icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  opacity: 50%;
-}
+  @media (min-width: 1024px) {
+    .files-container {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
 
-.active-view {
-  opacity: 100%;
-}
+  .icons {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.2rem;
+  }
 
-.no-files {
-  margin-top: 2rem;
-  font-size: 1.25rem;
-}
+  .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    opacity: 50%;
+  }
 
-.filter-wrapper {
-  margin-top: 2rem;
-  display: flex;
-  gap: 1rem;
-}
+  .active-view {
+    opacity: 100%;
+  }
+
+  .no-files {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+  }
+
+  .filter-wrapper {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+  }
 </style>

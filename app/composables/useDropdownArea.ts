@@ -59,5 +59,11 @@ export function useDropdownArea() {
     fileToUpload.value = file;
   };
 
-  return { dropdownArea, fileToUpload, setFileToUpload, registerDropdownAreaEvents, removeDropdownAreaEvents };
+  return {
+    dropdownArea,
+    fileToUpload,
+    setFileToUpload,
+    registerDropdownAreaEvents,
+    removeDropdownAreaEvents,
+  };
 }

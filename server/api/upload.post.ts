@@ -8,7 +8,11 @@ import formidable from 'formidable';
 import { MAX_FILE_SIZE, MAX_VIDEO_SIZE } from '~/utils/constants';
 import config from '~~/config';
 import { isValidAuthentication } from '~~/server/utils/auth';
-import { createFile, createThumbnail, findFileByUuid } from '~~/server/utils/db';
+import {
+  createFile,
+  createThumbnail,
+  findFileByUuid,
+} from '~~/server/utils/db';
 import { ensureDir } from '~~/server/utils/io';
 
 export default defineEventHandler(async (event) => {
@@ -50,7 +54,9 @@ export default defineEventHandler(async (event) => {
   }
 
   // If isPrivate is not set, then it will be true by default, if it is set, we check for its bool value
-  const _isPrivate = fields.is_private ? fields.is_private[0] === 'true' : false;
+  const _isPrivate = fields.is_private
+    ? fields.is_private[0] === 'true'
+    : false;
 
   assert(file[0]);
   const isImage = file[0].mimetype?.startsWith('image/') ?? false;
@@ -68,12 +74,20 @@ export default defineEventHandler(async (event) => {
 
   // TODO: add mimetype to db
   const fileName = file[0].newFilename;
-  const fileNameToStore = fields.file_name?.length ? fields.file_name[0] : file[0].originalFilename;
-  await createFile(tokenData!.id, fileNameToStore ?? 'NO_NAME', fileName, uuid, {
-    is_private: !isVideo && !isImage,
-    is_image: isImage,
-    is_video: isVideo,
-  });
+  const fileNameToStore = fields.file_name?.length
+    ? fields.file_name[0]
+    : file[0].originalFilename;
+  await createFile(
+    tokenData!.id,
+    fileNameToStore ?? 'NO_NAME',
+    fileName,
+    uuid,
+    {
+      is_private: !isVideo && !isImage,
+      is_image: isImage,
+      is_video: isVideo,
+    },
+  );
 
   // if is video generate thumbnail after writing the file
   if (isVideo) {

@@ -39,7 +39,9 @@ export const useFileStore = defineStore('file', () => {
 
   function filteredFiles(filter?: string) {
     const filtered = files.value.filter((file) => {
-      if (!isMediaFilter.value) { return !file.is_video && !file.is_image; }
+      if (!isMediaFilter.value) {
+        return !file.is_video && !file.is_image;
+      }
       return file.is_image || file.is_video;
     });
 
@@ -54,5 +56,11 @@ export const useFileStore = defineStore('file', () => {
     isMediaFilter.value = !isMediaFilter.value;
   }
 
-  return { filteredFiles, fetchFiles, removeFile, updateMediaFilter, updatePrivacy };
+  return {
+    filteredFiles,
+    fetchFiles,
+    removeFile,
+    updateMediaFilter,
+    updatePrivacy,
+  };
 });

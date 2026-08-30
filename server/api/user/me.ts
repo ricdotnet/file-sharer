@@ -3,7 +3,11 @@ import { Logger } from '@ricdotnet/logger/dist/index.js';
 import { COOKIE_NAME } from '~/utils/constants';
 import { generateCookie, generateToken } from '~~/server/utils/auth';
 import { findCookie, findUserById } from '~~/server/utils/db';
-import type { ICookie, TUserAuthenticatedTokenPayload, TUserResult } from '~~/server/utils/types';
+import type {
+  ICookie,
+  TUserAuthenticatedTokenPayload,
+  TUserResult,
+} from '~~/server/utils/types';
 
 export default defineEventHandler(async (event) => {
   const isRefresh = true;
@@ -13,7 +17,7 @@ export default defineEventHandler(async (event) => {
     return createError({ statusCode: 401, message: 'Cookie is not available' });
   }
 
-  const cookieRows = await findCookie(cookie) as ICookie[];
+  const cookieRows = (await findCookie(cookie)) as ICookie[];
   if (!cookieRows.length) {
     return createError({ statusCode: 401, message: 'Cookie is not valid' });
   }
@@ -25,11 +29,13 @@ export default defineEventHandler(async (event) => {
 
   if (new Date(cookieData.expires) < new Date()) {
     // cookie is expired
-    Logger.get().warn(`User ${cookieData.owner} called /me with an expired cookie`);
+    Logger.get().warn(
+      `User ${cookieData.owner} called /me with an expired cookie`,
+    );
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
-  const userRows = await findUserById(cookieData.owner) as TUserResult[];
+  const userRows = (await findUserById(cookieData.owner)) as TUserResult[];
   const user = userRows[0] as TUserResult;
 
   const userAuthenticatedTokenPayload: TUserAuthenticatedTokenPayload = {

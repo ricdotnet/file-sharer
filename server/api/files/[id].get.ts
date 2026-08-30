@@ -10,7 +10,7 @@ export default defineEventHandler(async (event: H3Event) => {
     return;
   }
 
-  const [file] = await findFileByUuid(decodeURI(fileName)) as any[];
+  const [file] = (await findFileByUuid(decodeURI(fileName))) as any[];
   const isFileOwner = await hasFileAccess(event, file.owner);
 
   if (file.is_private && !isFileOwner) {
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   if (file.is_video) {
-    const [thumbnail] = await findThumbnailByMediaId(file.id) as any[];
+    const [thumbnail] = (await findThumbnailByMediaId(file.id)) as any[];
 
     if (thumbnail) {
       file.thumbnail = thumbnail.name;
