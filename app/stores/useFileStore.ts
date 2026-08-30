@@ -4,7 +4,7 @@ import { useUserStore } from '#imports';
 import type { IFile } from '~~/types';
 
 export const useFileStore = defineStore('file', () => {
-  const files = ref<IFile[]>([]);
+  const files = ref<(IFile & { isSelected: boolean })[]>([]);
   const userStore = useUserStore();
   const isMediaFilter = ref(false);
 
@@ -56,10 +56,24 @@ export const useFileStore = defineStore('file', () => {
     isMediaFilter.value = !isMediaFilter.value;
   }
 
+  function setIsSelected(id: number) {
+    files.value.forEach((f) => {
+      if (f.id === id) {
+        f.isSelected = !f.isSelected;
+      }
+    });
+  }
+
+  function selectedFiles() {
+    return files.value.filter((f) => f.isSelected);
+  }
+
   return {
     filteredFiles,
     fetchFiles,
+    selectedFiles,
     removeFile,
+    setIsSelected,
     updateMediaFilter,
     updatePrivacy,
   };

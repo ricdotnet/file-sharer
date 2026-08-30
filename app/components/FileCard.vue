@@ -3,6 +3,7 @@
     ref="fileCardRef"
     class="file"
     :style="{ '--x': `${x}px`, '--y': `${y}px` }"
+    :class="file.isSelected && 'selected'"
   >
     <img
       v-if="file.is_image || file.is_video"
@@ -18,7 +19,7 @@
     </div>
     <div class="icon-group">
       <CircleStackIcon class="icon" />
-      <span>{{ convertSize(file.size) }}</span>
+      <span>{{ convertToHumanReadable(file.size) }}</span>
     </div>
     <div class="icon-group">
       <CalendarDaysIcon class="icon" />
@@ -79,6 +80,7 @@
   import {
     useCopyUrlToClipboard,
     useDate,
+    useFileSize,
     useFileStore,
     useToaster,
     useUserStore,
@@ -86,8 +88,9 @@
   import type { IFile } from '~~/types';
 
   const { authToken } = useUserStore();
-  const { removeFile, updatePrivacy } = useFileStore();
+  const { removeFile, updatePrivacy, setIsSelected } = useFileStore();
   const { addToast } = useToaster();
+  const { convertToHumanReadable } = useFileSize();
 
   const fileCardRef = ref<HTMLAnchorElement | null>(null);
   const { formatShort } = useDate();
@@ -95,7 +98,7 @@
   const y = ref(0);
 
   const props = defineProps<{
-    file: IFile;
+    file: IFile & { isSelected: boolean };
   }>();
 
   onMounted(() => {
@@ -107,26 +110,13 @@
       x.value = event.pageX - (fileCardRef.value?.offsetLeft ?? 0);
       y.value = event.pageY - (fileCardRef.value?.offsetTop ?? 0);
     });
+
+    fileCardRef.value.addEventListener('click', (event: MouseEvent) => {
+      event.preventDefault();
+
+      setIsSelected(props.file.id);
+    });
   });
-
-  // TODO: maybe move this to a composable
-  function convertSize(size: number) {
-    let _size: number;
-    let _unit: 'b' | 'KB' | 'MB';
-
-    if (size < 1000) {
-      _size = size;
-      _unit = 'b';
-    } else if (size < 1000000) {
-      _size = size / 1000;
-      _unit = 'KB';
-    } else {
-      _size = size / 1000000;
-      _unit = 'MB';
-    }
-
-    return `${_size.toFixed(2)} ${_unit}`;
-  }
 
   function sliceTitle(title: string) {
     return title.length > 70 ? `${title.slice(0, 70)}...` : title;
@@ -312,5 +302,10 @@
   .icon-group {
     display: flex;
     gap: 0.5rem;
+  }
+
+  .selected {
+    outline: 2px solid white;
+    outline-offset: -10px;
   }
 </style>
