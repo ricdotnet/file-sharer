@@ -16,16 +16,8 @@
     </div>
   </div>
   <div>
-    <div
-      v-if="!filteredFiles().length"
-      class="no-files"
-    >
-      You have no files stored with us.
-    </div>
-
     <div class="filter-wrapper">
       <Input
-        v-if="filteredFiles().length"
         id="filter"
         v-model="filterInput"
         name="filter"
@@ -33,7 +25,8 @@
       />
       <Button
         label="Media"
-        @click="onClickMediaFilterButton"
+        :class="fileStore.isMediaFilter && 'selected'"
+        @click="() => onClickMediaFilterButton()"
       />
       <Button
         v-if="selectedFiles().length > 0"
@@ -59,6 +52,13 @@
         {{ file }}
       </div>
     </div>
+
+    <div
+      v-if="!filteredFiles().length"
+      class="no-files"
+    >
+      You have no files stored with us.
+    </div>
   </div>
 </template>
 
@@ -76,6 +76,7 @@
   const filterInput = ref('');
   const filter = ref('');
 
+  const fileStore = useFileStore();
   const { filteredFiles, fetchFiles, updateMediaFilter, selectedFiles } =
     useFileStore();
 
@@ -148,5 +149,10 @@
     margin-top: 2rem;
     display: flex;
     gap: 1rem;
+  }
+
+  .selected {
+    outline: 2px solid var(--teal-70);
+    outline-offset: -7px;
   }
 </style>
