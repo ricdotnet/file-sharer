@@ -127,6 +127,11 @@
 
   function onClickDownload(event: MouseEvent) {
     event.stopPropagation();
+
+    const link = document.createElement('a');
+    link.href = `/api/download/${props.file.filename}`;
+    link.download = props.file.original_filename;
+    link.click();
   }
 
   async function onClickDelete(event: MouseEvent) {
