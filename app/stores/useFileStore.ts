@@ -69,6 +69,7 @@ export const useFileStore = defineStore('file', () => {
   }
 
   return {
+    isMediaFilter,
     filteredFiles,
     fetchFiles,
     selectedFiles,

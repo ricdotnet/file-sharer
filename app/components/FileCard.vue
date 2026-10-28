@@ -27,22 +27,16 @@
     </div>
     <div class="card-actions">
       <span v-if="file.is_image || file.is_video">
-        <a
-          target="_blank"
-          :href="`/view/${file.uuid}`"
-        >
+        <IconButton @click="(e: MouseEvent) => onClickPlay(e)">
           <PlayIcon class="icon" />
-        </a>
+        </IconButton>
       </span>
       <span v-else>
-        <a
-          target="_blank"
-          :href="`/api/download/${file.filename}`"
-        >
+        <IconButton @click="(e: MouseEvent) => onClickDownload(e)">
           <ArrowDownOnSquareIcon class="icon" />
-        </a>
+        </IconButton>
       </span>
-      <IconButton @click="(e: MouseEvent) => onClickLock(e, file.id)">
+      <IconButton @click="(e: MouseEvent) => onClickLock(e)">
         <LockClosedIcon
           v-if="file.is_private"
           class="icon"
@@ -54,11 +48,11 @@
       </IconButton>
       <IconButton
         v-if="file.canDelete"
-        @click="(e: MouseEvent) => onClickDelete(e, file.id)"
+        @click="(e: MouseEvent) => onClickDelete(e)"
       >
         <TrashIcon class="icon" />
       </IconButton>
-      <IconButton @click="copyLinkToClipboard">
+      <IconButton @click="(e: MouseEvent) => copyLinkToClipboard(e)">
         <ClipboardDocumentCheckIcon class="icon" />
       </IconButton>
     </div>
@@ -66,6 +60,8 @@
 </template>
 
 <script setup lang="ts">
+  import { useRouter } from 'vue-router';
+
   import {
     ArrowDownOnSquareIcon,
     CalendarDaysIcon,
@@ -87,6 +83,7 @@
   } from '#imports';
   import type { IFile } from '~~/types';
 
+  const router = useRouter();
   const { authToken } = useUserStore();
   const { removeFile, updatePrivacy, setIsSelected } = useFileStore();
   const { addToast } = useToaster();
@@ -122,7 +119,17 @@
     return title.length > 70 ? `${title.slice(0, 70)}...` : title;
   }
 
-  async function onClickDelete(event: MouseEvent, id: number) {
+  function onClickPlay(event: MouseEvent) {
+    event.stopPropagation();
+
+    router.push(`/view/${props.file.uuid}`);
+  }
+
+  function onClickDownload(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  async function onClickDelete(event: MouseEvent) {
     event.stopPropagation();
 
     const confirmDelete = confirm('Are you sure you want to delete this file?');
@@ -132,7 +139,7 @@
 
     try {
       await request({
-        url: `/api/files/${id}`,
+        url: `/api/files/${props.file.id}`,
         method: 'DELETE',
         headers: { authorization: authToken! },
       });
@@ -145,7 +152,7 @@
       return;
     }
 
-    removeFile(id);
+    removeFile(props.file.id);
 
     addToast({
       message: 'Fie successfully deleted',
@@ -153,7 +160,7 @@
     });
   }
 
-  async function onClickLock(event: MouseEvent, id: number) {
+  async function onClickLock(event: MouseEvent) {
     event.stopPropagation();
 
     const confirmLock = confirm(
@@ -167,7 +174,7 @@
 
     try {
       await request({
-        url: `/api/files/${id}`,
+        url: `/api/files/${props.file.id}`,
         method: 'PATCH',
         headers: { Authorization: authToken! },
         data: { is_private: !props.file.is_private },
@@ -181,7 +188,7 @@
       return;
     }
 
-    updatePrivacy(id);
+    updatePrivacy(props.file.id);
 
     addToast({
       message: `The file has been ${
@@ -191,7 +198,9 @@
     });
   }
 
-  async function copyLinkToClipboard() {
+  async function copyLinkToClipboard(event: MouseEvent) {
+    event.stopPropagation();
+
     const linkToCopy = `/api/download/${props.file.filename}${props.file.is_private ? '?digest=' + props.file.digest : ''}`;
 
     try {
@@ -305,7 +314,7 @@
   }
 
   .selected {
-    outline: 2px solid white;
+    outline: 2px solid var(--teal-70);
     outline-offset: -10px;
   }
 </style>
