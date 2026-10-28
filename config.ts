@@ -15,4 +15,6 @@ export default {
     return '/file-sharer/uploads';
   },
   IGNORED_FILES: ['.gitkeep'],
+  MAX_FILE_SIZE: process.env.MAX_FILE_SIZE ?? 1024 * 1024 * 150, // 150MB
+  MAX_VIDEO_SIZE: process.env.MAX_VIDEO_SIZE ?? 1024 * 1024 * 1024, // 1GB
 };

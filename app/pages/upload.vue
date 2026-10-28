@@ -98,6 +98,17 @@
       return;
     }
 
+    if (
+      (((file.value?.size ?? 0) || fileToUpload.value?.size) ?? 0) >
+      MAX_FILE_SIZE
+    ) {
+      addToast({
+        message: 'The file selected is too large',
+        type: 'error',
+      });
+      return;
+    }
+
     isUploading.value = true;
     const form = new FormData();
 
@@ -137,10 +148,14 @@
         },
       });
     } catch {
+      isUploading.value = false;
+
       addToast({
         type: 'error',
         message: 'Error while uploading file',
       });
+
+      return;
     }
 
     await navigateTo('/');
