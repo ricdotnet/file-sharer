@@ -8,12 +8,12 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  async (response: AxiosResponse) => {
-    const originalRequestConfig = response.config;
+  async (error: AxiosResponse) => {
+    const originalRequestConfig = error.config;
 
     const userStore = useUserStore();
 
-    if (response.status === 401) {
+    if (error.status === 401) {
       await userStore.authenticate();
 
       originalRequestConfig.headers.Authorization = userStore.authToken;
@@ -21,9 +21,8 @@ axiosInstance.interceptors.response.use(
       return axiosInstance(originalRequestConfig);
     }
 
-    window.location.href = useRuntimeConfig().public.baseUrl + '/logout';
+    return Promise.reject(error);
   },
 );
 
 export default axiosInstance;
-

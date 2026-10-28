@@ -37,20 +37,32 @@ export default defineEventHandler(async (event) => {
 
   if (!file || !file.length) {
     Logger.get().error('No files uploaded');
-    return sendRedirect(event, '/error', 400);
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+      message: 'No files uploaded',
+    });
   }
 
   // TODO: refactor and correct if wrong
   if (file.length > 1) {
     Logger.get().error('Tried to upload multiple files');
-    return sendRedirect(event, '/error', 400);
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+      message: 'Tried to upload multiple files',
+    });
   }
 
   const token = event.headers.get('Authorization');
 
   if (!token) {
     Logger.get().error('Tried to upload a file without a token');
-    return sendRedirect(event, '/error', 400);
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+      message: 'Tried to upload a file without a token',
+    });
   }
 
   // If isPrivate is not set, then it will be true by default, if it is set, we check for its bool value
@@ -64,12 +76,20 @@ export default defineEventHandler(async (event) => {
 
   if (isVideo && file[0].size > MAX_VIDEO_SIZE) {
     Logger.get().error('Tried to upload a video larger than the allowed size');
-    return sendRedirect(event, '/error', 400);
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+      message: 'Tried to upload a video larger than the allowed size',
+    });
   }
 
   if (!isVideo && file[0].size > MAX_FILE_SIZE) {
     Logger.get().error('Tried to upload a file larger than the allowed size');
-    return sendRedirect(event, '/error', 400);
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+      message: 'Tried to upload a file larger than the allowed size',
+    });
   }
 
   // TODO: add mimetype to db
