@@ -160,7 +160,7 @@
     removeFile(props.file.id);
 
     addToast({
-      message: 'Fie successfully deleted',
+      message: 'File successfully deleted',
       type: 'success',
     });
   }

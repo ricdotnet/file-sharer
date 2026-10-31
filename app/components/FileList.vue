@@ -31,6 +31,7 @@
       <Button
         v-if="selectedFiles().length > 0"
         :label="`Delete (${selectedFiles().length})`"
+        @click="(e: MouseEvent) => onClickDeleteSelected(e)"
       />
     </div>
 
@@ -65,7 +66,7 @@
 <script setup lang="ts">
   import { ListBulletIcon, TableCellsIcon } from '@heroicons/vue/16/solid';
 
-  import { useDebounce, useFileStore, watch } from '#imports';
+  import { useFileStore, useToaster, useUserStore, watch } from '#imports';
   import FileCard from '~/components/FileCard.vue';
   import IconButton from '~/components/IconButton.vue';
   import Input from '~/components/Input.vue';
@@ -76,9 +77,16 @@
   const filterInput = ref('');
   const filter = ref('');
 
+  const { authToken } = useUserStore();
   const fileStore = useFileStore();
-  const { filteredFiles, fetchFiles, updateMediaFilter, selectedFiles } =
-    useFileStore();
+  const {
+    filteredFiles,
+    fetchFiles,
+    updateMediaFilter,
+    selectedFiles,
+    removeFile,
+  } = useFileStore();
+  const { addToast } = useToaster();
 
   const config = useRuntimeConfig();
   const debounce = useDebounce();
@@ -95,6 +103,44 @@
 
   function onClickMediaFilterButton() {
     updateMediaFilter();
+  }
+
+  async function onClickDeleteSelected(event: MouseEvent) {
+    event.stopPropagation();
+
+    const confirmDelete = confirm(
+      'Are you sure you want to delete the selected files?',
+    );
+    if (!confirmDelete) {
+      return;
+    }
+
+    const ids = selectedFiles().map((file) => file.id);
+
+    try {
+      await request({
+        url: '/api/files',
+        method: 'DELETE',
+        headers: { authorization: authToken! },
+        data: ids,
+      });
+    } catch {
+      addToast({
+        type: 'error',
+        message: 'Error while trying to delete the file',
+      });
+
+      return;
+    }
+
+    for (const id of ids) {
+      removeFile(id);
+    }
+
+    addToast({
+      message: 'Selected files deleted successfully',
+      type: 'success',
+    });
   }
 </script>
 
