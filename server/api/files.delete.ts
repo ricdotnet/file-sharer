@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-import { Logger } from '@ricdotnet/logger/dist';
+import { Logger } from '@ricdotnet/logger/dist/index.js';
 
 import config from '~~/config';
 import { isValidAuthentication } from '~~/server/utils/auth';
@@ -15,7 +15,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const ids = await readBody<string[]>(event);
-  console.log(ids);
   await Promise.all(ids.map((id) => processDelete(tokenData.id, +id)));
 
   return 'Accepted';
