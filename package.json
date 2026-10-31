@@ -16,25 +16,25 @@
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
     "@ricdotnet/logger": "^0.3.3",
-    "argon2": "^0.44.0",
-    "axios": "1.13.6",
+    "argon2": "^0.45.1",
+    "axios": "1.21.0",
     "formidable": "3.5.4",
     "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.18.1",
+    "mysql2": "^3.24.6",
     "nuxt-api-shield": "^0.10.0",
     "nuxt-cron": "^1.8.0",
     "pinia": "^3.0.1"
   },
   "devDependencies": {
     "@nuxt/devtools": "4.0.0",
-    "@nuxt/eslint": "^1.15.1",
+    "@nuxt/eslint": "^1.17.0",
     "@pinia/nuxt": "latest",
-    "@types/formidable": "^3.4.6",
+    "@types/formidable": "^3.5.1",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.3.3",
     "eslint": "^9.39.2",
     "eslint-config-ricdotnet": "github:ricdotnet-org/eslint-config-ricdotnet",
-    "nuxt": "^4.3.1",
+    "nuxt": "^4.6.3",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.1.1"
   }
