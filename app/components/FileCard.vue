@@ -3,6 +3,7 @@
     ref="fileCardRef"
     class="file"
     :style="{ '--x': `${x}px`, '--y': `${y}px` }"
+    :class="file.isSelected && 'selected'"
   >
     <img
       v-if="file.is_image || file.is_video"
@@ -18,7 +19,7 @@
     </div>
     <div class="icon-group">
       <CircleStackIcon class="icon" />
-      <span>{{ convertSize(file.size) }}</span>
+      <span>{{ convertToHumanReadable(file.size) }}</span>
     </div>
     <div class="icon-group">
       <CalendarDaysIcon class="icon" />
@@ -26,22 +27,16 @@
     </div>
     <div class="card-actions">
       <span v-if="file.is_image || file.is_video">
-        <a
-          target="_blank"
-          :href="`/view/${file.uuid}`"
-        >
+        <IconButton @click="(e: MouseEvent) => onClickPlay(e)">
           <PlayIcon class="icon" />
-        </a>
+        </IconButton>
       </span>
       <span v-else>
-        <a
-          target="_blank"
-          :href="`/api/download/${file.filename}`"
-        >
+        <IconButton @click="(e: MouseEvent) => onClickDownload(e)">
           <ArrowDownOnSquareIcon class="icon" />
-        </a>
+        </IconButton>
       </span>
-      <IconButton @click="(e: MouseEvent) => onClickLock(e, file.id)">
+      <IconButton @click="(e: MouseEvent) => onClickLock(e)">
         <LockClosedIcon
           v-if="file.is_private"
           class="icon"
@@ -53,11 +48,11 @@
       </IconButton>
       <IconButton
         v-if="file.canDelete"
-        @click="(e: MouseEvent) => onClickDelete(e, file.id)"
+        @click="(e: MouseEvent) => onClickDelete(e)"
       >
         <TrashIcon class="icon" />
       </IconButton>
-      <IconButton @click="copyLinkToClipboard">
+      <IconButton @click="(e: MouseEvent) => copyLinkToClipboard(e)">
         <ClipboardDocumentCheckIcon class="icon" />
       </IconButton>
     </div>
@@ -65,6 +60,8 @@
 </template>
 
 <script setup lang="ts">
+  import { useRouter } from 'vue-router';
+
   import {
     ArrowDownOnSquareIcon,
     CalendarDaysIcon,
@@ -79,15 +76,18 @@
   import {
     useCopyUrlToClipboard,
     useDate,
+    useFileSize,
     useFileStore,
     useToaster,
     useUserStore,
   } from '#imports';
   import type { IFile } from '~~/types';
 
+  const router = useRouter();
   const { authToken } = useUserStore();
-  const { removeFile, updatePrivacy } = useFileStore();
+  const { removeFile, updatePrivacy, setIsSelected } = useFileStore();
   const { addToast } = useToaster();
+  const { convertToHumanReadable } = useFileSize();
 
   const fileCardRef = ref<HTMLAnchorElement | null>(null);
   const { formatShort } = useDate();
@@ -95,7 +95,7 @@
   const y = ref(0);
 
   const props = defineProps<{
-    file: IFile;
+    file: IFile & { isSelected: boolean };
   }>();
 
   onMounted(() => {
@@ -107,32 +107,34 @@
       x.value = event.pageX - (fileCardRef.value?.offsetLeft ?? 0);
       y.value = event.pageY - (fileCardRef.value?.offsetTop ?? 0);
     });
+
+    fileCardRef.value.addEventListener('click', (event: MouseEvent) => {
+      event.preventDefault();
+
+      setIsSelected(props.file.id);
+    });
   });
-
-  // TODO: maybe move this to a composable
-  function convertSize(size: number) {
-    let _size: number;
-    let _unit: 'b' | 'KB' | 'MB';
-
-    if (size < 1000) {
-      _size = size;
-      _unit = 'b';
-    } else if (size < 1000000) {
-      _size = size / 1000;
-      _unit = 'KB';
-    } else {
-      _size = size / 1000000;
-      _unit = 'MB';
-    }
-
-    return `${_size.toFixed(2)} ${_unit}`;
-  }
 
   function sliceTitle(title: string) {
     return title.length > 70 ? `${title.slice(0, 70)}...` : title;
   }
 
-  async function onClickDelete(event: MouseEvent, id: number) {
+  function onClickPlay(event: MouseEvent) {
+    event.stopPropagation();
+
+    router.push(`/view/${props.file.uuid}`);
+  }
+
+  function onClickDownload(event: MouseEvent) {
+    event.stopPropagation();
+
+    const link = document.createElement('a');
+    link.href = `/api/download/${props.file.filename}`;
+    link.download = props.file.original_filename;
+    link.click();
+  }
+
+  async function onClickDelete(event: MouseEvent) {
     event.stopPropagation();
 
     const confirmDelete = confirm('Are you sure you want to delete this file?');
@@ -142,7 +144,7 @@
 
     try {
       await request({
-        url: `/api/files/${id}`,
+        url: `/api/files/${props.file.id}`,
         method: 'DELETE',
         headers: { authorization: authToken! },
       });
@@ -155,7 +157,7 @@
       return;
     }
 
-    removeFile(id);
+    removeFile(props.file.id);
 
     addToast({
       message: 'Fie successfully deleted',
@@ -163,7 +165,7 @@
     });
   }
 
-  async function onClickLock(event: MouseEvent, id: number) {
+  async function onClickLock(event: MouseEvent) {
     event.stopPropagation();
 
     const confirmLock = confirm(
@@ -177,7 +179,7 @@
 
     try {
       await request({
-        url: `/api/files/${id}`,
+        url: `/api/files/${props.file.id}`,
         method: 'PATCH',
         headers: { Authorization: authToken! },
         data: { is_private: !props.file.is_private },
@@ -191,7 +193,7 @@
       return;
     }
 
-    updatePrivacy(id);
+    updatePrivacy(props.file.id);
 
     addToast({
       message: `The file has been ${
@@ -201,7 +203,9 @@
     });
   }
 
-  async function copyLinkToClipboard() {
+  async function copyLinkToClipboard(event: MouseEvent) {
+    event.stopPropagation();
+
     const linkToCopy = `/api/download/${props.file.filename}${props.file.is_private ? '?digest=' + props.file.digest : ''}`;
 
     try {
@@ -312,5 +316,10 @@
   .icon-group {
     display: flex;
     gap: 0.5rem;
+  }
+
+  .selected {
+    outline: 2px solid var(--teal-70);
+    outline-offset: -10px;
   }
 </style>
