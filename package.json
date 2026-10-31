@@ -23,12 +23,12 @@
     "mysql2": "^3.24.6",
     "nuxt-api-shield": "^0.10.0",
     "nuxt-cron": "^1.8.0",
-    "pinia": "^3.0.1"
+    "pinia": "^4.1.0"
   },
   "devDependencies": {
     "@nuxt/devtools": "4.0.0",
     "@nuxt/eslint": "^1.17.0",
-    "@pinia/nuxt": "latest",
+    "@pinia/nuxt": "^1.0.3",
     "@types/formidable": "^3.5.1",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.3.3",
