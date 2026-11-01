@@ -1,10 +1,10 @@
 import { randomBytes } from 'node:crypto';
 
-import { Logger } from '@ricdotnet/logger/dist/index.js';
 import * as argon from 'argon2';
 import mysql, { type PoolOptions } from 'mysql2/promise';
 
 import { COOKIE_EXPIRE } from '~/utils/constants';
+import config from '~~/config';
 
 const env = process.env;
 
@@ -29,7 +29,7 @@ async function findUserByUsername(username: string) {
       username,
     ]);
   } catch (err: any) {
-    Logger.get().error(`Error in findUserByUsername: ${err.message}`);
+    config.logger.error(`Error in findUserByUsername: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -45,7 +45,7 @@ async function findUserByEmail(email: string) {
     conn = await db.getConnection();
     [rows] = await conn.query('SELECT * FROM users WHERE email = ?', [email]);
   } catch (err: any) {
-    Logger.get().error(`Error in findUserByEmail: ${err.message}`);
+    config.logger.error(`Error in findUserByEmail: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -62,7 +62,7 @@ async function findUserById(id: number) {
     conn = await db.getConnection();
     [rows] = await conn.query('SELECT * FROM users WHERE id = ?', [id]);
   } catch (err: any) {
-    Logger.get().error(`Error in findUserById: ${err.message}`);
+    config.logger.error(`Error in findUserById: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -83,7 +83,7 @@ async function createUser(username: string, password: string, email: string) {
     );
     await preparedStatement.execute([username, hashedPass, email]);
   } catch (err: any) {
-    Logger.get().error(`Error in createUser: ${err.message}`);
+    config.logger.error(`Error in createUser: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -116,7 +116,7 @@ async function createFile(
       digest,
     ]);
   } catch (err: any) {
-    Logger.get().error(`Error in createFile: ${err.message}`);
+    config.logger.error(`Error in createFile: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -133,7 +133,7 @@ async function createThumbnail(name: string, mediaId: number) {
     );
     await preparedStatement.execute([name, mediaId]);
   } catch (err: any) {
-    Logger.get().error(`Error in creteThumbnail: ${err.message}`);
+    config.logger.error(`Error in creteThumbnail: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -148,7 +148,7 @@ async function findFilesByUserId(userId: number) {
     conn = await db.getConnection();
     [rows] = await conn.query('SELECT * FROM files WHERE owner = ?', [userId]);
   } catch (err: any) {
-    Logger.get().error(`Error in findFilesByUserId: ${err.message}`);
+    config.logger.error(`Error in findFilesByUserId: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -167,7 +167,7 @@ async function findFileByFilename(filename: string) {
       filename,
     ]);
   } catch (err: any) {
-    Logger.get().error(`Error in findFileByFilename: ${err.message}`);
+    config.logger.error(`Error in findFileByFilename: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -184,7 +184,7 @@ async function findFileByUuid(uuid: string) {
     conn = await db.getConnection();
     [rows] = await conn.query('SELECT * FROM files WHERE uuid = ?', [uuid]);
   } catch (err: any) {
-    Logger.get().error(`Error in findFileByUuid: ${err.message}`);
+    config.logger.error(`Error in findFileByUuid: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -203,7 +203,7 @@ async function findThumbnailByName(name: string) {
       name,
     ]);
   } catch (err: any) {
-    Logger.get().error(`Error in findThumbnailByName: ${err.message}`);
+    config.logger.error(`Error in findThumbnailByName: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -222,7 +222,7 @@ async function findThumbnailByMediaId(mediaId: number) {
       mediaId,
     ]);
   } catch (err: any) {
-    Logger.get().error(`Error in findThumbnailByMediaId: ${err.message}`);
+    config.logger.error(`Error in findThumbnailByMediaId: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -246,7 +246,7 @@ async function deleteFileById(owner: number, id: number) {
     );
     await preparedStatement.execute([id, owner]);
   } catch (err: any) {
-    Logger.get().error(`Error in deleteFileById: ${err.message}`);
+    config.logger.error(`Error in deleteFileById: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -265,7 +265,7 @@ async function updateFileById(owner: number, id: number, isPrivate: boolean) {
     );
     await preparedStatement.execute([isPrivate, owner, id]);
   } catch (err: any) {
-    Logger.get().error(`Error in updateFileById: ${err.message}`);
+    config.logger.error(`Error in updateFileById: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -287,7 +287,7 @@ async function saveCookie(owner: number, cookie: string, refreshToken: string) {
       refreshToken,
     ]);
   } catch (err: any) {
-    Logger.get().error(`Error in saveCookie: ${err.message}`);
+    config.logger.error(`Error in saveCookie: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -313,7 +313,7 @@ async function updateCookie(
       oldCookie,
     ]);
   } catch (err: any) {
-    Logger.get().error(`Error in updateCookie: ${err.message}`);
+    config.logger.error(`Error in updateCookie: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -330,7 +330,7 @@ async function deleteCookieByValue(value: string) {
     );
     await preparedStatement.execute([value]);
   } catch (err: any) {
-    Logger.get().error(`Error in deleteCookie: ${err.message}`);
+    config.logger.error(`Error in deleteCookie: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -347,7 +347,7 @@ async function findCookie(cookie: string) {
       cookie,
     ]);
   } catch (err: any) {
-    Logger.get().error(`Error in findCookie: ${err.message}`);
+    config.logger.error(`Error in findCookie: ${err.message}`);
     throw err;
   } finally {
     conn?.release();
@@ -365,7 +365,7 @@ async function clearExpiredCookies() {
       'DELETE FROM cookies WHERE expires < NOW() - INTERVAL 1 HOUR',
     );
   } catch (err: any) {
-    Logger.get().error(`Error in clearExpiredCookies: ${err.message}`);
+    config.logger.error(`Error in clearExpiredCookies: ${err.message}`);
     throw err;
   } finally {
     conn?.release();

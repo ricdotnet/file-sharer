@@ -1,8 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-import { Logger } from '@ricdotnet/logger/dist/index.js';
-
 import config from '~~/config';
 import { isValidAuthentication } from '~~/server/utils/auth';
 import type { IFile } from '~~/types';
@@ -13,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const { tokenData, error } = await isValidAuthentication(event);
 
   if (error) {
-    Logger.get().error(`Error occurred: ${error}`);
+    config.logger.error(`Error occurred: ${error}`);
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
@@ -27,7 +25,7 @@ export default defineEventHandler(async (event) => {
     try {
       fileInfo = await fs.stat(filePath);
     } catch (error) {
-      Logger.get().error(`Error occurred: ${error} for file ${filePath}`);
+      config.logger.error(`Error occurred: ${error} for file ${filePath}`);
       continue;
     }
 

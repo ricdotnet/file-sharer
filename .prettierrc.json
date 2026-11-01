@@ -4,5 +4,6 @@
   "tabWidth": 2,
   "vueIndentScriptAndStyle": true,
   "singleAttributePerLine": true,
-  "htmlWhitespaceSensitivity": "ignore"
+  "htmlWhitespaceSensitivity": "ignore",
+  "trailingComma": "all"
 }

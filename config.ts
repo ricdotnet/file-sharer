@@ -1,10 +1,12 @@
-import { Logger } from '@ricdotnet/logger/dist/index.js';
-import { LogLevels } from '@ricdotnet/logger/dist/src/Constants.js';
+import { Logger, JsonFormatter, PrettyFormatter } from '@ricdotnet/logger';
 
-const logLevel =
-  process.env.NODE_ENV === 'development' ? LogLevels.DEBUG : LogLevels.INFO;
+const isDevelopment = process.env.NODE_ENV === 'development';
 
-new Logger({ logToFile: true, level: logLevel });
+const logger = new Logger({
+  level: isDevelopment ? 'debug' : 'info',
+  formatter: isDevelopment ? new PrettyFormatter() : new JsonFormatter(),
+  redact: ['host'],
+});
 
 export default {
   UPLOADS_PATH: () => {
@@ -17,4 +19,5 @@ export default {
   IGNORED_FILES: ['.gitkeep'],
   MAX_FILE_SIZE: process.env.MAX_FILE_SIZE ?? 1024 * 1024 * 150, // 150MB
   MAX_VIDEO_SIZE: process.env.MAX_VIDEO_SIZE ?? 1024 * 1024 * 1024, // 1GB
+  logger,
 };

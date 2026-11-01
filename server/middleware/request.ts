@@ -1,4 +1,4 @@
-import { Logger } from '@ricdotnet/logger/dist/index.js';
+import config from '~~/config';
 
 const matcher = new RegExp(
   '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
@@ -12,5 +12,7 @@ export default defineEventHandler((event) => {
     return;
   }
 
-  Logger.get().info(`${url} - ${JSON.stringify(headers)}`);
+  config.logger.info(url.toString(), {
+    headers,
+  });
 });

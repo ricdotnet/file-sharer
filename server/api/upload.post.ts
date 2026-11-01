@@ -2,7 +2,6 @@ import assert from 'node:assert';
 import { exec } from 'node:child_process';
 import crypto from 'node:crypto';
 
-import { Logger } from '@ricdotnet/logger/dist/index.js';
 import formidable from 'formidable';
 
 import { MAX_FILE_SIZE, MAX_VIDEO_SIZE } from '~/utils/constants';
@@ -20,7 +19,7 @@ export default defineEventHandler(async (event) => {
   const uuid = crypto.randomUUID();
 
   if (error) {
-    Logger.get().error(`Error occurred: ${error}`);
+    config.logger.error(`Error occurred: ${error}`);
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 
@@ -36,7 +35,7 @@ export default defineEventHandler(async (event) => {
   const [fields, { file }] = await multipart.parse(event.node.req);
 
   if (!file || !file.length) {
-    Logger.get().error('No files uploaded');
+    config.logger.error('No files uploaded');
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
@@ -46,7 +45,7 @@ export default defineEventHandler(async (event) => {
 
   // TODO: refactor and correct if wrong
   if (file.length > 1) {
-    Logger.get().error('Tried to upload multiple files');
+    config.logger.error('Tried to upload multiple files');
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
@@ -57,7 +56,7 @@ export default defineEventHandler(async (event) => {
   const token = event.headers.get('Authorization');
 
   if (!token) {
-    Logger.get().error('Tried to upload a file without a token');
+    config.logger.error('Tried to upload a file without a token');
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
@@ -75,7 +74,7 @@ export default defineEventHandler(async (event) => {
   const isVideo = file[0].mimetype?.startsWith('video/') ?? false;
 
   if (isVideo && file[0].size > MAX_VIDEO_SIZE) {
-    Logger.get().error('Tried to upload a video larger than the allowed size');
+    config.logger.error('Tried to upload a video larger than the allowed size');
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
@@ -84,7 +83,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (!isVideo && file[0].size > MAX_FILE_SIZE) {
-    Logger.get().error('Tried to upload a file larger than the allowed size');
+    config.logger.error('Tried to upload a file larger than the allowed size');
     throw createError({
       statusCode: 400,
       statusMessage: 'Bad Request',
@@ -120,7 +119,7 @@ export default defineEventHandler(async (event) => {
     await new Promise((resolve, reject) => {
       exec(command, (error) => {
         if (error) {
-          Logger.get().error(`Error generating thumbnail: ${error}`);
+          config.logger.error(`Error generating thumbnail: ${error}`);
           reject(error);
         } else {
           resolve(thumbnailPath);

@@ -2,7 +2,6 @@ import fsl from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { Logger } from '@ricdotnet/logger/dist/index.js';
 import type { H3Event } from 'h3';
 
 import config from '~~/config';
@@ -45,7 +44,7 @@ export default defineEventHandler(async (event: H3Event) => {
     if (fileResult.is_private && fileResult.digest !== digest) {
       const cookie = getCookie(event, 'file-sharer');
       if (!cookie) {
-        Logger.get().warn(
+        config.logger.warn(
           `User tried to access private file ${filename} without a cookie`,
         );
         return createError({
@@ -56,7 +55,7 @@ export default defineEventHandler(async (event: H3Event) => {
 
       const [cookieResult] = (await findCookie(cookie)) as ICookie[];
       if (!cookieResult) {
-        Logger.get().warn(
+        config.logger.warn(
           `User tried to access private file ${filename} with an invalid cookie`,
         );
         return createError({
@@ -66,7 +65,7 @@ export default defineEventHandler(async (event: H3Event) => {
       }
 
       if (cookieResult.owner !== fileResult.owner) {
-        Logger.get().warn(
+        config.logger.warn(
           `User ${cookieResult.owner} tried to access file ${filename} owned by ${fileResult.owner}`,
         );
         return createError({
@@ -84,7 +83,7 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   if (!file) {
-    Logger.get().warn(`File not found in the file system: ${filename}`);
+    config.logger.warn(`File not found in the file system: ${filename}`);
     return createError({ statusCode: 404, message: Messages.FILE_NOT_FOUND });
   }
 
@@ -139,7 +138,9 @@ export default defineEventHandler(async (event: H3Event) => {
     setResponseHeaders(event, {
       'content-type': 'application/octet-stream',
       'content-length': file.length,
-      'content-disposition': `attachment; filename="${originalFilename ?? filename}"`,
+      'content-disposition': `attachment; filename="${
+        originalFilename ?? filename
+      }"`,
     });
   }
 
