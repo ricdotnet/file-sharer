@@ -1,5 +1,3 @@
-import { Logger } from '@ricdotnet/logger/dist/index.js';
-
 import { COOKIE_NAME } from '~/utils/constants';
 import { generateCookie, generateToken } from '~~/server/utils/auth';
 import { findCookie, findUserById } from '~~/server/utils/db';
@@ -8,6 +6,7 @@ import type {
   TUserAuthenticatedTokenPayload,
   TUserResult,
 } from '~~/server/utils/types';
+import config from '~~/config';
 
 export default defineEventHandler(async (event) => {
   const isRefresh = true;
@@ -29,7 +28,7 @@ export default defineEventHandler(async (event) => {
 
   if (new Date(cookieData.expires) < new Date()) {
     // cookie is expired
-    Logger.get().warn(
+    config.logger.warn(
       `User ${cookieData.owner} called /me with an expired cookie`,
     );
     return createError({ statusCode: 401, message: 'Unauthorized' });

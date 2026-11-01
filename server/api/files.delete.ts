@@ -1,8 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-import { Logger } from '@ricdotnet/logger/dist/index.js';
-
 import config from '~~/config';
 import { isValidAuthentication } from '~~/server/utils/auth';
 
@@ -10,7 +8,7 @@ export default defineEventHandler(async (event) => {
   const { tokenData, error } = await isValidAuthentication(event);
 
   if (error || !tokenData?.id) {
-    Logger.get().error(`Error occurred: ${error}`);
+    config.logger.error(`Error occurred: ${error}`);
     return createError({ statusCode: 401, message: 'Unauthorized' });
   }
 

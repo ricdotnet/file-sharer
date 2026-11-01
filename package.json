@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
-    "@ricdotnet/logger": "^0.3.3",
+    "@ricdotnet/logger": "^0.4.2",
     "argon2": "^0.45.1",
     "axios": "1.21.0",
     "formidable": "3.5.4",

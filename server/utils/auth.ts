@@ -1,6 +1,5 @@
 import crypto from 'crypto';
 
-import { Logger } from '@ricdotnet/logger/dist/index.js';
 import type { H3Event } from 'h3';
 import jwt from 'jsonwebtoken';
 import type { StringValue } from 'ms';
@@ -15,6 +14,7 @@ import {
 
 import { findCookie, saveCookie, updateCookie } from './db';
 import type { TUserAuthenticatedTokenPayload } from './types';
+import config from '~~/config';
 
 export function generateToken(
   payload: TUserAuthenticatedTokenPayload | object,
@@ -75,7 +75,7 @@ export async function isValidAuthentication(event: H3Event) {
   const authToken = getHeader(event, 'authorization');
 
   if (!secret) {
-    Logger.get().error('SECRET was not found in the environment');
+    config.logger.error('SECRET was not found in the environment');
     throw createError({ statusCode: 500, message: 'Something went wrong.' });
   }
 
@@ -88,7 +88,7 @@ export async function isValidAuthentication(event: H3Event) {
   try {
     tokenData = jwt.verify(authToken, secret) as TUserAuthenticatedTokenPayload;
   } catch (err) {
-    Logger.get().error(`Error occurred: ${err}`);
+    config.logger.error(`Error occurred: ${err}`);
 
     return { error: err };
   }
